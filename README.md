@@ -1,34 +1,38 @@
 # UrbanGo - Система управления каршерингом
 
-Система управления автомобилями для каршеринга, разработанная на C# с использованием Windows Forms.
+Современная система управления автомобилями для каршеринга, разработанная на C# с использованием Windows Forms и поддержкой множественных провайдеров данных.
 
 ## 📋 Описание проекта
 
-UrbanGo - это desktop-приложение для управления автопарком каршеринга. Система позволяет:
-- Управлять базой данных автомобилей
+UrbanGo - это desktop-приложение для управления автопарком каршеринга с поддержкой Entity Framework и Dapper. Система позволяет:
+- Управлять базой данных автомобилей через SQL Server LocalDB
+- Выбирать провайдер данных (Entity Framework или Dapper)
 - Отслеживать статус каждого автомобиля (доступен, арендован, на обслуживании)
 - Рассчитывать стоимость аренды
 - Логировать все операции в файл
+- Работать как через WinForms, так и через консольный интерфейс
 
 ## 🏗️ Архитектура проекта
 
-Проект построен по принципу многослойной архитектуры (N-Layer Architecture):
+Проект построен по принципу многослойной архитектуры (N-Layer Architecture) с использованием паттерна Repository:
 
 ### Структура решения
 
 ```
 AIS/
-├── Model/              # Слой данных (модели)
-├── BusinessLogic/      # Слой бизнес-логики
-├── AIS/              # Слой представления (WinForms)
+├── Model/              # Слой данных (модели и интерфейсы)
+├── BussinessLogic/     # Слой бизнес-логики
+├── DataAccessLayer/    # Слой доступа к данным
+├── AIS/               # Слой представления (WinForms)
 └── Console/           # Консольное приложение
 ```
 
 ### Компоненты
 
-- **Model** - Содержит модели данных (`Car`, `CarStatus`)
-- **BusinessLogic** - Бизнес-логика и сервисы (`ICarService`, `CarService`)
-- **AIS1** - WinForms интерфейс пользователя
+- **Model** - Содержит модели данных (`Car`, `CarStatus`, `IDomainObject`)
+- **BussinessLogic** - Бизнес-логика и сервисы (`ICarService`, `CarService`)
+- **DataAccessLayer** - Слой доступа к данным с поддержкой EF и Dapper
+- **AIS** - WinForms интерфейс пользователя
 - **Console** - Консольная версия приложения
 
 ## 🚗 Функциональность
@@ -64,18 +68,21 @@ AIS/
 
 - **Язык**: C# (.NET 8.0)
 - **UI Framework**: Windows Forms
-- **Целевая платформа**: .NET (кроссплатформенная)
+- **База данных**: SQL Server LocalDB
+- **ORM**: Entity Framework Core + Dapper
+- **Целевая платформа**: .NET 8.0 (кроссплатформенная)
 - **Архитектурный паттерн**: N-Layer Architecture
-- **Паттерн проектирования**: Repository Pattern (через интерфейсы)
+- **Паттерн проектирования**: Repository Pattern + Dependency Injection
+- **Строка подключения**: `Server=(localdb)\\mssqllocaldb;Database=UrbanGoDB;Trusted_Connection=true;TrustServerCertificate=true;`
 
 ## 📦 Установка и запуск
 
 ### Требования
 
 - **Windows**: Windows 10/11 или Windows Server 2012 R2+
-- **Linux**: Ubuntu 16.04+, CentOS 7+, или другие дистрибутивы с поддержкой .NET
-- **macOS**: macOS 10.13+
-- **.NET Runtime**: .NET 6.0, 7.0 или 8.0
+- **.NET Runtime**: .NET 8.0
+- **SQL Server**: SQL Server LocalDB (входит в состав Visual Studio)
+- **Visual Studio**: 2022 или новее (рекомендуется)
 
 ### Запуск
 
@@ -92,8 +99,8 @@ AIS.sln
 3. Соберите решение (Build → Build Solution)
 
 4. Запустите приложение:
-   - Для WinForms: запустите проект `AIS`
-   - Для консольной версии: запустите проект `Console`
+   - Для WinForms: запустите проект `AIS` (выберите провайдер данных при запуске)
+   - Для консольной версии: запустите проект `Console` (выберите провайдер данных в меню)
 
 ### Альтернативный запуск через CLI
 
@@ -125,7 +132,7 @@ dotnet run --project Console
 ### Модель Car
 
 ```csharp
-public class Car
+public class Car : IDomainObject
 {
     public int Id { get; set; }                    // Уникальный ID
     public string Brand { get; set; }              // Марка (Toyota, Kia)
@@ -135,6 +142,15 @@ public class Car
     public int Mileage { get; set; }               // Пробег (км)
     public CarStatus Status { get; set; }          // Статус
     public decimal RentalPricePerHour { get; set; } // Цена за час
+}
+```
+
+### Интерфейс IDomainObject
+
+```csharp
+public interface IDomainObject
+{
+    int Id { get; set; }
 }
 ```
 
@@ -162,6 +178,27 @@ public enum CarStatus
 - `RentCar(int id)` - аренда автомобиля
 - `CalculateRentalCost(int id, int hours)` - расчет стоимости
 
+### Слой доступа к данным
+
+#### Интерфейс IRepository<T>
+
+```csharp
+public interface IRepository<T> where T : IDomainObject
+{
+    void Add(T entity);
+    void Delete(int id);
+    IEnumerable<T> ReadAll();
+    T ReadById(int id);
+    void Update(T entity);
+}
+```
+
+#### Реализации репозитория
+
+- **EntityRepository<T>** - реализация через Entity Framework Core
+- **DapperRepository<T>** - реализация через Dapper ORM
+- **CarSharingContext** - DbContext для Entity Framework
+
 ## 📝 Логирование
 
 Все операции автоматически логируются в файл `actions.log` на рабочем столе пользователя. Формат записи:
@@ -171,14 +208,43 @@ public enum CarStatus
 [2024-01-15 14:35:10] Автомобиль ID=1 арендован
 ```
 
-## 🔄 Миграция с .NET Framework
+## 🗄️ База данных
 
-Проект был успешно перенесен с .NET Framework на современный .NET с сохранением всей функциональности. Основные изменения:
+### Настройка SQL Server LocalDB
 
-- ✅ Обновлены целевые платформы в `.csproj` файлах
-- ✅ Сохранена совместимость Windows Forms
-- ✅ Добавлена поддержка кроссплатформенности
-- ✅ Обновлены зависимости пакетов NuGet
+1. Убедитесь, что SQL Server LocalDB установлен (входит в состав Visual Studio)
+2. Создайте базу данных `UrbanGoDB` в LocalDB
+3. Создайте таблицу `Cars`:
+
+```sql
+CREATE TABLE Cars (
+    Id int IDENTITY(1,1) PRIMARY KEY,
+    Brand nvarchar(50) NOT NULL,
+    Model nvarchar(50) NOT NULL,
+    LicensePlate nvarchar(20) NOT NULL UNIQUE,
+    Year int NOT NULL,
+    Mileage int NOT NULL,
+    Status int NOT NULL,
+    RentalPricePerHour decimal(10,2) NOT NULL
+);
+```
+
+### Выбор провайдера данных
+
+При запуске приложения пользователь может выбрать:
+- **Entity Framework** - для работы через ORM с автоматическим отслеживанием изменений
+- **Dapper** - для работы через прямые SQL-запросы с высокой производительностью
+
+## 🔄 Архитектурные улучшения
+
+Проект был модернизирован с добавлением современных паттернов:
+
+- ✅ **Repository Pattern** - абстракция доступа к данным
+- ✅ **Dependency Injection** - внедрение зависимостей
+- ✅ **Interface Segregation** - разделение интерфейсов
+- ✅ **Entity Framework Core** - современный ORM
+- ✅ **Dapper** - микро-ORM для производительности
+- ✅ **Множественные провайдеры данных** - гибкость выбора
 
 ## 👨‍💻 Автор
 

@@ -6,11 +6,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BussinessLogic;
+using DataAccessLayer;
+using Microsoft.EntityFrameworkCore;
 
 namespace AIS
 {
     /// <summary>
-    /// Точка входа WinForms-приложения и обработчики глобальных исключений.
+    /// РўРѕС‡РєР° РІС…РѕРґР° WinForms-РїСЂРёР»РѕР¶РµРЅРёСЏ Рё РѕР±СЂР°Р±РѕС‚С‡РёРєРё РіР»РѕР±Р°Р»СЊРЅС‹С… РёСЃРєР»СЋС‡РµРЅРёР№.
     /// </summary>
     internal static class Program
     {
@@ -23,29 +25,77 @@ namespace AIS
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            Application.Run(new MainForm());
+            // Р’С‹Р±РѕСЂ РїСЂРѕРІР°Р№РґРµСЂР° РґР°РЅРЅС‹С…
+            var dataProvider = ChooseDataProvider();
+            if (dataProvider == null)
+            {
+                return; // РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РѕС‚РјРµРЅРёР» РІС‹Р±РѕСЂ
+            }
+
+            // РЎРѕР·РґР°РЅРёРµ Рё Р·Р°РїСѓСЃРє РіР»Р°РІРЅРѕР№ С„РѕСЂРјС‹ СЃ РІС‹Р±СЂР°РЅРЅС‹Рј РїСЂРѕРІР°Р№РґРµСЂРѕРј
+            var mainForm = new MainForm(dataProvider);
+            Application.Run(mainForm);
         }
 
         /// <summary>
-        /// Обработчик необработанных исключений в UI-потоке.
-        /// Показывает сообщение об ошибке пользователю.
+        /// РџРѕРєР°Р·С‹РІР°РµС‚ РґРёР°Р»РѕРі РІС‹Р±РѕСЂР° РїСЂРѕРІР°Р№РґРµСЂР° РґР°РЅРЅС‹С….
+        /// </summary>
+        /// <returns>Р’С‹Р±СЂР°РЅРЅС‹Р№ РїСЂРѕРІР°Р№РґРµСЂ РґР°РЅРЅС‹С… РёР»Рё null, РµСЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РѕС‚РјРµРЅРёР».</returns>
+        private static IRepository<Model.Car> ChooseDataProvider()
+        {
+            var result = MessageBox.Show(
+                "Р’С‹Р±РµСЂРёС‚Рµ РїСЂРѕРІР°Р№РґРµСЂ РґР°РЅРЅС‹С…:\n\n" +
+                "Р”Р° - Entity Framework\n" +
+                "РќРµС‚ - Dapper\n" +
+                "РћС‚РјРµРЅР° - Р’С‹С…РѕРґ РёР· РїСЂРёР»РѕР¶РµРЅРёСЏ",
+                "Р’С‹Р±РѕСЂ РїСЂРѕРІР°Р№РґРµСЂР° РґР°РЅРЅС‹С…",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Cancel)
+            {
+                return null;
+            }
+
+            const string connectionString = "Server=(localdb)\\mssqllocaldb;Database=UrbanGoDB;Trusted_Connection=true;TrustServerCertificate=true;";
+
+            if (result == DialogResult.Yes)
+            {
+                // Entity Framework
+                var options = new DbContextOptionsBuilder<CarSharingContext>()
+                    .UseSqlServer(connectionString)
+                    .Options;
+                
+                var context = new CarSharingContext(options);
+                return new EntityRepository<Model.Car>(context);
+            }
+            else
+            {
+                // Dapper
+                return new DapperRepository<Model.Car>(connectionString);
+            }
+        }
+
+        /// <summary>
+        /// РћР±СЂР°Р±РѕС‚С‡РёРє РЅРµРѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… РёСЃРєР»СЋС‡РµРЅРёР№ РІ UI-РїРѕС‚РѕРєРµ.
+        /// РџРѕРєР°Р·С‹РІР°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЋ.
         /// </summary>
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            MessageBox.Show($"Произошла непредвиденная ошибка:\n{e.Exception.Message}",
-                "Критическая ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show($"РџСЂРѕРёР·РѕС€Р»Р° РЅРµРїСЂРµРґРІРёРґРµРЅРЅР°СЏ РѕС€РёР±РєР°:\n{e.Exception.Message}",
+                "РљСЂРёС‚РёС‡РµСЃРєР°СЏ РѕС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
-        /// Обработчик необработанных исключений домена приложения (не UI-поток).
-        /// Показывает сообщение об ошибке при критических сбоях.
+        /// РћР±СЂР°Р±РѕС‚С‡РёРє РЅРµРѕР±СЂР°Р±РѕС‚Р°РЅРЅС‹С… РёСЃРєР»СЋС‡РµРЅРёР№ РґРѕРјРµРЅР° РїСЂРёР»РѕР¶РµРЅРёСЏ (РЅРµ UI-РїРѕС‚РѕРє).
+        /// РџРѕРєР°Р·С‹РІР°РµС‚ СЃРѕРѕР±С‰РµРЅРёРµ РѕР± РѕС€РёР±РєРµ РїСЂРё РєСЂРёС‚РёС‡РµСЃРєРёС… СЃР±РѕСЏС….
         /// </summary>
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (e.ExceptionObject is Exception ex)
             {
-                MessageBox.Show($"Произошла критическая ошибка:\n{ex.Message}",
-                    "Критическая ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"РџСЂРѕРёР·РѕС€Р»Р° РєСЂРёС‚РёС‡РµСЃРєР°СЏ РѕС€РёР±РєР°:\n{ex.Message}",
+                    "РљСЂРёС‚РёС‡РµСЃРєР°СЏ РѕС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

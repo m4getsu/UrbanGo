@@ -1,4 +1,5 @@
 ﻿using Model;
+using DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,10 +15,18 @@ namespace BussinessLogic
     /// </summary>
     public class CarService : ICarService
     {
-        private readonly List<Car> _cars = new List<Car>();
-        private int _nextId = 1;
+        private readonly IRepository<Car> _repository;
         private readonly object _logSync = new object();
         private readonly string _logFilePath = Path.Combine(@"C:\Users\kosty\OneDrive\Desktop", "actions.log");
+
+        /// <summary>
+        /// Инициализирует новый экземпляр сервиса с репозиторием для работы с данными.
+        /// </summary>
+        /// <param name="repository">Репозиторий для доступа к данным автомобилей.</param>
+        public CarService(IRepository<Car> repository)
+        {
+            _repository = repository;
+        }
 
         /// <summary>
         /// Записывает строку в файл журнала действий на рабочем столе пользователя.
@@ -76,12 +85,12 @@ namespace BussinessLogic
             if (rentalPricePerHour <= 0)
                 throw new ArgumentException("Стоимость аренды должна быть положительной.", nameof(rentalPricePerHour));
 
-            if (_cars.Any(c => c.LicensePlate.Equals(licensePlate, StringComparison.OrdinalIgnoreCase)))
+            var existingCars = _repository.ReadAll();
+            if (existingCars.Any(c => c.LicensePlate.Equals(licensePlate, StringComparison.OrdinalIgnoreCase)))
                 throw new ArgumentException("Автомобиль с таким государственным номером уже существует.", nameof(licensePlate));
 
             var car = new Car
             {
-                Id = _nextId++,
                 Brand = brand.Trim(),
                 Model = model.Trim(),
                 LicensePlate = licensePlate.Trim(),
@@ -91,7 +100,7 @@ namespace BussinessLogic
                 Status = CarStatus.Available
             };
 
-            _cars.Add(car);
+            _repository.Add(car);
             WriteLog($"CREATE: Id={car.Id}, {car.Brand} {car.Model}, Plate={car.LicensePlate}, Year={car.Year}, Mileage={car.Mileage}, PricePerHour={car.RentalPricePerHour}");
             return car;
         }
@@ -103,7 +112,7 @@ namespace BussinessLogic
         /// <returns>Найденный автомобиль или null, если автомобиль не найден.</returns>
         public Car GetCar(int id)
         {
-            return _cars.FirstOrDefault(c => c.Id == id);
+            return _repository.ReadById(id);
         }
 
         /// <summary>
@@ -112,7 +121,7 @@ namespace BussinessLogic
         /// <returns>Список автомобилей.</returns>
         public List<Car> GetAllCars()
         {
-            return new List<Car>(_cars);
+            return _repository.ReadAll().ToList();
         }
 
         /// <summary>
@@ -130,16 +139,12 @@ namespace BussinessLogic
             if (existingCar == null)
                 return false;
 
-            if (_cars.Any(c => c.Id != carToUpdate.Id && c.LicensePlate.Equals(carToUpdate.LicensePlate, StringComparison.OrdinalIgnoreCase)))
+            var allCars = _repository.ReadAll();
+            if (allCars.Any(c => c.Id != carToUpdate.Id && c.LicensePlate.Equals(carToUpdate.LicensePlate, StringComparison.OrdinalIgnoreCase)))
                 return false;
-            existingCar.Brand = carToUpdate.Brand;
-            existingCar.Model = carToUpdate.Model;
-            existingCar.LicensePlate = carToUpdate.LicensePlate;
-            existingCar.Year = carToUpdate.Year;
-            existingCar.Mileage = carToUpdate.Mileage;
-            existingCar.Status = carToUpdate.Status;
-            existingCar.RentalPricePerHour = carToUpdate.RentalPricePerHour;
-            WriteLog($"UPDATE: Id={existingCar.Id}, {existingCar.Brand} {existingCar.Model}, Plate={existingCar.LicensePlate}, Year={existingCar.Year}, Mileage={existingCar.Mileage}, Status={existingCar.Status}, PricePerHour={existingCar.RentalPricePerHour}");
+
+            _repository.Update(carToUpdate);
+            WriteLog($"UPDATE: Id={carToUpdate.Id}, {carToUpdate.Brand} {carToUpdate.Model}, Plate={carToUpdate.LicensePlate}, Year={carToUpdate.Year}, Mileage={carToUpdate.Mileage}, Status={carToUpdate.Status}, PricePerHour={carToUpdate.RentalPricePerHour}");
             return true;
         }
 
@@ -157,12 +162,9 @@ namespace BussinessLogic
             if (carToRemove.Status == CarStatus.Rented)
                 return false;
 
-            var removed = _cars.Remove(carToRemove);
-            if (removed)
-            {
-                WriteLog($"DELETE: Id={carToRemove.Id}, {carToRemove.Brand} {carToRemove.Model}, Plate={carToRemove.LicensePlate}");
-            }
-            return removed;
+            _repository.Delete(id);
+            WriteLog($"DELETE: Id={carToRemove.Id}, {carToRemove.Brand} {carToRemove.Model}, Plate={carToRemove.LicensePlate}");
+            return true;
         }
 
         /// <summary>
@@ -171,7 +173,7 @@ namespace BussinessLogic
         /// <returns>Список доступных автомобилей.</returns>
         public List<Car> GetAvailableCars()
         {
-            return _cars.Where(c => c.Status == CarStatus.Available).ToList();
+            return _repository.ReadAll().Where(c => c.Status == CarStatus.Available).ToList();
         }
 
         /// <summary>
@@ -186,6 +188,7 @@ namespace BussinessLogic
                 return false;
 
             carToRent.Status = CarStatus.Rented;
+            _repository.Update(carToRent);
             WriteLog($"RENT: Id={carToRent.Id}, {carToRent.Brand} {carToRent.Model}, Plate={carToRent.LicensePlate}");
             return true;
         }
@@ -249,7 +252,7 @@ namespace BussinessLogic
         public List<string> GetAllCarsDescriptions()
         {
             var descriptions = new List<string>();
-            foreach (var car in _cars)
+            foreach (var car in _repository.ReadAll())
             {
                 descriptions.Add(GetCarDescription(car.Id));
             }
@@ -263,7 +266,7 @@ namespace BussinessLogic
         public List<string> GetAvailableCarsDescriptions()
         {
             var descriptions = new List<string>();
-            foreach (var car in _cars)
+            foreach (var car in _repository.ReadAll())
             {
                 if (car.Status == CarStatus.Available)
                 {
@@ -346,7 +349,7 @@ namespace BussinessLogic
         /// </summary>
         /// <param name="carId">Идентификатор автомобиля.</param>
         /// <returns>Объект с данными для отображения или null, если автомобиль не найден.</returns>
-        public object GetCarForDisplay(int carId)
+        public object  GetCarForDisplay(int carId)
         {
             var car = GetCar(carId);
             if (car == null) return null;
@@ -373,7 +376,7 @@ namespace BussinessLogic
         public List<object> GetCarsForDisplay()
         {
             var result = new List<object>();
-            foreach (var car in _cars)
+            foreach (var car in _repository.ReadAll())
             {
                 result.Add(new
                 {

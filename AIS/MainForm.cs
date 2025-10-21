@@ -1,4 +1,5 @@
 using BussinessLogic;
+using DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,9 +13,9 @@ using System.Windows.Forms;
 namespace AIS
 {
     /// <summary>
-    /// Главная форма приложения (WinForms) для управления автомобилями:
-    /// отображение списка, поиск, добавление, редактирование, удаление,
-    /// аренда и расчёт стоимости.
+    /// Р“Р»Р°РІРЅР°СЏ С„РѕСЂРјР° РїСЂРёР»РѕР¶РµРЅРёСЏ (WinForms) РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ Р°РІС‚РѕРјРѕР±РёР»СЏРјРё:
+    /// РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ СЃРїРёСЃРєР°, РїРѕРёСЃРє, РґРѕР±Р°РІР»РµРЅРёРµ, СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ, СѓРґР°Р»РµРЅРёРµ,
+    /// Р°СЂРµРЅРґР° Рё СЂР°СЃС‡С‘С‚ СЃС‚РѕРёРјРѕСЃС‚Рё.
     /// </summary>
     public partial class MainForm : Form
     {
@@ -23,70 +24,56 @@ namespace AIS
         private class CarDisplayItem
         {
             /// <summary>
-            /// Уникальный идентификатор автомобиля.
+            /// РЈРЅРёРєР°Р»СЊРЅС‹Р№ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р°РІС‚РѕРјРѕР±РёР»СЏ.
             /// </summary>
             public int Id { get; set; }
             /// <summary>
-            /// Марка автомобиля.
+            /// РњР°СЂРєР° Р°РІС‚РѕРјРѕР±РёР»СЏ.
             /// </summary>
             public string Brand { get; set; } = string.Empty;
             /// <summary>
-            /// Модель автомобиля.
+            /// РњРѕРґРµР»СЊ Р°РІС‚РѕРјРѕР±РёР»СЏ.
             /// </summary>
             public string Model { get; set; } = string.Empty;
             /// <summary>
-            /// Гос. номер автомобиля.
+            /// Р“РѕСЃ. РЅРѕРјРµСЂ Р°РІС‚РѕРјРѕР±РёР»СЏ.
             /// </summary>
             public string LicensePlate { get; set; } = string.Empty;
             /// <summary>
-            /// Год выпуска.
+            /// Р“РѕРґ РІС‹РїСѓСЃРєР°.
             /// </summary>
             public int Year { get; set; }
             /// <summary>
-            /// Пробег, км.
+            /// РџСЂРѕР±РµРі, РєРј.
             /// </summary>
             public int Mileage { get; set; }
             /// <summary>
-            /// Стоимость аренды в час.
+            /// РЎС‚РѕРёРјРѕСЃС‚СЊ Р°СЂРµРЅРґС‹ РІ С‡Р°СЃ.
             /// </summary>
             public decimal RentalPricePerHour { get; set; }
             /// <summary>
-            /// Статус в текстовом виде (англ. ключ enum).
+            /// РЎС‚Р°С‚СѓСЃ РІ С‚РµРєСЃС‚РѕРІРѕРј РІРёРґРµ (Р°РЅРіР». РєР»СЋС‡ enum).
             /// </summary>
             public string StatusText { get; set; } = string.Empty;
             /// <summary>
-            /// Короткая строка для отображения (марка, модель, номер).
+            /// РљРѕСЂРѕС‚РєР°СЏ СЃС‚СЂРѕРєР° РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ (РјР°СЂРєР°, РјРѕРґРµР»СЊ, РЅРѕРјРµСЂ).
             /// </summary>
             public string DisplayText { get; set; } = string.Empty;
         }
 
-        public MainForm()
+        public MainForm(IRepository<Model.Car> repository)
         {
             InitializeComponent();
-            _carService = new CarService();
-            InitializeTestData();
+            _carService = new CarService(repository);
         }
 
         /// <summary>
-        /// Загрузка тестовых данных
+        /// Р—Р°РіСЂСѓР·РєР° С‚РµСЃС‚РѕРІС‹С… РґР°РЅРЅС‹С…
         /// </summary>
-        private void InitializeTestData()
-        {
-            try
-            {
-                _carService.CreateCar("Toyota", "Camry", "А123ВС77", 2020, 45000, 250);
-                _carService.CreateCar("Kia", "Rio", "О777ОО77", 2022, 10000, 200);
-                _carService.CreateCar("Hyundai", "Solaris", "В456ОР78", 2021, 30000, 220);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при создании тестовых данных: {ex.Message}",
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
+
 
         /// <summary>
-        /// Обработчик загрузки формы: настраивает таблицу и загружает данные.
+        /// РћР±СЂР°Р±РѕС‚С‡РёРє Р·Р°РіСЂСѓР·РєРё С„РѕСЂРјС‹: РЅР°СЃС‚СЂР°РёРІР°РµС‚ С‚Р°Р±Р»РёС†Сѓ Рё Р·Р°РіСЂСѓР¶Р°РµС‚ РґР°РЅРЅС‹Рµ.
         /// </summary>
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -95,7 +82,7 @@ namespace AIS
         }
 
         /// <summary>
-        /// Настраивает внешний вид и колонки DataGridView для списка автомобилей.
+        /// РќР°СЃС‚СЂР°РёРІР°РµС‚ РІРЅРµС€РЅРёР№ РІРёРґ Рё РєРѕР»РѕРЅРєРё DataGridView РґР»СЏ СЃРїРёСЃРєР° Р°РІС‚РѕРјРѕР±РёР»РµР№.
         /// </summary>
         private void ConfigureDataGridView()
         {
@@ -132,7 +119,7 @@ namespace AIS
             dataGridViewCars.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Brand",
-                HeaderText = "Марка",
+                HeaderText = "РњР°СЂРєР°",
                 Width = 100,
                 DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleLeft }
             });
@@ -140,7 +127,7 @@ namespace AIS
             dataGridViewCars.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Model",
-                HeaderText = "Модель",
+                HeaderText = "РњРѕРґРµР»СЊ",
                 Width = 100,
                 DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleLeft }
             });
@@ -148,7 +135,7 @@ namespace AIS
             dataGridViewCars.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "LicensePlate",
-                HeaderText = "Гос. номер",
+                HeaderText = "Р“РѕСЃ. РЅРѕРјРµСЂ",
                 Width = 100,
                 DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
             });
@@ -156,7 +143,7 @@ namespace AIS
             dataGridViewCars.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Year",
-                HeaderText = "Год",
+                HeaderText = "Р“РѕРґ",
                 Width = 60,
                 DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
             });
@@ -164,7 +151,7 @@ namespace AIS
             dataGridViewCars.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "StatusText",
-                HeaderText = "Статус",
+                HeaderText = "РЎС‚Р°С‚СѓСЃ",
                 Width = 100,
                 DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter }
             });
@@ -172,7 +159,7 @@ namespace AIS
             dataGridViewCars.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "Mileage",
-                HeaderText = "Пробег",
+                HeaderText = "РџСЂРѕР±РµРі",
                 Width = 80,
                 DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight }
             });
@@ -180,7 +167,7 @@ namespace AIS
             dataGridViewCars.Columns.Add(new DataGridViewTextBoxColumn
             {
                 DataPropertyName = "RentalPricePerHour",
-                HeaderText = "Цена/час",
+                HeaderText = "Р¦РµРЅР°/С‡Р°СЃ",
                 Width = 90,
                 DefaultCellStyle = new DataGridViewCellStyle
                 {
@@ -191,7 +178,7 @@ namespace AIS
         }
 
         /// <summary>
-        /// Обновляет список автомобилей с учётом фильтра поиска и статистику.
+        /// РћР±РЅРѕРІР»СЏРµС‚ СЃРїРёСЃРѕРє Р°РІС‚РѕРјРѕР±РёР»РµР№ СЃ СѓС‡С‘С‚РѕРј С„РёР»СЊС‚СЂР° РїРѕРёСЃРєР° Рё СЃС‚Р°С‚РёСЃС‚РёРєСѓ.
         /// </summary>
         private void RefreshCarsList()
         {
@@ -235,35 +222,35 @@ namespace AIS
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}",
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: {ex.Message}",
+                    "пїЅпїЅпїЅпїЅпїЅпїЅ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// Пересчитывает и отображает агрегированную статистику по списку.
+        /// РџРµСЂРµСЃС‡РёС‚С‹РІР°РµС‚ Рё РѕС‚РѕР±СЂР°Р¶Р°РµС‚ Р°РіСЂРµРіРёСЂРѕРІР°РЅРЅСѓСЋ СЃС‚Р°С‚РёСЃС‚РёРєСѓ РїРѕ СЃРїРёСЃРєСѓ.
         /// </summary>
-        /// <param name="cars">Текущие элементы, отображаемые в таблице.</param>
+        /// <param name="cars">РўРµРєСѓС‰РёРµ СЌР»РµРјРµРЅС‚С‹, РѕС‚РѕР±СЂР°Р¶Р°РµРјС‹Рµ РІ С‚Р°Р±Р»РёС†Рµ.</param>
         private void UpdateStatusBar(List<CarDisplayItem> cars)
         {
             try
             {
                 int total = cars.Count;
-                int availableCount = cars.Count(c => c.StatusText == "Свободен");
-                int rentedCount = cars.Count(c => c.StatusText == "В аренде");
-                int maintenanceCount = cars.Count(c => c.StatusText == "На тех. обслуживании");
+                int availableCount = cars.Count(c => c.StatusText == "РЎРІРѕР±РѕРґРµРЅ");
+                int rentedCount = cars.Count(c => c.StatusText == "Р’ Р°СЂРµРЅРґРµ");
+                int maintenanceCount = cars.Count(c => c.StatusText == "РќР° С‚РµС…. РѕР±СЃР»СѓР¶РёРІР°РЅРёРё");
 
                 toolStripStatusLabel.Text =
-                    $"Всего: {total} | Свбободных: {availableCount} | В аренде: {rentedCount} | На тех. обслуживании: {maintenanceCount}";
+                    $"Р’СЃРµРіРѕ: {total} | РЎРІР±РѕР±РѕРґРЅС‹С…: {availableCount} | Р’ Р°СЂРµРЅРґРµ:  {rentedCount} | РќР° С‚РµС…. РѕР±СЃР»СѓР¶РёРІР°РЅРёРё: {maintenanceCount}";
             }
             catch (Exception ex)
             {
-                toolStripStatusLabel.Text = $"Ошибка: {ex.Message}";
+                toolStripStatusLabel.Text = $"РћС€РёР±РєР°: {ex.Message}";
             }
         }
 
         /// <summary>
-        /// Добавляет новый автомобиль через модальную форму.
+        /// Р”РѕР±Р°РІР»СЏРµС‚ РЅРѕРІС‹Р№ Р°РІС‚РѕРјРѕР±РёР»СЊ С‡РµСЂРµР· РјРѕРґР°Р»СЊРЅСѓСЋ С„РѕСЂРјСѓ.
         /// </summary>
         private void buttonAdd_Click(object sender, EventArgs e)
         {
@@ -282,12 +269,12 @@ namespace AIS
                             addForm.Price
                         );
                         RefreshCarsList();
-                        MessageBox.Show("Автомобиль успешно добавлен!", "Успех",
+                        MessageBox.Show("РђРІС‚РѕРјРѕР±РёР»СЊ СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅ!", "РЈСЃРїРµС…",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (ArgumentException ex)
                     {
-                        MessageBox.Show($"Ошибка при добавлении: {ex.Message}", "Ошибка",
+                        MessageBox.Show($"РћС€РёР±РєР° РїСЂРё РґРѕР±Р°РІР»РµРЅРёРё: {ex.Message}", "РћС€РёР±РєР°",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
@@ -295,7 +282,7 @@ namespace AIS
         }
 
         /// <summary>
-        /// Редактирует выбранный автомобиль через модальную форму.
+        /// Р РµРґР°РєС‚РёСЂСѓРµС‚ РІС‹Р±СЂР°РЅРЅС‹Р№ Р°РІС‚РѕРјРѕР±РёР»СЊ С‡РµСЂРµР· РјРѕРґР°Р»СЊРЅСѓСЋ С„РѕСЂРјСѓ.
         /// </summary>
         private void buttonEdit_Click(object sender, EventArgs e)
         {
@@ -306,19 +293,19 @@ namespace AIS
                 var currentValues = _carService.GetCarValuesForEdit(carId);
                 if (currentValues == null)
                 {
-                    MessageBox.Show("Автомобиль не найден!", "Ошибка",
+                    MessageBox.Show("РђРІС‚РѕРјРѕР±РёР»СЊ РЅРµ РЅР°Р№РґРµРЅ!", "РћС€РёР±РєР°",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
                 using (var editForm = new CarEditForm(
-                    (string)currentValues[0],  // марка
-                    (string)currentValues[1],  // модель
-                    (string)currentValues[2],  // номер
-                    (int)currentValues[3],     // год
-                    (int)currentValues[4],     // пробег
-                    (decimal)currentValues[5], // цена
-                    (int)currentValues[6]      // статус
+                    (string)currentValues[0],  // РјР°СЂРєР°
+                    (string)currentValues[1],  // РјРѕРґРµР»СЊ
+                    (string)currentValues[2],  // РЅРѕРјРµСЂ
+                    (int)currentValues[3],     // РіРѕРґ
+                    (int)currentValues[4],     // РїСЂРѕР±РµРі
+                    (decimal)currentValues[5], // С†РµРЅР°
+                    (int)currentValues[6]      // СЃС‚Р°С‚СѓСЃ
                 ))
                 {
                     if (editForm.ShowDialog() == DialogResult.OK)
@@ -329,18 +316,18 @@ namespace AIS
                                 editForm.LicensePlate, editForm.Year, editForm.Mileage, editForm.Price, editForm.Status))
                             {
                                 RefreshCarsList();
-                                MessageBox.Show("Данные автомобиля успешно обновлены!", "Успех",
+                                MessageBox.Show("Р”Р°РЅРЅС‹Рµ Р°РІС‚РѕРјРѕР±РёР»СЏ СѓСЃРїРµС€РЅРѕ РѕР±РЅРѕРІР»РµРЅС‹!", "РЈСЃРїРµС…",
                                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                             else
                             {
-                                MessageBox.Show("Не удалось обновить автомобиль. Проверьте уникальность гос. номера.",
-                                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("РќРµ СѓРґР°Р»РѕСЃСЊ РѕР±РЅРѕРІРёС‚СЊ Р°РІС‚РѕРјРѕР±РёР»СЊ. РџСЂРѕРІРµСЂСЊС‚Рµ СѓРЅРёРєР°Р»СЊРЅРѕСЃС‚СЊ РіРѕСЃ. РЅРѕРјРµСЂР°.",
+                                    "РћС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                         catch (ArgumentException ex)
                         {
-                            MessageBox.Show($"Ошибка при обновлении: {ex.Message}", "Ошибка",
+                            MessageBox.Show($"РћС€РёР±РєР° РїСЂРё РѕР±РЅРѕРІР»РµРЅРёРё: {ex.Message}", "РћС€РёР±РєР°",
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
@@ -348,13 +335,13 @@ namespace AIS
             }
             else
             {
-                MessageBox.Show("Пожалуйста, выберите автомобиль для редактирования.", "Информация",
+                MessageBox.Show("РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІС‹Р±РµСЂРёС‚Рµ Р°РІС‚РѕРјРѕР±РёР»СЊ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ.", "РРЅС„РѕСЂРјР°С†РёСЏ",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         /// <summary>
-        /// Удаляет выбранный автомобиль после подтверждения.
+        /// РЈРґР°Р»СЏРµС‚ РІС‹Р±СЂР°РЅРЅС‹Р№ Р°РІС‚РѕРјРѕР±РёР»СЊ РїРѕСЃР»Рµ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёСЏ.
         /// </summary>
         private void buttonDelete_Click(object sender, EventArgs e)
         {
@@ -364,35 +351,35 @@ namespace AIS
                 string carInfo = $"{selectedCar.Brand} {selectedCar.Model}";
 
                 var result = MessageBox.Show(
-                    $"Вы уверены, что хотите удалить автомобиль '{carInfo}'?",
-                    "Подтверждение удаления",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
+                   $"Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ СѓРґР°Р»РёС‚СЊ Р°РІС‚РѕРјРѕР±РёР»СЊ '{carInfo}'?",
+                   "РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ СѓРґР°Р»РµРЅРёСЏ",
+                   MessageBoxButtons.YesNo,
+                   MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
                     if (_carService.DeleteCar(carId))
                     {
                         RefreshCarsList();
-                        MessageBox.Show("Автомобиль успешно удален!", "Успех",
+                        MessageBox.Show("РђРІС‚РѕРјРѕР±РёР»СЊ СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅ!", "РЈСЃРїРµС…",
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
-                        MessageBox.Show("Не удалось удалить автомобиль. Возможно, он арендован.",
-                            "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("РќРµ СѓРґР°Р»РѕСЃСЊ СѓРґР°Р»РёС‚СЊ Р°РІС‚РѕРјРѕР±РёР»СЊ. Р’РѕР·РјРѕР¶РЅРѕ, РѕРЅ Р°СЂРµРЅРґРѕРІР°РЅ.",
+                            "РћС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Пожалуйста, выберите автомобиль для удаления.", "Информация",
+                MessageBox.Show("РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІС‹Р±РµСЂРёС‚Рµ Р°РІС‚РѕРјРѕР±РёР»СЊ РґР»СЏ СѓРґР°Р»РµРЅРёСЏ.", "РРЅС„РѕСЂРјР°С†РёСЏ",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         /// <summary>
-        /// Арендует выбранный автомобиль и обновляет список.
+        /// РђСЂРµРЅРґСѓРµС‚ РІС‹Р±СЂР°РЅРЅС‹Р№ Р°РІС‚РѕРјРѕР±РёР»СЊ Рё РѕР±РЅРѕРІР»СЏРµС‚ СЃРїРёСЃРѕРє.
         /// </summary>
         private void buttonRent_Click(object sender, EventArgs e)
         {
@@ -403,24 +390,24 @@ namespace AIS
                 if (_carService.RentCar(carId))
                 {
                     RefreshCarsList();
-                    MessageBox.Show("Автомобиль успешно арендован!", "Успех",
+                    MessageBox.Show("РђРІС‚РѕРјРѕР±РёР»СЊ СѓСЃРїРµС€РЅРѕ Р°СЂРµРЅРґРѕРІР°РЅ!", "РЈСЃРїРµС…",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Не удалось арендовать автомобиль. Возможно, он уже арендован или недоступен.",
-                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("РќРµ СѓРґР°Р»РѕСЃСЊ Р°СЂРµРЅРґРѕРІР°С‚СЊ Р°РІС‚РѕРјРѕР±РёР»СЊ. Р’РѕР·РјРѕР¶РЅРѕ, РѕРЅ СѓР¶Рµ Р°СЂРµРЅРґРѕРІР°РЅ РёР»Рё РЅРµРґРѕСЃС‚СѓРїРµРЅ.",
+                        "РћС€РёР±РєР°", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             else
             {
-                MessageBox.Show("Пожалуйста, выберите автомобиль для аренды.", "Информация",
+                MessageBox.Show("РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІС‹Р±РµСЂРёС‚Рµ Р°РІС‚РѕРјРѕР±РёР»СЊ РґР»СЏ Р°СЂРµРЅРґС‹.", "РРЅС„РѕСЂРјР°С†РёСЏ",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         /// <summary>
-        /// Открывает форму расчёта стоимости для выбранного автомобиля.
+        /// РћС‚РєСЂС‹РІР°РµС‚ С„РѕСЂРјСѓ СЂР°СЃС‡С‘С‚Р° СЃС‚РѕРёРјРѕСЃС‚Рё РґР»СЏ РІС‹Р±СЂР°РЅРЅРѕРіРѕ Р°РІС‚РѕРјРѕР±РёР»СЏ.
         /// </summary>
         private void buttonCalculate_Click(object sender, EventArgs e)
         {
@@ -435,13 +422,13 @@ namespace AIS
             }
             else
             {
-                MessageBox.Show("Пожалуйста, выберите автомобиль для расчета стоимости.", "Информация",
+                MessageBox.Show("РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІС‹Р±РµСЂРёС‚Рµ Р°РІС‚РѕРјРѕР±РёР»СЊ РґР»СЏ СЂР°СЃС‡РµС‚Р° СЃС‚РѕРёРјРѕСЃС‚Рё.", "РРЅС„РѕСЂРјР°С†РёСЏ",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         /// <summary>
-        /// Обновляет список автомобилей.
+        /// РћР±РЅРѕРІР»СЏРµС‚ СЃРїРёСЃРѕРє Р°РІС‚РѕРјРѕР±РёР»РµР№.
         /// </summary>
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
@@ -449,7 +436,7 @@ namespace AIS
         }
 
         /// <summary>
-        /// Применяет фильтр по мере изменения текста поиска.
+        /// РџСЂРёРјРµРЅСЏРµС‚ С„РёР»СЊС‚СЂ РїРѕ РјРµСЂРµ РёР·РјРµРЅРµРЅРёСЏ С‚РµРєСЃС‚Р° РїРѕРёСЃРєР°.
         /// </summary>
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
@@ -457,7 +444,7 @@ namespace AIS
         }
 
         /// <summary>
-        /// Применяет фильтр поиска по кнопке.
+        /// РџСЂРёРјРµРЅСЏРµС‚ С„РёР»СЊС‚СЂ РїРѕРёСЃРєР° РїРѕ РєРЅРѕРїРєРµ.
         /// </summary>
         private void buttonSearch_Click(object sender, EventArgs e)
         {
@@ -465,7 +452,7 @@ namespace AIS
         }
 
         /// <summary>
-        /// Включает/отключает кнопки действий в зависимости от выбранной строки.
+        /// Р’РєР»СЋС‡Р°РµС‚/РѕС‚РєР»СЋС‡Р°РµС‚ РєРЅРѕРїРєРё РґРµР№СЃС‚РІРёР№ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ РІС‹Р±СЂР°РЅРЅРѕР№ СЃС‚СЂРѕРєРё.
         /// </summary>
         private void dataGridViewCars_SelectionChanged(object sender, EventArgs e)
         {
@@ -477,13 +464,13 @@ namespace AIS
         }
 
         /// <summary>
-        /// Запрашивает подтверждение перед закрытием приложения.
+        /// Р—Р°РїСЂР°С€РёРІР°РµС‚ РїРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РїРµСЂРµРґ Р·Р°РєСЂС‹С‚РёРµРј РїСЂРёР»РѕР¶РµРЅРёСЏ.
         /// </summary>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             var result = MessageBox.Show(
-                "Вы уверены, что хотите выйти?",
-                "Подтверждение выхода",
+                "Р’С‹ СѓРІРµСЂРµРЅС‹, С‡С‚Рѕ С…РѕС‚РёС‚Рµ РІС‹Р№С‚Рё?",
+                "РџРѕРґС‚РІРµСЂР¶РґРµРЅРёРµ РІС‹С…РѕРґР°",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 

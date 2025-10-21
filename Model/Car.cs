@@ -9,7 +9,7 @@ namespace Model
     /// <summary>
     /// Представляет автомобиль в системе каршеринга.
     /// </summary>
-    public class Car
+    public class Car : IDomainObject
     {
         /// <summary>
         /// Уникальный идентификатор автомобиля.

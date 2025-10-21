@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BussinessLogic;
+using DataAccessLayer;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsoleApp
 {
@@ -13,7 +15,7 @@ namespace ConsoleApp
     /// </summary>
     internal class Program
     {
-        private static readonly ICarService _carService = new CarService();
+        private static ICarService _carService;
 
         /// <summary>
         /// Главная точка входа в приложение.
@@ -21,6 +23,17 @@ namespace ConsoleApp
         /// <param name="args">Аргументы командной строки.</param>
         static void Main(string[] args)
         {
+            // Выбор провайдера данных
+            var dataProvider = ChooseDataProvider();
+            if (dataProvider == null)
+            {
+                Console.WriteLine("Выход из программы...");
+                return;
+            }
+
+            // Создание сервиса с выбранным провайдером
+            _carService = new CarService(dataProvider);
+
             bool exitRequested = false;
 
             while (!exitRequested)
@@ -519,6 +532,53 @@ namespace ConsoleApp
         {
             Console.WriteLine("\nНажмите любую клавишу для продолжения...");
             Console.ReadKey();
+        }
+
+        /// <summary>
+        /// Показывает консольный запрос выбора провайдера данных.
+        /// </summary>
+        /// <returns>Выбранный провайдер данных или null, если пользователь отменил.</returns>
+        private static IRepository<Model.Car> ChooseDataProvider()
+        {
+            Console.Clear();
+            Console.WriteLine("=== Выбор провайдера данных ===");
+            Console.WriteLine("1 - Entity Framework");
+            Console.WriteLine("2 - Dapper");
+            Console.WriteLine("0 - Выход");
+            Console.Write("Ваш выбор: ");
+
+            string userInput = Console.ReadLine();
+
+            if (userInput == "0")
+            {
+                return null;
+            }
+
+            const string connectionString = "Server=(localdb)\\mssqllocaldb;Database=UrbanGoDB;Trusted_Connection=true;TrustServerCertificate=true;";
+
+            switch (userInput)
+            {
+                case "1":
+                    // Entity Framework
+                    Console.WriteLine("Инициализация Entity Framework...");
+                    var options = new DbContextOptionsBuilder<CarSharingContext>()
+                        .UseSqlServer(connectionString)
+                        .Options;
+                    
+                    var context = new CarSharingContext(options);
+                    return new EntityRepository<Model.Car>(context);
+
+                case "2":
+                    // Dapper
+                    Console.WriteLine("Инициализация Dapper...");
+                    return new DapperRepository<Model.Car>(connectionString);
+
+                default:
+                    Console.WriteLine("Неверный выбор. Попробуйте снова.");
+                    Console.WriteLine("Нажмите любую клавишу для продолжения...");
+                    Console.ReadKey();
+                    return ChooseDataProvider(); // Рекурсивный вызов для повторного выбора
+            }
         }
     }
 }
