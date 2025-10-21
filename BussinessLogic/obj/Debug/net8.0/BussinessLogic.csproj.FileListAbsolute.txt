@@ -1,0 +1,15 @@
+C:\Users\kosty\source\repos\AIS\BussinessLogic\bin\Debug\net8.0\BussinessLogic.deps.json
+C:\Users\kosty\source\repos\AIS\BussinessLogic\bin\Debug\net8.0\BussinessLogic.dll
+C:\Users\kosty\source\repos\AIS\BussinessLogic\bin\Debug\net8.0\BussinessLogic.pdb
+C:\Users\kosty\source\repos\AIS\BussinessLogic\bin\Debug\net8.0\Model.dll
+C:\Users\kosty\source\repos\AIS\BussinessLogic\bin\Debug\net8.0\Model.pdb
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\BussinessLogic.csproj.AssemblyReference.cache
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\BussinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\BussinessLogic.AssemblyInfoInputs.cache
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\BussinessLogic.AssemblyInfo.cs
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\BussinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\Bussines.273F0448.Up2Date
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\BussinessLogic.dll
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\refint\BussinessLogic.dll
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\BussinessLogic.pdb
+C:\Users\kosty\source\repos\AIS\BussinessLogic\obj\Debug\net8.0\ref\BussinessLogic.dll
