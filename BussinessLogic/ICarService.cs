@@ -65,8 +65,9 @@ namespace BussinessLogic
         /// </summary>
         /// <param name="carId">ID автомобиля.</param>
         /// <param name="hours">Количество часов аренды.</param>
+        /// <param name="promoCode">Необязательный промокод для применения скидки.</param>
         /// <returns>Итоговая стоимость аренды.</returns>
-        decimal CalculateRentalCost(int carId, int hours);
+        decimal CalculateRentalCost(int carId, int hours, string promoCode = null);
 
         /// <summary>
         /// Получает строковое представление автомобиля по ID.

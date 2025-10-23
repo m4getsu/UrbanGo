@@ -25,16 +25,42 @@ namespace AIS
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            // Выбор провайдера данных
             var dataProvider = ChooseDataProvider();
             if (dataProvider == null)
             {
-                return; // Пользователь отменил выбор
+                return; 
             }
 
-            // Создание и запуск главной формы с выбранным провайдером
-            var mainForm = new MainForm(dataProvider);
+            var promoCodeRepository = CreatePromoCodeRepository(dataProvider);
+            var promoService = new PromoService(promoCodeRepository);
+            var carService = new CarService(dataProvider, promoService);
+
+            var mainForm = new MainForm(carService);
             Application.Run(mainForm);
+        }
+
+        /// <summary>
+        /// Создает репозиторий промокодов в зависимости от выбранного провайдера данных.
+        /// </summary>
+        /// <param name="carRepository">Репозиторий автомобилей для определения типа провайдера.</param>
+        /// <returns>Репозиторий промокодов.</returns>
+        private static IPromoCodeRepository CreatePromoCodeRepository(IRepository<Model.Car> carRepository)
+        {
+            const string connectionString = "Server=(localdb)\\mssqllocaldb;Database=UrbanGoDB;Trusted_Connection=true;TrustServerCertificate=true;";
+
+            if (carRepository is EntityRepository<Model.Car>)
+            {
+                var options = new DbContextOptionsBuilder<CarSharingContext>()
+                    .UseSqlServer(connectionString)
+                    .Options;
+                
+                var context = new CarSharingContext(options);
+                return new EFPromoCodeRepository(context);
+            }
+            else
+            {
+                return new DapperPromoCodeRepository(connectionString);
+            }
         }
 
         /// <summary>
@@ -61,7 +87,6 @@ namespace AIS
 
             if (result == DialogResult.Yes)
             {
-                // Entity Framework
                 var options = new DbContextOptionsBuilder<CarSharingContext>()
                     .UseSqlServer(connectionString)
                     .Options;
@@ -71,7 +96,6 @@ namespace AIS
             }
             else
             {
-                // Dapper
                 return new DapperRepository<Model.Car>(connectionString);
             }
         }

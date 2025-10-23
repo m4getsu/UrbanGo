@@ -16,6 +16,7 @@ namespace ConsoleApp
     internal class Program
     {
         private static ICarService _carService;
+        private static PromoService _promoService;
 
         /// <summary>
         /// Главная точка входа в приложение.
@@ -23,7 +24,6 @@ namespace ConsoleApp
         /// <param name="args">Аргументы командной строки.</param>
         static void Main(string[] args)
         {
-            // Выбор провайдера данных
             var dataProvider = ChooseDataProvider();
             if (dataProvider == null)
             {
@@ -31,8 +31,9 @@ namespace ConsoleApp
                 return;
             }
 
-            // Создание сервиса с выбранным провайдером
-            _carService = new CarService(dataProvider);
+            var promoCodeRepository = CreatePromoCodeRepository(dataProvider);
+            _promoService = new PromoService(promoCodeRepository);
+            _carService = new CarService(dataProvider, _promoService);
 
             bool exitRequested = false;
 
@@ -371,10 +372,22 @@ namespace ConsoleApp
                 return;
             }
 
+            Console.Write("Введите промокод (или оставьте пустым): ");
+            string promoCode = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(promoCode))
+            {
+                promoCode = null;
+            }
+
             try
             {
-                decimal cost = _carService.CalculateRentalCost(carId, hours);
+                decimal cost = _carService.CalculateRentalCost(carId, hours, promoCode);
                 Console.WriteLine($"\nСтоимость аренды на {hours} часов: {cost:C}");
+                
+                if (!string.IsNullOrEmpty(promoCode))
+                {
+                    Console.WriteLine($"Промокод '{promoCode}' применен успешно!");
+                }
             }
             catch (ArgumentException ex)
             {
@@ -535,6 +548,32 @@ namespace ConsoleApp
         }
 
         /// <summary>
+        /// Создает репозиторий промокодов в зависимости от выбранного провайдера данных.
+        /// </summary>
+        /// <param name="carRepository">Репозиторий автомобилей для определения типа провайдера.</param>
+        /// <returns>Репозиторий промокодов.</returns>
+        private static IPromoCodeRepository CreatePromoCodeRepository(IRepository<Model.Car> carRepository)
+        {
+            const string connectionString = "Server=(localdb)\\mssqllocaldb;Database=UrbanGoDB;Trusted_Connection=true;TrustServerCertificate=true;";
+
+            if (carRepository is EntityRepository<Model.Car>)
+            {
+                // Entity Framework
+                var options = new DbContextOptionsBuilder<CarSharingContext>()
+                    .UseSqlServer(connectionString)
+                    .Options;
+                
+                var context = new CarSharingContext(options);
+                return new EFPromoCodeRepository(context);
+            }
+            else
+            {
+                // Dapper
+                return new DapperPromoCodeRepository(connectionString);
+            }
+        }
+
+        /// <summary>
         /// Показывает консольный запрос выбора провайдера данных.
         /// </summary>
         /// <returns>Выбранный провайдер данных или null, если пользователь отменил.</returns>
@@ -559,7 +598,6 @@ namespace ConsoleApp
             switch (userInput)
             {
                 case "1":
-                    // Entity Framework
                     Console.WriteLine("Инициализация Entity Framework...");
                     var options = new DbContextOptionsBuilder<CarSharingContext>()
                         .UseSqlServer(connectionString)
@@ -569,7 +607,6 @@ namespace ConsoleApp
                     return new EntityRepository<Model.Car>(context);
 
                 case "2":
-                    // Dapper
                     Console.WriteLine("Инициализация Dapper...");
                     return new DapperRepository<Model.Car>(connectionString);
 
@@ -577,7 +614,7 @@ namespace ConsoleApp
                     Console.WriteLine("Неверный выбор. Попробуйте снова.");
                     Console.WriteLine("Нажмите любую клавишу для продолжения...");
                     Console.ReadKey();
-                    return ChooseDataProvider(); // Рекурсивный вызов для повторного выбора
+                    return ChooseDataProvider(); 
             }
         }
     }

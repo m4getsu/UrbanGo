@@ -72,18 +72,15 @@ namespace DataAccessLayer
         /// <param name="entity">Сущность с обновленными данными.</param>
         public void Update(T entity)
         {
-            // Проверяем, отслеживается ли уже сущность с таким ID
             var trackedEntity = _context.ChangeTracker.Entries<T>()
                 .FirstOrDefault(e => e.Entity.Id == entity.Id);
 
             if (trackedEntity != null)
             {
-                // Если сущность уже отслеживается, обновляем её значения
                 trackedEntity.CurrentValues.SetValues(entity);
             }
             else
             {
-                // Если сущность не отслеживается, прикрепляем её как измененную
                 _context.Entry(entity).State = EntityState.Modified;
             }
 

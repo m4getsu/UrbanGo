@@ -3,6 +3,54 @@
   "WorkspaceRootPath": "C:\\Users\\kosty\\source\\repos\\AIS\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|C:\\Users\\kosty\\source\\repos\\AIS\\ais\\calculatecostform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\calculatecostform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|c:\\users\\kosty\\source\\repos\\ais\\ais\\calculatecostform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\calculatecostform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|c:\\users\\kosty\\source\\repos\\ais\\bussinesslogic\\carservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|solutionrelative:bussinesslogic\\carservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|c:\\users\\kosty\\source\\repos\\ais\\bussinesslogic\\icarservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|solutionrelative:bussinesslogic\\icarservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|c:\\users\\kosty\\source\\repos\\ais\\bussinesslogic\\promoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|solutionrelative:bussinesslogic\\promoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E5D1435C-5219-43E9-8066-CA95B9A2D974}|Model\\Model.csproj|c:\\users\\kosty\\source\\repos\\ais\\model\\idomainobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E5D1435C-5219-43E9-8066-CA95B9A2D974}|Model\\Model.csproj|solutionrelative:model\\idomainobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E5D1435C-5219-43E9-8066-CA95B9A2D974}|Model\\Model.csproj|c:\\users\\kosty\\source\\repos\\ais\\model\\promocode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E5D1435C-5219-43E9-8066-CA95B9A2D974}|Model\\Model.csproj|solutionrelative:model\\promocode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|c:\\users\\kosty\\source\\repos\\ais\\ais\\calculatecostform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\calculatecostform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|c:\\users\\kosty\\source\\repos\\ais\\dataaccesslayer\\carsharingcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|solutionrelative:dataaccesslayer\\carsharingcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|c:\\users\\kosty\\source\\repos\\ais\\dataaccesslayer\\efpromocoderepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|solutionrelative:dataaccesslayer\\efpromocoderepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|c:\\users\\kosty\\source\\repos\\ais\\dataaccesslayer\\ipromocoderepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|solutionrelative:dataaccesslayer\\ipromocoderepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|c:\\users\\kosty\\source\\repos\\ais\\ais\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|c:\\users\\kosty\\source\\repos\\ais\\ais\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,12 +59,12 @@
       "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|c:\\users\\kosty\\source\\repos\\ais\\bussinesslogic\\carservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|solutionrelative:bussinesslogic\\carservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|c:\\users\\kosty\\source\\repos\\ais\\dataaccesslayer\\dapperrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|solutionrelative:dataaccesslayer\\dapperrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|C:\\Users\\kosty\\source\\repos\\AIS\\ais\\calculatecostform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\calculatecostform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|c:\\users\\kosty\\source\\repos\\ais\\dataaccesslayer\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|solutionrelative:dataaccesslayer\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|C:\\Users\\kosty\\source\\repos\\AIS\\ais\\careditform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
@@ -27,14 +75,6 @@
       "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\mainform.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|c:\\users\\kosty\\source\\repos\\ais\\ais\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|c:\\users\\kosty\\source\\repos\\ais\\ais\\calculatecostform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\calculatecostform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|c:\\users\\kosty\\source\\repos\\ais\\ais\\careditform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\careditform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -43,28 +83,8 @@
       "RelativeMoniker": "D:0:0:{0990C729-B002-43F9-AFC9-B5754EDDF3B2}|Console\\ConsoleApp.csproj|solutionrelative:console\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|c:\\users\\kosty\\source\\repos\\ais\\bussinesslogic\\icarservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|solutionrelative:bussinesslogic\\icarservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|c:\\users\\kosty\\source\\repos\\ais\\dataaccesslayer\\carsharingcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|solutionrelative:dataaccesslayer\\carsharingcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|c:\\users\\kosty\\source\\repos\\ais\\dataaccesslayer\\dapperrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|solutionrelative:dataaccesslayer\\dapperrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|c:\\users\\kosty\\source\\repos\\ais\\dataaccesslayer\\entityrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|solutionrelative:dataaccesslayer\\entityrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|c:\\users\\kosty\\source\\repos\\ais\\dataaccesslayer\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A9FCCEB3-DD88-F8C0-89A3-FD31A7C54F23}|DataAccessLayer\\DataAccessLayer.csproj|solutionrelative:dataaccesslayer\\irepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E5D1435C-5219-43E9-8066-CA95B9A2D974}|Model\\Model.csproj|c:\\users\\kosty\\source\\repos\\ais\\model\\idomainobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E5D1435C-5219-43E9-8066-CA95B9A2D974}|Model\\Model.csproj|solutionrelative:model\\idomainobject.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -74,7 +94,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 17,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -90,7 +110,72 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
+              "Title": "PromoService.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\PromoService.cs",
+              "RelativeDocumentMoniker": "BussinessLogic\\PromoService.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\PromoService.cs",
+              "RelativeToolTip": "BussinessLogic\\PromoService.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T12:03:55.323Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PromoCode.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Model\\PromoCode.cs",
+              "RelativeDocumentMoniker": "Model\\PromoCode.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Model\\PromoCode.cs",
+              "RelativeToolTip": "Model\\PromoCode.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T12:03:37.735Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "CalculateCostForm.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\CalculateCostForm.Designer.cs",
+              "RelativeDocumentMoniker": "AIS\\CalculateCostForm.Designer.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\CalculateCostForm.Designer.cs",
+              "RelativeToolTip": "AIS\\CalculateCostForm.Designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T12:03:20.967Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "EFPromoCodeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\EFPromoCodeRepository.cs",
+              "RelativeDocumentMoniker": "DataAccessLayer\\EFPromoCodeRepository.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\EFPromoCodeRepository.cs",
+              "RelativeToolTip": "DataAccessLayer\\EFPromoCodeRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T12:01:49.452Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "IPromoCodeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\IPromoCodeRepository.cs",
+              "RelativeDocumentMoniker": "DataAccessLayer\\IPromoCodeRepository.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\IPromoCodeRepository.cs",
+              "RelativeToolTip": "DataAccessLayer\\IPromoCodeRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-23T12:01:45.243Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
               "Title": "MainForm.Designer.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\MainForm.Designer.cs",
               "RelativeDocumentMoniker": "AIS\\MainForm.Designer.cs",
@@ -98,35 +183,37 @@
               "RelativeToolTip": "AIS\\MainForm.Designer.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T10:57:55.945Z"
+              "WhenOpened": "2025-10-21T10:57:55.945Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 1,
               "Title": "CalculateCostForm.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\CalculateCostForm.cs",
               "RelativeDocumentMoniker": "AIS\\CalculateCostForm.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\CalculateCostForm.cs",
               "RelativeToolTip": "AIS\\CalculateCostForm.cs",
-              "ViewState": "AgIAAEAAAAAAAAAAAAAqwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAAwHsAAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-21T10:45:00.616Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "CalculateCostForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\CalculateCostForm.cs",
               "RelativeDocumentMoniker": "AIS\\CalculateCostForm.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\CalculateCostForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "RelativeToolTip": "AIS\\CalculateCostForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T10:45:00.015Z"
+              "WhenOpened": "2025-10-21T10:45:00.015Z",
+              "EditorCaption": " [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 18,
               "Title": "CarEditForm.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\CarEditForm.cs",
               "RelativeDocumentMoniker": "AIS\\CarEditForm.cs",
@@ -139,7 +226,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 16,
               "Title": "CarEditForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\CarEditForm.cs",
               "RelativeDocumentMoniker": "AIS\\CarEditForm.cs",
@@ -156,49 +243,53 @@
               "RelativeDocumentMoniker": "BussinessLogic\\CarService.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\CarService.cs",
               "RelativeToolTip": "BussinessLogic\\CarService.cs",
-              "ViewState": "AgIAAE0AAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAqwOEAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T10:44:28.286Z"
+              "WhenOpened": "2025-10-21T10:44:28.286Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 3,
               "Title": "ICarService.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\ICarService.cs",
               "RelativeDocumentMoniker": "BussinessLogic\\ICarService.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\ICarService.cs",
               "RelativeToolTip": "BussinessLogic\\ICarService.cs",
-              "ViewState": "AgIAAIQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEUAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T10:44:24.069Z"
+              "WhenOpened": "2025-10-21T10:44:24.069Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 8,
               "Title": "CarSharingContext.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\CarSharingContext.cs",
               "RelativeDocumentMoniker": "DataAccessLayer\\CarSharingContext.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\CarSharingContext.cs",
               "RelativeToolTip": "DataAccessLayer\\CarSharingContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAoAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T10:44:22.135Z"
+              "WhenOpened": "2025-10-21T10:44:22.135Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "DapperRepository.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DapperRepository.cs",
               "RelativeDocumentMoniker": "DataAccessLayer\\DapperRepository.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DapperRepository.cs",
               "RelativeToolTip": "DataAccessLayer\\DapperRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACsAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T10:44:21.245Z"
+              "WhenOpened": "2025-10-21T10:44:21.245Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 20,
               "Title": "EntityRepository.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\EntityRepository.cs",
               "RelativeDocumentMoniker": "DataAccessLayer\\EntityRepository.cs",
@@ -210,43 +301,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "IRepository.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\IRepository.cs",
               "RelativeDocumentMoniker": "DataAccessLayer\\IRepository.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\IRepository.cs",
               "RelativeToolTip": "DataAccessLayer\\IRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-21T10:44:19.003Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\Program.cs",
               "RelativeDocumentMoniker": "AIS\\Program.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\Program.cs",
               "RelativeToolTip": "AIS\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGEAAABWAAAAAAAAAA==",
+              "ViewState": "AgIAAG4AAAAAAAAAAAAgwGEAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T10:44:07.835Z"
+              "WhenOpened": "2025-10-21T10:44:07.835Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MainForm.cs [Design]",
+              "DocumentIndex": 13,
+              "Title": "MainForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\MainForm.cs",
               "RelativeDocumentMoniker": "AIS\\MainForm.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\MainForm.cs [Design]",
-              "RelativeToolTip": "AIS\\MainForm.cs [Design]",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\MainForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
+              "RelativeToolTip": "AIS\\MainForm.cs [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-21T10:43:43.786Z",
-              "EditorCaption": " [Design]"
+              "EditorCaption": " [\u041A\u043E\u043D\u0441\u0442\u0440\u0443\u043A\u0442\u043E\u0440]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 19,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Console\\Program.cs",
               "RelativeDocumentMoniker": "Console\\Program.cs",
@@ -258,20 +350,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 12,
               "Title": "MainForm.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\MainForm.cs",
               "RelativeDocumentMoniker": "AIS\\MainForm.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\MainForm.cs",
               "RelativeToolTip": "AIS\\MainForm.cs",
-              "ViewState": "AgIAADkAAAAAAAAAAAAIwEMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADkAAAAAAAAAAAAIwEIAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-21T10:28:01.486Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 5,
               "Title": "IDomainObject.cs",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Model\\IDomainObject.cs",
               "RelativeDocumentMoniker": "Model\\IDomainObject.cs",
@@ -279,7 +371,8 @@
               "RelativeToolTip": "Model\\IDomainObject.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-21T10:23:54.39Z"
+              "WhenOpened": "2025-10-21T10:23:54.39Z",
+              "EditorCaption": ""
             }
           ]
         }

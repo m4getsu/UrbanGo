@@ -23,6 +23,11 @@ namespace DataAccessLayer
         public DbSet<Car> Cars { get; set; }
 
         /// <summary>
+        /// Коллекция промокодов в базе данных.
+        /// </summary>
+        public DbSet<PromoCode> PromoCodes { get; set; }
+
+        /// <summary>
         /// Строка подключения к базе данных SQL Server LocalDB.
         /// </summary>
         public static string ConnectionString => 

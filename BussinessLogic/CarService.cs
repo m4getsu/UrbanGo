@@ -16,6 +16,7 @@ namespace BussinessLogic
     public class CarService : ICarService
     {
         private readonly IRepository<Car> _repository;
+        private readonly PromoService _promoService;
         private readonly object _logSync = new object();
         private readonly string _logFilePath = Path.Combine(@"C:\Users\kosty\OneDrive\Desktop", "actions.log");
 
@@ -23,9 +24,11 @@ namespace BussinessLogic
         /// Инициализирует новый экземпляр сервиса с репозиторием для работы с данными.
         /// </summary>
         /// <param name="repository">Репозиторий для доступа к данным автомобилей.</param>
-        public CarService(IRepository<Car> repository)
+        /// <param name="promoService">Сервис для работы с промокодами.</param>
+        public CarService(IRepository<Car> repository, PromoService promoService)
         {
             _repository = repository;
+            _promoService = promoService;
         }
 
         /// <summary>
@@ -198,9 +201,10 @@ namespace BussinessLogic
         /// </summary>
         /// <param name="carId">Идентификатор автомобиля.</param>
         /// <param name="hours">Количество часов аренды.</param>
+        /// <param name="promoCode">Необязательный промокод для применения скидки.</param>
         /// <returns>Рассчитанная стоимость аренды.</returns>
         /// <exception cref="ArgumentException">Выбрасывается, если количество часов неположительное или автомобиль не найден.</exception>
-        public decimal CalculateRentalCost(int carId, int hours)
+        public decimal CalculateRentalCost(int carId, int hours, string promoCode = null)
         {
             if (hours <= 0)
                 throw new ArgumentException("Количество часов аренды должно быть положительным числом.", nameof(hours));
@@ -209,7 +213,19 @@ namespace BussinessLogic
             if (car == null)
                 throw new ArgumentException("Автомобиль с указанным ID не найден.", nameof(carId));
 
-            return car.RentalPricePerHour * hours;
+            decimal originalPrice = car.RentalPricePerHour * hours;
+
+            if (string.IsNullOrWhiteSpace(promoCode))
+                return originalPrice;
+
+            try
+            {
+                return _promoService.ApplyPromoCode(promoCode, originalPrice);
+            }
+            catch (ArgumentException)
+            {
+                throw;
+            }
         }
 
         /// <summary>
