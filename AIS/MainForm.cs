@@ -61,10 +61,10 @@ namespace AIS
             public string DisplayText { get; set; } = string.Empty;
         }
 
-        public MainForm(IRepository<Model.Car> repository)
+        public MainForm(IRepository<Model.Car> repository, PromoService promoService)
         {
             InitializeComponent();
-            _carService = new CarService(repository);
+            _carService = new CarService(repository, promoService);
         }
 
         /// <summary>

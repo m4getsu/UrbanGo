@@ -35,7 +35,7 @@ namespace AIS
             var promoService = new PromoService(promoCodeRepository);
             var carService = new CarService(dataProvider, promoService);
 
-            var mainForm = new MainForm(carService);
+            var mainForm = new MainForm(dataProvider, promoService);
             Application.Run(mainForm);
         }
 

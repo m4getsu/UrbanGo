@@ -155,7 +155,7 @@ namespace ConsoleApp
 
                 var newCar = _carService.CreateCar(brand, model, licensePlate, year, mileage, price);
 
-                Console.WriteLine($"\nАвтомобиль успешно добавлен с ID {newCar.Id}!");
+                Console.WriteLine($"\nАвтомобиль успешно добавлен!");
             }
             catch (ArgumentException ex)
             {
@@ -558,7 +558,7 @@ namespace ConsoleApp
 
             if (carRepository is EntityRepository<Model.Car>)
             {
-                // Entity Framework
+
                 var options = new DbContextOptionsBuilder<CarSharingContext>()
                     .UseSqlServer(connectionString)
                     .Options;
@@ -568,7 +568,7 @@ namespace ConsoleApp
             }
             else
             {
-                // Dapper
+
                 return new DapperPromoCodeRepository(connectionString);
             }
         }
