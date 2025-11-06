@@ -10,7 +10,7 @@ namespace DataAccessLayer
     /// Обеспечивает доступ к данным через DbContext.
     /// </summary>
     /// <typeparam name="T">Тип доменного объекта, реализующего IDomainObject.</typeparam>
-    public class EntityRepository<T> : IRepository<T> where T : class, IDomainObject
+    public class EntityRepository<T> : IRepository<T>, IReadRepository<T>, IWriteRepository<T> where T : class, IDomainObject
     {
         private readonly CarSharingContext _context;
 

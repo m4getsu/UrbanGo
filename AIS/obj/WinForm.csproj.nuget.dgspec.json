@@ -34,9 +34,6 @@
             "projectReferences": {
               "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\BussinessLogic.csproj": {
                 "projectPath": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\BussinessLogic.csproj"
-              },
-              "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj": {
-                "projectPath": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj"
               }
             }
           }
@@ -78,6 +75,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.10, )"
+            },
+            "Ninject": {
+              "target": "Package",
+              "version": "[3.3.6, )"
             }
           },
           "imports": [
@@ -177,6 +178,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[9.0.10, )"
+            },
+            "Ninject": {
+              "target": "Package",
+              "version": "[3.3.6, )"
             }
           },
           "imports": [

@@ -28,6 +28,10 @@
 **PromoService.cs** - сервис для работы с промокодами:
 - `ApplyPromoCode(string promoCode, decimal originalPrice)` - применение промокода
 
+Дополнительно для изоляции UI от DAL добавлены:
+- `IPromoService` — интерфейс для использования в UI
+- `PromoServiceAdapter` — адаптер над `PromoService`, чтобы не менять существующий класс
+
 ### 4. Обновления существующих компонентов
 
 **CarService.cs**:
@@ -103,6 +107,7 @@ Server=(localdb)\\mssqllocaldb;Database=UrbanGoDB;Trusted_Connection=true;TrustS
 - Система следует существующей архитектуре проекта
 - Поддерживает оба провайдера данных (EF и Dapper)
 - Промокоды интегрированы в существующий процесс расчета стоимости
+- UI получает зависимости только через `(ICarService, IPromoService)` — создание репозиториев инкапсулировано в `BussinessLogic/ServiceFactory`
 
 ### Обработка ошибок
 - При неверном промокоде показывается сообщение "Промокод не найден"
@@ -139,14 +144,17 @@ AIS/
 │   └── CarSharingContext.cs           # Обновлен для промокодов
 ├── BussinessLogic/
 │   ├── PromoService.cs                # Сервис промокодов
+│   ├── PromoServiceAdapter.cs         # Адаптер под IPromoService
+│   ├── IPromoService.cs               # Интерфейс сервиса промокодов (для UI)
+│   ├── ServiceFactory.cs              # Создание сервисов и репозиториев
 │   ├── CarService.cs                  # Обновлен для промокодов
-│   └── ICarService.cs                 # Обновлен интерфейс
+│   └── ICarService.cs                 # Интерфейс сервиса автомобилей
 ├── AIS/
 │   ├── CalculateCostForm.cs           # Обновлена форма
 │   ├── CalculateCostForm.Designer.cs  # Обновлен дизайнер
-│   └── Program.cs                     # Обновлена инициализация
+│   └── Program.cs                     # Инициализация через CreateServices(useEF)
 ├── Console/
-│   └── Program.cs                     # Обновлено консольное приложение
+│   └── Program.cs                     # Инициализация через CreateServices(useEF)
 ├── CreatePromoCodesTable.sql          # SQL скрипт для создания таблицы
 └── PROMOCODES_README.md               # Данная документация
 ```

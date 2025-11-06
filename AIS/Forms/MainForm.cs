@@ -1,5 +1,4 @@
 using BussinessLogic;
-using DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,81 +8,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BussinessLogic.Dto;
+using AIS.Controllers;
 
 namespace AIS
 {
-    /// <summary>
-    /// Главная форма приложения (WinForms) для управления автомобилями:
-    /// отображение списка, поиск, добавление, редактирование, удаление,
-    /// аренда и расчёт стоимости.
-    /// </summary>
     public partial class MainForm : Form
     {
-        private readonly ICarService _carService;
+        private readonly MainFormController _controller;
 
-        private class CarDisplayItem
-        {
-            /// <summary>
-            /// Уникальный идентификатор автомобиля.
-            /// </summary>
-            public int Id { get; set; }
-            /// <summary>
-            /// Марка автомобиля.
-            /// </summary>
-            public string Brand { get; set; } = string.Empty;
-            /// <summary>
-            /// Модель автомобиля.
-            /// </summary>
-            public string Model { get; set; } = string.Empty;
-            /// <summary>
-            /// Гос. номер автомобиля.
-            /// </summary>
-            public string LicensePlate { get; set; } = string.Empty;
-            /// <summary>
-            /// Год выпуска.
-            /// </summary>
-            public int Year { get; set; }
-            /// <summary>
-            /// Пробег, км.
-            /// </summary>
-            public int Mileage { get; set; }
-            /// <summary>
-            /// Стоимость аренды в час.
-            /// </summary>
-            public decimal RentalPricePerHour { get; set; }
-            /// <summary>
-            /// Статус в текстовом виде (англ. ключ enum).
-            /// </summary>
-            public string StatusText { get; set; } = string.Empty;
-            /// <summary>
-            /// Короткая строка для отображения (марка, модель, номер).
-            /// </summary>
-            public string DisplayText { get; set; } = string.Empty;
-        }
-
-        public MainForm(IRepository<Model.Car> repository, PromoService promoService)
+        public MainForm(MainFormController controller)
         {
             InitializeComponent();
-            _carService = new CarService(repository, promoService);
+            _controller = controller;
         }
 
-        /// <summary>
-        /// Загрузка тестовых данных
-        /// </summary>
-
-
-        /// <summary>
-        /// Обработчик загрузки формы: настраивает таблицу и загружает данные.
-        /// </summary>
         private void MainForm_Load(object sender, EventArgs e)
         {
             RefreshCarsList();
             ConfigureDataGridView();
         }
 
-        /// <summary>
-        /// Настраивает внешний вид и колонки DataGridView для списка автомобилей.
-        /// </summary>
         private void ConfigureDataGridView()
         {
             dataGridViewCars.AutoGenerateColumns = false;
@@ -177,61 +122,34 @@ namespace AIS
             });
         }
 
-        /// <summary>
-        /// Обновляет список автомобилей с учётом фильтра поиска и статистику.
-        /// </summary>
         private void RefreshCarsList()
         {
             try
             {
-                var carsForDisplay = _carService.GetCarsForDisplay();
-                var displayItems = new List<CarDisplayItem>();
-
-                foreach (var carObj in carsForDisplay)
-                {
-                    if (carObj != null)
-                    {
-                        var carType = carObj.GetType();
-                        displayItems.Add(new CarDisplayItem
-                        {
-                            Id = (int)carType.GetProperty("Id").GetValue(carObj),
-                            Brand = (string)carType.GetProperty("Brand").GetValue(carObj),
-                            Model = (string)carType.GetProperty("Model").GetValue(carObj),
-                            LicensePlate = (string)carType.GetProperty("LicensePlate").GetValue(carObj),
-                            Year = (int)carType.GetProperty("Year").GetValue(carObj),
-                            Mileage = (int)carType.GetProperty("Mileage").GetValue(carObj),
-                            RentalPricePerHour = (decimal)carType.GetProperty("RentalPricePerHour").GetValue(carObj),
-                            StatusText = (string)carType.GetProperty("StatusText").GetValue(carObj),
-                            DisplayText = (string)carType.GetProperty("DisplayText").GetValue(carObj)
-                        });
-                    }
-                }
+                var carsForDisplay = _controller.GetCarsForDisplay();
+                var items = new List<CarListItemDto>(carsForDisplay ?? Enumerable.Empty<CarListItemDto>());
 
                 if (!string.IsNullOrWhiteSpace(textBoxSearch.Text))
                 {
                     var searchTerm = textBoxSearch.Text.ToLower();
-                    displayItems = displayItems.Where(c =>
+                    items = items.Where(c =>
                         c.Brand.ToLower().Contains(searchTerm) ||
                         c.Model.ToLower().Contains(searchTerm) ||
                         c.LicensePlate.ToLower().Contains(searchTerm)
                     ).ToList();
                 }
 
-                dataGridViewCars.DataSource = new BindingList<CarDisplayItem>(displayItems);
-                UpdateStatusBar(displayItems);
+                dataGridViewCars.DataSource = new BindingList<CarListItemDto>(items);
+                UpdateStatusBar(items);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"������ ��� �������� ������: {ex.Message}",
-                    "������", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка при обновлении списка: {ex.Message}",
+                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        /// <summary>
-        /// Пересчитывает и отображает агрегированную статистику по списку.
-        /// </summary>
-        /// <param name="cars">Текущие элементы, отображаемые в таблице.</param>
-        private void UpdateStatusBar(List<CarDisplayItem> cars)
+        private void UpdateStatusBar(List<CarListItemDto> cars)
         {
             try
             {
@@ -249,9 +167,6 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Добавляет новый автомобиль через модальную форму.
-        /// </summary>
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             using (var addForm = new CarEditForm())
@@ -260,7 +175,7 @@ namespace AIS
                 {
                     try
                     {
-                        _carService.CreateCar(
+                        _controller.CreateCar(
                             addForm.Brand,
                             addForm.Model,
                             addForm.LicensePlate,
@@ -281,16 +196,13 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Редактирует выбранный автомобиль через модальную форму.
-        /// </summary>
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarDisplayItem selectedCar)
+            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
             {
                 int carId = selectedCar.Id;
 
-                var currentValues = _carService.GetCarValuesForEdit(carId);
+                var currentValues = _controller.GetCarValuesForEdit(carId);
                 if (currentValues == null)
                 {
                     MessageBox.Show("Автомобиль не найден!", "Ошибка",
@@ -299,20 +211,20 @@ namespace AIS
                 }
 
                 using (var editForm = new CarEditForm(
-                    (string)currentValues[0],  // марка
-                    (string)currentValues[1],  // модель
-                    (string)currentValues[2],  // номер
-                    (int)currentValues[3],     // год
-                    (int)currentValues[4],     // пробег
-                    (decimal)currentValues[5], // цена
-                    (int)currentValues[6]      // статус
+                    (string)currentValues[0],
+                    (string)currentValues[1],
+                    (string)currentValues[2],
+                    (int)currentValues[3],
+                    (int)currentValues[4],
+                    (decimal)currentValues[5],
+                    (int)currentValues[6]
                 ))
                 {
                     if (editForm.ShowDialog() == DialogResult.OK)
                     {
                         try
                         {
-                            if (_carService.UpdateCarDetails(carId, editForm.Brand, editForm.Model,
+                            if (_controller.UpdateCarDetails(carId, editForm.Brand, editForm.Model,
                                 editForm.LicensePlate, editForm.Year, editForm.Mileage, editForm.Price, editForm.Status))
                             {
                                 RefreshCarsList();
@@ -340,12 +252,9 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Удаляет выбранный автомобиль после подтверждения.
-        /// </summary>
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarDisplayItem selectedCar)
+            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
             {
                 int carId = selectedCar.Id;
                 string carInfo = $"{selectedCar.Brand} {selectedCar.Model}";
@@ -358,7 +267,7 @@ namespace AIS
 
                 if (result == DialogResult.Yes)
                 {
-                    if (_carService.DeleteCar(carId))
+                    if (_controller.DeleteCar(carId))
                     {
                         RefreshCarsList();
                         MessageBox.Show("Автомобиль успешно удален!", "Успех",
@@ -378,16 +287,13 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Арендует выбранный автомобиль и обновляет список.
-        /// </summary>
         private void buttonRent_Click(object sender, EventArgs e)
         {
-            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarDisplayItem selectedCar)
+            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
             {
                 int carId = selectedCar.Id;
 
-                if (_carService.RentCar(carId))
+                if (_controller.RentCar(carId))
                 {
                     RefreshCarsList();
                     MessageBox.Show("Автомобиль успешно арендован!", "Успех",
@@ -406,16 +312,13 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Открывает форму расчёта стоимости для выбранного автомобиля.
-        /// </summary>
         private void buttonCalculate_Click(object sender, EventArgs e)
         {
-            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarDisplayItem selectedCar)
+            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
             {
                 int carId = selectedCar.Id;
 
-                using (var calcForm = new CalculateCostForm(carId, _carService))
+                using (var calcForm = new CalculateCostForm(carId, _controller.CreateCalculateCostFormController()))
                 {
                     calcForm.ShowDialog();
                 }
@@ -427,33 +330,21 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Обновляет список автомобилей.
-        /// </summary>
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
             RefreshCarsList();
         }
 
-        /// <summary>
-        /// Применяет фильтр по мере изменения текста поиска.
-        /// </summary>
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             RefreshCarsList();
         }
 
-        /// <summary>
-        /// Применяет фильтр поиска по кнопке.
-        /// </summary>
         private void buttonSearch_Click(object sender, EventArgs e)
         {
             RefreshCarsList();
         }
 
-        /// <summary>
-        /// Включает/отключает кнопки действий в зависимости от выбранной строки.
-        /// </summary>
         private void dataGridViewCars_SelectionChanged(object sender, EventArgs e)
         {
             bool hasSelection = dataGridViewCars.CurrentRow != null;
@@ -463,9 +354,6 @@ namespace AIS
             buttonCalculate.Enabled = hasSelection;
         }
 
-        /// <summary>
-        /// Запрашивает подтверждение перед закрытием приложения.
-        /// </summary>
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             var result = MessageBox.Show(
@@ -481,3 +369,4 @@ namespace AIS
         }
     }
 }
+

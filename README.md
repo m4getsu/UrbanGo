@@ -30,7 +30,7 @@ AIS/
 ### Компоненты
 
 - **Model** - Содержит модели данных (`Car`, `CarStatus`, `IDomainObject`)
-- **BussinessLogic** - Бизнес-логика и сервисы (`ICarService`, `CarService`)
+- **BussinessLogic** - Бизнес-логика и сервисы (`ICarService`, `CarService`, `IPromoService`, `PromoServiceAdapter`, `ServiceFactory`)
 - **DataAccessLayer** - Слой доступа к данным с поддержкой EF и Dapper
 - **AIS** - WinForms интерфейс пользователя
 - **Console** - Консольная версия приложения
@@ -72,7 +72,7 @@ AIS/
 - **ORM**: Entity Framework Core + Dapper
 - **Целевая платформа**: .NET 8.0 (кроссплатформенная)
 - **Архитектурный паттерн**: N-Layer Architecture
-- **Паттерн проектирования**: Repository Pattern + Dependency Injection
+- **Паттерн проектирования**: Repository Pattern + простая композиция зависимостей (без DI-контейнеров)
 - **Строка подключения**: `Server=(localdb)\\mssqllocaldb;Database=UrbanGoDB;Trusted_Connection=true;TrustServerCertificate=true;`
 
 ## 📦 Установка и запуск
@@ -229,18 +229,33 @@ CREATE TABLE Cars (
 );
 ```
 
-### Выбор провайдера данных
+### Выбор провайдера данных и создание сервисов (UI не зависит от DAL)
 
-При запуске приложения пользователь может выбрать:
-- **Entity Framework** - для работы через ORM с автоматическим отслеживанием изменений
-- **Dapper** - для работы через прямые SQL-запросы с высокой производительностью
+UI-слой (WinForms и Console) больше не ссылается на `DataAccessLayer`. Выбор провайдера и создание репозиториев инкапсулированы в `BussinessLogic/ServiceFactory.cs`. В обоих `Program.cs` определён метод `CreateServices(bool useEF)`, который возвращает кортеж `(ICarService, IPromoService)`.
+
+При запуске пользователь выбирает провайдера данных (EF или Dapper), далее UI получает только интерфейсы сервисов:
+
+```csharp
+// Program.cs (обоих проектов)
+var useEF = ChooseProvider(); // bool? в WinForms (есть Отмена), bool в Console
+if (useEF == null) return;
+
+var (carService, promoService) = CreateServices(useEF.Value);
+// Далее UI работает только с ICarService/IPromoService
+```
+
+Ключевые файлы:
+- `BussinessLogic/ServiceFactory.cs` — фабрика, создающая EF/Dapper репозитории и сервисы
+- `BussinessLogic/IPromoService.cs` — интерфейс сервиса промокодов для UI
+- `BussinessLogic/PromoServiceAdapter.cs` — адаптер, чтобы не менять существующий `PromoService`
+- `AIS/Program.cs`, `Console/Program.cs` — инициализация сервисов и передача их в UI
 
 ## 🔄 Архитектурные улучшения
 
 Проект был модернизирован с добавлением современных паттернов:
 
 - ✅ **Repository Pattern** - абстракция доступа к данным
-- ✅ **Dependency Injection** - внедрение зависимостей
+- ✅ **Dependency Injection (простая композиция)** - внедрение зависимостей без DI-контейнеров (через фабрику и кортеж)
 - ✅ **Interface Segregation** - разделение интерфейсов
 - ✅ **Entity Framework Core** - современный ORM
 - ✅ **Dapper** - микро-ORM для производительности

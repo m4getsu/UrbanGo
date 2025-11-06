@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -265,3 +265,4 @@ namespace AIS
         private ErrorProvider errorProvider;
     }
 }
+

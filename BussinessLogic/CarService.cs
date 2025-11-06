@@ -1,11 +1,9 @@
 ﻿using Model;
 using DataAccessLayer;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
+using BussinessLogic.Logging;
+using BussinessLogic.Dto;
+using BussinessLogic.Validation;
+using BussinessLogic.Pricing;
 
 namespace BussinessLogic
 {
@@ -16,19 +14,23 @@ namespace BussinessLogic
     public class CarService : ICarService
     {
         private readonly IRepository<Car> _repository;
-        private readonly PromoService _promoService;
-        private readonly object _logSync = new object();
-        private readonly string _logFilePath = Path.Combine(@"C:\Users\kosty\OneDrive\Desktop", "actions.log");
+        private readonly IPricingStrategy _pricingStrategy;
+        private readonly IDiscountPolicy _discountPolicy;
+        private readonly ILogger _logger;
+        private readonly ICarValidator _carValidator;
 
         /// <summary>
         /// Инициализирует новый экземпляр сервиса с репозиторием для работы с данными.
         /// </summary>
         /// <param name="repository">Репозиторий для доступа к данным автомобилей.</param>
         /// <param name="promoService">Сервис для работы с промокодами.</param>
-        public CarService(IRepository<Car> repository, PromoService promoService)
+        public CarService(IRepository<Car> repository, IPricingStrategy pricingStrategy, IDiscountPolicy discountPolicy, ILogger logger, ICarValidator carValidator)
         {
             _repository = repository;
-            _promoService = promoService;
+            _pricingStrategy = pricingStrategy;
+            _discountPolicy = discountPolicy;
+            _logger = logger;
+            _carValidator = carValidator;
         }
 
         /// <summary>
@@ -37,25 +39,7 @@ namespace BussinessLogic
         /// основную логику приложения при ошибках записи (исключения подавляются).
         /// </summary>
         /// <param name="message">Текст сообщения для записи в лог.</param>
-        private void WriteLog(string message)
-        {
-            try
-            {
-                var line = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}" + Environment.NewLine;
-                lock (_logSync)
-                {
-                    var directory = Path.GetDirectoryName(_logFilePath);
-                    if (!string.IsNullOrEmpty(directory))
-                    {
-                        Directory.CreateDirectory(directory);
-                    }
-                    File.AppendAllText(_logFilePath, line, Encoding.UTF8);
-                }
-            }
-            catch
-            {
-            }
-        }
+        private void WriteLog(string message) => _logger?.Log(message);
 
         /// <summary>
         /// Создает новый автомобиль и добавляет его в систему.
@@ -70,23 +54,7 @@ namespace BussinessLogic
         /// <exception cref="ArgumentException">Выбрасывается, если предоставлены недопустимые данные.</exception>
         public Car CreateCar(string brand, string model, string licensePlate, int year, int mileage, decimal rentalPricePerHour)
         {
-            if (string.IsNullOrWhiteSpace(brand))
-                throw new ArgumentException("Марка автомобиля не может быть пустой.", nameof(brand));
-
-            if (string.IsNullOrWhiteSpace(model))
-                throw new ArgumentException("Модель автомобиля не может быть пустой.", nameof(model));
-
-            if (string.IsNullOrWhiteSpace(licensePlate))
-                throw new ArgumentException("Государственный номер не может быть пустым.", nameof(licensePlate));
-
-            if (year < 1900 || year > DateTime.Now.Year + 1)
-                throw new ArgumentException($"Год выпуска должен быть между 1900 и {DateTime.Now.Year + 1}.", nameof(year));
-
-            if (mileage < 0)
-                throw new ArgumentException("Пробег не может быть отрицательным.", nameof(mileage));
-
-            if (rentalPricePerHour <= 0)
-                throw new ArgumentException("Стоимость аренды должна быть положительной.", nameof(rentalPricePerHour));
+            _carValidator.ValidateForCreate(brand, model, licensePlate, year, mileage, rentalPricePerHour);
 
             var existingCars = _repository.ReadAll();
             if (existingCars.Any(c => c.LicensePlate.Equals(licensePlate, StringComparison.OrdinalIgnoreCase)))
@@ -213,19 +181,8 @@ namespace BussinessLogic
             if (car == null)
                 throw new ArgumentException("Автомобиль с указанным ID не найден.", nameof(carId));
 
-            decimal originalPrice = car.RentalPricePerHour * hours;
-
-            if (string.IsNullOrWhiteSpace(promoCode))
-                return originalPrice;
-
-            try
-            {
-                return _promoService.ApplyPromoCode(promoCode, originalPrice);
-            }
-            catch (ArgumentException)
-            {
-                throw;
-            }
+            decimal basePrice = _pricingStrategy.CalculateBasePrice(car.RentalPricePerHour, hours);
+            return _discountPolicy.ApplyDiscount(promoCode, basePrice);
         }
 
         /// <summary>
@@ -306,6 +263,7 @@ namespace BussinessLogic
         /// <returns>True, если обновление прошло успешно, иначе False.</returns>
         public bool UpdateCarDetails(int id, string brand, string model, string licensePlate, int year, int mileage, decimal rentalPricePerHour, int status)
         {
+            _carValidator.ValidateForUpdate(brand, model, licensePlate, year, mileage, rentalPricePerHour, status);
             CarStatus carStatus;
             switch (status)
             {
@@ -365,12 +323,11 @@ namespace BussinessLogic
         /// </summary>
         /// <param name="carId">Идентификатор автомобиля.</param>
         /// <returns>Объект с данными для отображения или null, если автомобиль не найден.</returns>
-        public object  GetCarForDisplay(int carId)
+        public CarDetailsDto? GetCarForDisplay(int carId)
         {
             var car = GetCar(carId);
             if (car == null) return null;
-
-            return new
+            return new CarDetailsDto
             {
                 Id = car.Id,
                 Brand = car.Brand,
@@ -378,10 +335,9 @@ namespace BussinessLogic
                 LicensePlate = car.LicensePlate,
                 Year = car.Year,
                 Mileage = car.Mileage,
-                Status = car.Status,
                 RentalPricePerHour = car.RentalPricePerHour,
                 StatusText = car.Status.ToString(),
-                DisplayText = $"{car.Brand} {car.Model} ({car.LicensePlate})"
+                Description = GetCarDescription(car.Id)
             };
         }
 
@@ -389,12 +345,12 @@ namespace BussinessLogic
         /// Получает список всех автомобилей для отображения в пользовательском интерфейсе.
         /// </summary>
         /// <returns>Список объектов с данными для отображения.</returns>
-        public List<object> GetCarsForDisplay()
+        public List<CarListItemDto> GetCarsForDisplay()
         {
-            var result = new List<object>();
+            var result = new List<CarListItemDto>();
             foreach (var car in _repository.ReadAll())
             {
-                result.Add(new
+                result.Add(new CarListItemDto
                 {
                     Id = car.Id,
                     Brand = car.Brand,
@@ -402,7 +358,6 @@ namespace BussinessLogic
                     LicensePlate = car.LicensePlate,
                     Year = car.Year,
                     Mileage = car.Mileage,
-                    Status = car.Status,
                     RentalPricePerHour = car.RentalPricePerHour,
                     StatusText = car.Status.ToString(),
                     DisplayText = $"{car.Brand} {car.Model} ({car.LicensePlate})"
@@ -416,12 +371,11 @@ namespace BussinessLogic
         /// </summary>
         /// <param name="carId">Идентификатор автомобиля.</param>
         /// <returns>Объект с данными для расчета или null, если автомобиль не найден.</returns>
-        public object GetCarForCalculation(int carId)
+        public CarForCalculationDto? GetCarForCalculation(int carId)
         {
             var car = GetCar(carId);
             if (car == null) return null;
-
-            return new
+            return new CarForCalculationDto
             {
                 Id = car.Id,
                 Brand = car.Brand,

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,40 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using BussinessLogic;
+using BussinessLogic.Dto;
+using AIS.Controllers;
 
 
 namespace AIS
 {
-    /// <summary>
-    /// Форма расчёта стоимости аренды автомобиля за выбранное количество часов.
-    /// </summary>
     public partial class CalculateCostForm : Form
     {
-        private readonly ICarService _carService;
+        private readonly CalculateCostFormController _controller;
         private readonly int _carId;
         private string _currentPromoCode = null;
 
-        /// <summary>
-        /// Создаёт форму расчёта и инициализирует данные автомобиля.
-        /// </summary>
-        /// <param name="carId">ID автомобиля для расчёта.</param>
-        /// <param name="carService">Сервис автомобилей.</param>
-        public CalculateCostForm(int carId, ICarService carService)
+        public CalculateCostForm(int carId, CalculateCostFormController controller)
         {
             InitializeComponent();
             _carId = carId;
-            _carService = carService;
+            _controller = controller;
             InitializeForm();
         }
 
-        /// <summary>
-        /// Загружает данные автомобиля и готовит элементы управления формы.
-        /// </summary>
         private void InitializeForm()
         {
-            var carInfo = _carService.GetCarForCalculation(_carId);
+            var carInfo = _controller.GetCarForCalculation(_carId);
             if (carInfo == null)
             {
                 MessageBox.Show("Автомобиль не найден!", "Ошибка",
@@ -48,9 +38,16 @@ namespace AIS
                 Close();
                 return;
             }
-            var carType = carInfo.GetType();
-            labelCarInfo.Text = (string)carType.GetProperty("DisplayText").GetValue(carInfo);
-            labelPricePerHour.Text = $"{(decimal)carType.GetProperty("RentalPricePerHour").GetValue(carInfo):C}/час";
+            if (carInfo is CarForCalculationDto dto)
+            {
+                labelCarInfo.Text = dto.DisplayText;
+                labelPricePerHour.Text = $"{dto.RentalPricePerHour:C}/час";
+            }
+            else
+            {
+                labelCarInfo.Text = "";
+                labelPricePerHour.Text = "";
+            }
 
             numericUpDownHours.Minimum = 1;
             numericUpDownHours.Maximum = 720;
@@ -58,15 +55,12 @@ namespace AIS
             CalculateCost();
         }
 
-        /// <summary>
-        /// Пересчитывает итоговую стоимость аренды по текущему числу часов.
-        /// </summary>
         private void CalculateCost()
         {
             try
             {
                 int hours = (int)numericUpDownHours.Value;
-                decimal cost = _carService.CalculateRentalCost(_carId, hours, _currentPromoCode);
+                decimal cost = _controller.CalculateRentalCost(_carId, hours, _currentPromoCode);
                 labelTotalCost.Text = cost.ToString("C");
                 labelTotalCost.ForeColor = SystemColors.ControlText;
             }
@@ -82,25 +76,16 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Обработчик изменения количества часов: запускает перерасчёт.
-        /// </summary>
         private void numericUpDownHours_ValueChanged(object sender, EventArgs e)
         {
             CalculateCost();
         }
 
-        /// <summary>
-        /// Закрывает форму по нажатию кнопки ОК.
-        /// </summary>
         private void buttonOK_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        /// <summary>
-        /// Обработчик нажатия кнопки применения промокода.
-        /// </summary>
         private void btnApplyPromo_Click(object sender, EventArgs e)
         {
             string promoCode = txtPromoCode.Text.Trim();
@@ -114,8 +99,8 @@ namespace AIS
             try
             {
                 int hours = (int)numericUpDownHours.Value;
-                decimal originalCost = _carService.CalculateRentalCost(_carId, hours);
-                decimal discountedCost = _carService.CalculateRentalCost(_carId, hours, promoCode);
+                decimal originalCost = _controller.CalculateRentalCost(_carId, hours);
+                decimal discountedCost = _controller.CalculateRentalCost(_carId, hours, promoCode);
                 
                 if (discountedCost < originalCost)
                 {
@@ -141,3 +126,4 @@ namespace AIS
         }
     }
 }
+

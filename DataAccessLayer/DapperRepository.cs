@@ -11,7 +11,7 @@ namespace DataAccessLayer
     /// Обеспечивает доступ к данным через прямые SQL-запросы.
     /// </summary>
     /// <typeparam name="T">Тип доменного объекта, реализующего IDomainObject.</typeparam>
-    public class DapperRepository<T> : IRepository<T> where T : class, IDomainObject
+    public class DapperRepository<T> : IRepository<T>, IReadRepository<T>, IWriteRepository<T> where T : class, IDomainObject, new()
     {
         private readonly string _connectionString;
 

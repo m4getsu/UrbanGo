@@ -1,4 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
+using static System.Net.Mime.MediaTypeNames;
 using System.Drawing.Printing;
 using System.Drawing;
 using System.Windows.Forms;
@@ -275,3 +275,4 @@ namespace AIS
         private ToolStripStatusLabel toolStripStatusLabel;
     }
 }
+

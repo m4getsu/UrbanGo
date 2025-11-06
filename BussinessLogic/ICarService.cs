@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Model;
+using BussinessLogic.Dto;
 
 namespace BussinessLogic
 {
@@ -114,20 +115,21 @@ namespace BussinessLogic
         /// </summary>
         /// <param name="carId">ID автомобиля.</param>
         /// <returns>Объект с данными для отображения или null.</returns>
-        object GetCarForDisplay(int carId);
+        CarDetailsDto? GetCarForDisplay(int carId);
+
 
         /// <summary>
         /// Получает список автомобилей для отображения в UI.
         /// </summary>
         /// <returns>Список объектов для отображения.</returns>
-        List<object> GetCarsForDisplay();
+        List<CarListItemDto> GetCarsForDisplay();
 
         /// <summary>
         /// Получает информацию об автомобиле для расчета стоимости.
         /// </summary>
         /// <param name="carId">ID автомобиля.</param>
         /// <returns>Объект с данными для расчета или null.</returns>
-        object GetCarForCalculation(int carId);
+        CarForCalculationDto? GetCarForCalculation(int carId);
 
     }
 }

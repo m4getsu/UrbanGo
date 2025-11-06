@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,46 +12,18 @@ using BussinessLogic;
 
 namespace AIS
 {
-    /// <summary>
-    /// Форма добавления/редактирования автомобиля.
-    /// Содержит поля ввода и базовую валидацию значений.
-    /// </summary>
     public partial class CarEditForm : Form
     {
-        /// <summary>
-        /// Марка автомобиля.
-        /// </summary>
         public string Brand { get; private set; } = string.Empty;
-        /// <summary>
-        /// Модель автомобиля.
-        /// </summary>
         public string Model { get; private set; } = string.Empty;
-        /// <summary>
-        /// Гос. номер автомобиля.
-        /// </summary>
         public string LicensePlate { get; private set; } = string.Empty;
-        /// <summary>
-        /// Год выпуска.
-        /// </summary>
         public int Year { get; private set; }
-        /// <summary>
-        /// Пробег, км.
-        /// </summary>
         public int Mileage { get; private set; }
-        /// <summary>
-        /// Стоимость аренды в час.
-        /// </summary>
         public decimal Price { get; private set; }
-        /// <summary>
-        /// Статус автомобиля: 0 - Свободен, 1 - В аренде, 2 - На тех. обслуживании.
-        /// </summary>
         public int Status { get; private set; }
 
         private readonly bool _isEditMode;
 
-        /// <summary>
-        /// Конструктор формы для добавления автомобиля.
-        /// </summary>
         public CarEditForm()
         {
             InitializeComponent();
@@ -60,16 +32,6 @@ namespace AIS
             Text = "Добавление автомобиля";
         }
 
-        /// <summary>
-        /// Конструктор формы для редактирования автомобиля.
-        /// </summary>
-        /// <param name="brand">Марка.</param>
-        /// <param name="model">Модель.</param>
-        /// <param name="licensePlate">Гос. номер.</param>
-        /// <param name="year">Год выпуска.</param>
-        /// <param name="mileage">Пробег, км.</param>
-        /// <param name="price">Цена аренды в час.</param>
-        /// <param name="status">Статус (0 - Свободен, 1 - В аренде, 2 - На тех. обслуживании).</param>
         public CarEditForm(string brand, string model, string licensePlate, int year,
                           int mileage, decimal price, int status) : this()
         {
@@ -87,9 +49,6 @@ namespace AIS
             comboBoxStatus.Enabled = true;
         }
 
-        /// <summary>
-        /// Инициализирует значения комбобокса статуса.
-        /// </summary>
         private void InitializeStatusComboBox()
         {
             comboBoxStatus.Items.AddRange(new object[] { "Свободен", "В аренде", "На тех. обслуживании" });
@@ -97,9 +56,6 @@ namespace AIS
             comboBoxStatus.Enabled = !_isEditMode;
         }
 
-        /// <summary>
-        /// Валидирует ввод и сохраняет данные при нажатии ОК.
-        /// </summary>
         private void buttonOK_Click(object sender, EventArgs e)
         {
             if (ValidateChildren(ValidationConstraints.Enabled))
@@ -117,18 +73,12 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Отменяет изменения и закрывает форму.
-        /// </summary>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
-        /// <summary>
-        /// Проверяет, что поле Марка не пустое.
-        /// </summary>
         private void textBoxBrand_Validating(object sender, CancelEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBoxBrand.Text))
@@ -142,9 +92,6 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Проверяет, что поле Модель не пустое.
-        /// </summary>
         private void textBoxModel_Validating(object sender, CancelEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBoxModel.Text))
@@ -158,9 +105,6 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Проверяет, что поле Гос. номер не пустое.
-        /// </summary>
         private void textBoxLicensePlate_Validating(object sender, CancelEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBoxLicensePlate.Text))
@@ -174,9 +118,6 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Проверяет, что год выпуска в допустимых пределах.
-        /// </summary>
         private void numericUpDownYear_Validating(object sender, CancelEventArgs e)
         {
             if (numericUpDownYear.Value < 1900 || numericUpDownYear.Value > DateTime.Now.Year + 1)
@@ -190,9 +131,6 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Проверяет, что пробег не отрицательный.
-        /// </summary>
         private void numericUpDownMileage_Validating(object sender, CancelEventArgs e)
         {
             if (numericUpDownMileage.Value < 0)
@@ -206,9 +144,6 @@ namespace AIS
             }
         }
 
-        /// <summary>
-        /// Проверяет, что цена аренды положительная.
-        /// </summary>
         private void numericUpDownPrice_Validating(object sender, CancelEventArgs e)
         {
             if (numericUpDownPrice.Value <= 0)
@@ -223,3 +158,4 @@ namespace AIS
         }
     }
 }
+
