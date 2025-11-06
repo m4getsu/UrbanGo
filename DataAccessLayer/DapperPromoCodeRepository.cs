@@ -8,6 +8,7 @@ namespace DataAccessLayer
 {
     /// <summary>
     /// Реализация репозитория промокодов с использованием Dapper ORM.
+    /// Реализует только операции чтения, так как промокоды создаются администратором.
     /// </summary>
     public class DapperPromoCodeRepository : IPromoCodeRepository
     {
@@ -20,28 +21,6 @@ namespace DataAccessLayer
         public DapperPromoCodeRepository(string connectionString)
         {
             _connectionString = connectionString;
-        }
-
-        /// <summary>
-        /// Добавляет новый промокод в базу данных.
-        /// </summary>
-        /// <param name="entity">Промокод для добавления.</param>
-        public void Add(PromoCode entity)
-        {
-            using var connection = new SqlConnection(_connectionString);
-            connection.Execute(@"
-                INSERT INTO PromoCodes (Code, DiscountPercent, IsActive) 
-                VALUES (@Code, @DiscountPercent, @IsActive)", entity);
-        }
-
-        /// <summary>
-        /// Удаляет промокод из базы данных по его идентификатору.
-        /// </summary>
-        /// <param name="id">Идентификатор промокода для удаления.</param>
-        public void Delete(int id)
-        {
-            using var connection = new SqlConnection(_connectionString);
-            connection.Execute("DELETE FROM PromoCodes WHERE Id = @Id", new { Id = id });
         }
 
         /// <summary>
@@ -63,19 +42,6 @@ namespace DataAccessLayer
         {
             using var connection = new SqlConnection(_connectionString);
             return connection.QueryFirstOrDefault<PromoCode>("SELECT * FROM PromoCodes WHERE Id = @Id", new { Id = id });
-        }
-
-        /// <summary>
-        /// Обновляет существующий промокод в базе данных.
-        /// </summary>
-        /// <param name="entity">Промокод с обновленными данными.</param>
-        public void Update(PromoCode entity)
-        {
-            using var connection = new SqlConnection(_connectionString);
-            connection.Execute(@"
-                UPDATE PromoCodes 
-                SET Code = @Code, DiscountPercent = @DiscountPercent, IsActive = @IsActive 
-                WHERE Id = @Id", entity);
         }
 
         /// <summary>

@@ -25,7 +25,11 @@ namespace DataAccessLayer
         T ReadById(int id);
     }
 
-    // Интерфейс только для записи
+    /// <summary>
+    /// Интерфейс репозитория для операций записи с доменными объектами.
+    /// Определяет методы для создания, обновления и удаления сущностей.
+    /// </summary>
+    /// <typeparam name="T">Тип доменного объекта, реализующего IDomainObject.</typeparam>
     public interface IWriteRepository<T> where T : IDomainObject
     {
         /// <summary>
@@ -47,7 +51,11 @@ namespace DataAccessLayer
         void Delete(int id);
     }
 
-    // Основной фасад (оставить ради существующего кода)
+    /// <summary>
+    /// Полный интерфейс репозитория, объединяющий операции чтения и записи.
+    /// Представляет собой фасад для полного набора CRUD операций.
+    /// </summary>
+    /// <typeparam name="T">Тип доменного объекта, реализующего IDomainObject.</typeparam>
     public interface IRepository<T> : IReadRepository<T>, IWriteRepository<T> where T : IDomainObject
     {
     }

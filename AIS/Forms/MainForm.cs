@@ -13,10 +13,17 @@ using AIS.Controllers;
 
 namespace AIS
 {
+    /// <summary>
+    /// Главная форма приложения для управления автомобилями.
+    /// </summary>
     public partial class MainForm : Form
     {
         private readonly MainFormController _controller;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр главной формы с контроллером.
+        /// </summary>
+        /// <param name="controller">Контроллер для взаимодействия с бизнес-логикой.</param>
         public MainForm(MainFormController controller)
         {
             InitializeComponent();

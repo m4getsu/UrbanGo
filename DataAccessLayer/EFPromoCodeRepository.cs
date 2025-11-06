@@ -7,6 +7,7 @@ namespace DataAccessLayer
 {
     /// <summary>
     /// Реализация репозитория промокодов с использованием Entity Framework Core.
+    /// Реализует только операции чтения, так как промокоды создаются администратором.
     /// </summary>
     public class EFPromoCodeRepository : IPromoCodeRepository
     {
@@ -19,30 +20,6 @@ namespace DataAccessLayer
         public EFPromoCodeRepository(CarSharingContext context)
         {
             _context = context;
-        }
-
-        /// <summary>
-        /// Добавляет новый промокод в базу данных.
-        /// </summary>
-        /// <param name="entity">Промокод для добавления.</param>
-        public void Add(PromoCode entity)
-        {
-            _context.Set<PromoCode>().Add(entity);
-            _context.SaveChanges();
-        }
-
-        /// <summary>
-        /// Удаляет промокод из базы данных по его идентификатору.
-        /// </summary>
-        /// <param name="id">Идентификатор промокода для удаления.</param>
-        public void Delete(int id)
-        {
-            var entity = _context.Set<PromoCode>().Find(id);
-            if (entity != null)
-            {
-                _context.Set<PromoCode>().Remove(entity);
-                _context.SaveChanges();
-            }
         }
 
         /// <summary>
@@ -62,27 +39,6 @@ namespace DataAccessLayer
         public PromoCode ReadById(int id)
         {
             return _context.Set<PromoCode>().Find(id);
-        }
-
-        /// <summary>
-        /// Обновляет существующий промокод в базе данных.
-        /// </summary>
-        /// <param name="entity">Промокод с обновленными данными.</param>
-        public void Update(PromoCode entity)
-        {
-            var trackedEntity = _context.ChangeTracker.Entries<PromoCode>()
-                .FirstOrDefault(e => e.Entity.Id == entity.Id);
-
-            if (trackedEntity != null)
-            {
-                trackedEntity.CurrentValues.SetValues(entity);
-            }
-            else
-            {
-                _context.Entry(entity).State = EntityState.Modified;
-            }
-
-            _context.SaveChanges();
         }
 
         /// <summary>

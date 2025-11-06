@@ -4019,11 +4019,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj",
+      "projectUniqueName": "c:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj",
       "projectName": "DataAccessLayer",
-      "projectPath": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj",
+      "projectPath": "c:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj",
       "packagesPath": "C:\\Users\\kosty\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\obj\\",
+      "outputPath": "c:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4044,8 +4044,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\kosty\\source\\repos\\AIS\\Model\\Model.csproj": {
-              "projectPath": "C:\\Users\\kosty\\source\\repos\\AIS\\Model\\Model.csproj"
+            "c:\\Users\\kosty\\source\\repos\\AIS\\Model\\Model.csproj": {
+              "projectPath": "c:\\Users\\kosty\\source\\repos\\AIS\\Model\\Model.csproj"
             }
           }
         }

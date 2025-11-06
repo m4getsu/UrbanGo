@@ -7,11 +7,13 @@ using Ninject.Modules;
 using BussinessLogic.Logging;
 using BussinessLogic.Pricing;
 using BussinessLogic.Validation;
+using BussinessLogic.Services;
 
 namespace BussinessLogic
 {
 	/// <summary>
 	/// Конфигурация Ninject: биндит репозитории и сервисы, поддерживает EF/Dapper и синглтоны.
+	/// Обновлен для поддержки конкретных репозиториев и разделенных интерфейсов сервисов.
 	/// </summary>
 	public class SimpleConfigModule : NinjectModule
 	{
@@ -49,14 +51,22 @@ namespace BussinessLogic
 			}
 			else
 			{
-				Bind<IRepository<Car>>().ToConstant(new DapperRepository<Car>(_connectionString)).InSingletonScope();
+				// Используем конкретную реализацию CarDapperRepository вместо DapperRepository<Car>
+				// для соблюдения принципа Open/Closed
+				Bind<IRepository<Car>>().ToConstant(new CarDapperRepository(_connectionString)).InSingletonScope();
 				Bind<IPromoCodeRepository>().ToConstant(new DapperPromoCodeRepository(_connectionString)).InSingletonScope();
 			}
 
-			// Сервисы
+			// Сервисы промокодов
 			Bind<PromoService>().ToSelf().InSingletonScope();
 			Bind<IPromoService>().ToMethod(ctx => new PromoServiceAdapter(ctx.Kernel.Get<PromoService>())).InSingletonScope();
-			Bind<ICarService>().To<CarService>().InSingletonScope();
+
+			// Сервисы автомобилей - CarService реализует все интерфейсы
+			Bind<CarService>().ToSelf().InSingletonScope();
+			Bind<ICarService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
+			Bind<ICarManagementService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
+			Bind<ICarQueryService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
+			Bind<ICarDisplayService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
 		}
 	}
 }

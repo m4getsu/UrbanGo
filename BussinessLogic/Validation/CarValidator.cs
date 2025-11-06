@@ -2,8 +2,20 @@ using System;
 
 namespace BussinessLogic.Validation
 {
+    /// <summary>
+    /// Реализация валидатора для проверки данных автомобилей.
+    /// </summary>
     public class CarValidator : ICarValidator
     {
+        /// <summary>
+        /// Проверяет корректность данных при создании автомобиля.
+        /// </summary>
+        /// <param name="brand">Марка автомобиля.</param>
+        /// <param name="model">Модель автомобиля.</param>
+        /// <param name="licensePlate">Государственный номер.</param>
+        /// <param name="year">Год выпуска.</param>
+        /// <param name="mileage">Пробег.</param>
+        /// <param name="rentalPricePerHour">Стоимость аренды за час.</param>
         public void ValidateForCreate(string brand, string model, string licensePlate, int year, int mileage, decimal rentalPricePerHour)
         {
             if (string.IsNullOrWhiteSpace(brand))
@@ -20,6 +32,16 @@ namespace BussinessLogic.Validation
                 throw new ArgumentException("Стоимость аренды должна быть положительной.", nameof(rentalPricePerHour));
         }
 
+        /// <summary>
+        /// Проверяет корректность данных при обновлении автомобиля.
+        /// </summary>
+        /// <param name="brand">Марка автомобиля.</param>
+        /// <param name="model">Модель автомобиля.</param>
+        /// <param name="licensePlate">Государственный номер.</param>
+        /// <param name="year">Год выпуска.</param>
+        /// <param name="mileage">Пробег.</param>
+        /// <param name="rentalPricePerHour">Стоимость аренды за час.</param>
+        /// <param name="status">Статус автомобиля.</param>
         public void ValidateForUpdate(string brand, string model, string licensePlate, int year, int mileage, decimal rentalPricePerHour, int status)
         {
             ValidateForCreate(brand, model, licensePlate, year, mileage, rentalPricePerHour);

@@ -12,18 +12,51 @@ using BussinessLogic;
 
 namespace AIS
 {
+    /// <summary>
+    /// Форма для создания и редактирования автомобилей.
+    /// </summary>
     public partial class CarEditForm : Form
     {
+        /// <summary>
+        /// Получает марку автомобиля.
+        /// </summary>
         public string Brand { get; private set; } = string.Empty;
+
+        /// <summary>
+        /// Получает модель автомобиля.
+        /// </summary>
         public string Model { get; private set; } = string.Empty;
+
+        /// <summary>
+        /// Получает государственный номер автомобиля.
+        /// </summary>
         public string LicensePlate { get; private set; } = string.Empty;
+
+        /// <summary>
+        /// Получает год выпуска автомобиля.
+        /// </summary>
         public int Year { get; private set; }
+
+        /// <summary>
+        /// Получает пробег автомобиля.
+        /// </summary>
         public int Mileage { get; private set; }
+
+        /// <summary>
+        /// Получает стоимость аренды за час.
+        /// </summary>
         public decimal Price { get; private set; }
+
+        /// <summary>
+        /// Получает статус автомобиля.
+        /// </summary>
         public int Status { get; private set; }
 
         private readonly bool _isEditMode;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр формы для создания автомобиля.
+        /// </summary>
         public CarEditForm()
         {
             InitializeComponent();

@@ -14,12 +14,20 @@ using AIS.Controllers;
 
 namespace AIS
 {
+    /// <summary>
+    /// Форма для расчета стоимости аренды автомобиля.
+    /// </summary>
     public partial class CalculateCostForm : Form
     {
         private readonly CalculateCostFormController _controller;
         private readonly int _carId;
         private string _currentPromoCode = null;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр формы расчета с идентификатором автомобиля и контроллером.
+        /// </summary>
+        /// <param name="carId">ID автомобиля для расчета.</param>
+        /// <param name="controller">Контроллер для взаимодействия с бизнес-логикой.</param>
         public CalculateCostForm(int carId, CalculateCostFormController controller)
         {
             InitializeComponent();

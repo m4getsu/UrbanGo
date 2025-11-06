@@ -4799,11 +4799,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj": {
-              "projectPath": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj"
+            "c:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj": {
+              "projectPath": "c:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj"
             },
-            "C:\\Users\\kosty\\source\\repos\\AIS\\Model\\Model.csproj": {
-              "projectPath": "C:\\Users\\kosty\\source\\repos\\AIS\\Model\\Model.csproj"
+            "c:\\Users\\kosty\\source\\repos\\AIS\\Model\\Model.csproj": {
+              "projectPath": "c:\\Users\\kosty\\source\\repos\\AIS\\Model\\Model.csproj"
             }
           }
         }

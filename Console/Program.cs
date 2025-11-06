@@ -3,8 +3,15 @@ using BussinessLogic;
 using Ninject;
 using ConsoleApp;
 
+/// <summary>
+/// Точка входа консольного приложения для управления системой каршеринга.
+/// </summary>
 class Program
 {
+    /// <summary>
+    /// Точка входа консольного приложения. Инициализирует контейнер зависимостей и запускает меню.
+    /// </summary>
+    /// <param name="args">Аргументы командной строки.</param>
     static void Main(string[] args)
     {
         var useEF = ChooseProvider();
@@ -18,6 +25,11 @@ class Program
         var menu = new MenuController(di.CarService, di.PromoService);
         menu.Run();
     }
+
+    /// <summary>
+    /// Показывает меню выбора провайдера данных (Entity Framework или Dapper).
+    /// </summary>
+    /// <returns>True для EF, False для Dapper, null при выходе.</returns>
     private static bool? ChooseProvider()
         {
             Console.Clear();

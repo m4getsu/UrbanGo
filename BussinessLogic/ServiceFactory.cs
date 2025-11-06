@@ -12,6 +12,11 @@ namespace BussinessLogic
 	/// </summary>
 	public static class ServiceFactory
 	{
+		/// <summary>
+		/// Создает сервисы для работы с автомобилями и промокодами, используя выбранный ORM.
+		/// </summary>
+		/// <param name="useEF">True для использования Entity Framework, False для Dapper.</param>
+		/// <returns>Кортеж из сервиса автомобилей и сервиса промокодов.</returns>
 		public static (ICarService carService, IPromoService promoService) CreateServices(bool useEF)
 		{
 			string connectionString = "Server=(localdb)\\mssqllocaldb;Database=UrbanGoDB;Trusted_Connection=true;TrustServerCertificate=true;";

@@ -17,6 +17,9 @@ namespace AIS
     /// </summary>
     internal static class Program
     {
+        /// <summary>
+        /// Точка входа приложения. Инициализирует UI, обработчики исключений и контейнер зависимостей.
+        /// </summary>
         [STAThread]
         static void Main()
         {
@@ -39,6 +42,10 @@ namespace AIS
             Application.Run(mainForm);
         }
 
+        /// <summary>
+        /// Показывает диалог выбора провайдера данных (Entity Framework или Dapper).
+        /// </summary>
+        /// <returns>True для EF, False для Dapper, null при отмене.</returns>
         private static bool? ChooseProvider()
         {
             var result = MessageBox.Show(

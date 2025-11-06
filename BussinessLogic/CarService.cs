@@ -4,14 +4,16 @@ using BussinessLogic.Logging;
 using BussinessLogic.Dto;
 using BussinessLogic.Validation;
 using BussinessLogic.Pricing;
+using BussinessLogic.Services;
 
 namespace BussinessLogic
 {
     /// <summary>
     /// Реализует бизнес-логику по управлению автомобилями в системе каршеринга.
     /// Обеспечивает выполнение операций CRUD и бизнес-функций.
+    /// Реализует разделенные интерфейсы для соблюдения принципа ISP (Interface Segregation Principle).
     /// </summary>
-    public class CarService : ICarService
+    public class CarService : ICarService, ICarManagementService, ICarQueryService, ICarDisplayService
     {
         private readonly IRepository<Car> _repository;
         private readonly IPricingStrategy _pricingStrategy;

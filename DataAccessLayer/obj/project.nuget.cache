@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ef3i6hSmcxk=",
+  "dgSpecHash": "GX25G0ptoA8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj",
+  "projectFilePath": "c:\\Users\\kosty\\source\\repos\\AIS\\DataAccessLayer\\DataAccessLayer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kosty\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\kosty\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

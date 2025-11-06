@@ -2,16 +2,28 @@ using BussinessLogic;
 
 namespace ConsoleApp
 {
+    /// <summary>
+    /// Контроллер консольного меню для управления системой каршеринга.
+    /// </summary>
     public class MenuController
     {
         private readonly ICarService _carService;
         private readonly IPromoService _promoService;
+
+        /// <summary>
+        /// Инициализирует новый экземпляр контроллера меню с сервисами.
+        /// </summary>
+        /// <param name="carService">Сервис для работы с автомобилями.</param>
+        /// <param name="promoService">Сервис для работы с промокодами.</param>
         public MenuController(ICarService carService, IPromoService promoService)
         {
             _carService = carService;
             _promoService = promoService;
         }
 
+        /// <summary>
+        /// Запускает главный цикл консольного меню приложения.
+        /// </summary>
         public void Run()
         {
             bool exitRequested = false;
