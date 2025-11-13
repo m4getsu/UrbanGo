@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BussinessLogic.Dto;
 using AIS.Controllers;
+using AIS.Forms;
 
 namespace AIS
 {
@@ -19,15 +20,18 @@ namespace AIS
     public partial class MainForm : Form
     {
         private readonly MainFormController _controller;
+        private readonly DependencyContainer _dependencyContainer;
 
         /// <summary>
         /// Инициализирует новый экземпляр главной формы с контроллером.
         /// </summary>
         /// <param name="controller">Контроллер для взаимодействия с бизнес-логикой.</param>
-        public MainForm(MainFormController controller)
+        /// <param name="dependencyContainer">Контейнер зависимостей для доступа к сервисам.</param>
+        public MainForm(MainFormController controller, DependencyContainer dependencyContainer)
         {
             InitializeComponent();
             _controller = controller;
+            _dependencyContainer = dependencyContainer;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -40,7 +44,7 @@ namespace AIS
         {
             dataGridViewCars.AutoGenerateColumns = false;
             dataGridViewCars.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewCars.MultiSelect = false;
+            dataGridViewCars.MultiSelect = true;
             dataGridViewCars.ReadOnly = true;
             dataGridViewCars.AllowUserToAddRows = false;
             dataGridViewCars.AllowUserToDeleteRows = false;
@@ -374,6 +378,142 @@ namespace AIS
                 e.Cancel = true;
             }
         }
+
+        private void buttonImport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var importService = _dependencyContainer.ImportService;
+                using var importForm = new CarImportForm(importService);
+
+                if (importForm.ShowDialog() == DialogResult.OK)
+                {
+                    RefreshCarsList();
+                    MessageBox.Show(
+                        "Список автомобилей обновлен после импорта",
+                        "Импорт завершен",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Ошибка при открытии формы импорта:\n{ex.Message}",
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using var dialog = new SaveFileDialog
+                {
+                    Filter = "CSV файлы (*.csv)|*.csv|JSON файлы (*.json)|*.json",
+                    Title = "Экспорт автомобилей",
+                    FileName = $"cars_export_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}"
+                };
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var importService = _dependencyContainer.ImportService;
+                    int exportedCount = 0;
+
+                    // Проверяем, есть ли выбранные строки
+                    if (dataGridViewCars.SelectedRows.Count > 0)
+                    {
+                        var confirmResult = MessageBox.Show(
+                            $"Экспортировать только выбранные автомобили ({dataGridViewCars.SelectedRows.Count} шт.)?\n\n" +
+                            "Да - экспорт выбранных\n" +
+                            "Нет - экспорт всех автомобилей",
+                            "Выбор данных для экспорта",
+                            MessageBoxButtons.YesNoCancel,
+                            MessageBoxIcon.Question
+                        );
+
+                        if (confirmResult == DialogResult.Cancel)
+                            return;
+
+                        if (confirmResult == DialogResult.Yes)
+                        {
+                            // Экспорт выбранных
+                            var selectedIds = dataGridViewCars.SelectedRows
+                                .Cast<DataGridViewRow>()
+                                .Select(r => ((CarListItemDto)r.DataBoundItem).Id)
+                                .ToList();
+
+                            if (dialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                                exportedCount = importService.ExportToCsv(selectedIds, dialog.FileName);
+                            else
+                                exportedCount = importService.ExportToJson(selectedIds, dialog.FileName);
+                        }
+                        else
+                        {
+                            // Экспорт всех
+                            if (dialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                                exportedCount = importService.ExportToCsv(dialog.FileName);
+                            else
+                                exportedCount = importService.ExportToJson(dialog.FileName);
+                        }
+                    }
+                    else
+                    {
+                        // Нет выбранных строк - экспортируем всё
+                        if (dialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                            exportedCount = importService.ExportToCsv(dialog.FileName);
+                        else
+                            exportedCount = importService.ExportToJson(dialog.FileName);
+                    }
+
+                    MessageBox.Show(
+                        $"Экспорт выполнен успешно!\n\n" +
+                        $"Экспортировано автомобилей: {exportedCount}\n" +
+                        $"Файл сохранен: {dialog.FileName}",
+                        "Экспорт завершен",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                    );
+
+                    // Открыть папку с файлом
+                    var openFolderResult = MessageBox.Show(
+                        "Открыть папку с экспортированным файлом?",
+                        "Открыть папку",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                    );
+
+                    if (openFolderResult == DialogResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{dialog.FileName}\"");
+                    }
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Невозможно выполнить экспорт",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Ошибка при экспорте данных:\n{ex.Message}",
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+
     }
 }
 

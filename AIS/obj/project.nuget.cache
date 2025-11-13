@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "7YLHJr+9tHc=",
+  "dgSpecHash": "Ecl+3oAPjoQ=",
   "success": true,
-  "projectFilePath": "c:\\Users\\kosty\\source\\repos\\AIS\\AIS\\WinForm.csproj",
+  "projectFilePath": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\WinForm.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kosty\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\kosty\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
+    "C:\\Users\\kosty\\.nuget\\packages\\csvhelper\\33.1.0\\csvhelper.33.1.0.nupkg.sha512",
     "C:\\Users\\kosty\\.nuget\\packages\\dapper\\2.1.66\\dapper.2.1.66.nupkg.sha512",
     "C:\\Users\\kosty\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\kosty\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",

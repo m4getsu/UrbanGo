@@ -8,6 +8,7 @@ using BussinessLogic.Logging;
 using BussinessLogic.Pricing;
 using BussinessLogic.Validation;
 using BussinessLogic.Services;
+using BussinessLogic.Services.Import;
 
 namespace BussinessLogic
 {
@@ -67,6 +68,9 @@ namespace BussinessLogic
 			Bind<ICarManagementService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
 			Bind<ICarQueryService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
 			Bind<ICarDisplayService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
+
+			// Сервис импорта автомобилей
+			Bind<ICarImportService>().To<CarImportService>().InSingletonScope();
 		}
 	}
 }

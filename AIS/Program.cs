@@ -38,7 +38,7 @@ namespace AIS
             var config = new AppConfiguration();
             var di = new DependencyContainer(useEF.Value, config);
             var controller = new MainFormController(di.CarService);
-            var mainForm = new MainForm(controller);
+            var mainForm = new MainForm(controller, di);
             Application.Run(mainForm);
         }
 

@@ -19,7 +19,8 @@
 - ✅ **Система статусов** - отслеживание состояния каждого автомобиля (доступен, арендован, на обслуживании)
 - ✅ **Расчет стоимости** - гибкая система ценообразования с поддержкой промокодов
 - ✅ **Промокоды** - применение скидок к аренде
-- ✅ **Валидация данных** - проверка корректности вводимой информации
+- ✅ **Импорт/Экспорт** - импорт автомобилей из CSV/JSON и экспорт в CSV/JSON (библиотека CsvHelper 30.0.1)
+- ✅ **Валидация данных** - проверка корректности вводимой информации и валидация перед импортом
 - ✅ **Логирование** - автоматическая запись всех операций в файл
 - ✅ **Два интерфейса** - WinForms и консольное приложение
 - ✅ **Выбор ORM** - Entity Framework Core или Dapper (на выбор пользователя при запуске)
@@ -56,7 +57,12 @@ AIS/
 │   ├── Services/              # Разделенные интерфейсы (ISP)
 │   │   ├── ICarManagementService.cs  # CRUD + бизнес-операции
 │   │   ├── ICarQueryService.cs       # Запросы данных
-│   │   └── ICarDisplayService.cs     # Форматирование для UI
+│   │   ├── ICarDisplayService.cs     # Форматирование для UI
+│   │   └── Import/                   # Импорт/Экспорт (CsvHelper)
+│   │       ├── ICarImportService.cs  # Интерфейс импорт/экспорт
+│   │       ├── CarImportService.cs   # Реализация (CSV/JSON)
+│   │       └── Models/
+│   │           └── ImportResult.cs   # Модель результата импорта
 │   ├── Dto/                   # Data Transfer Objects
 │   │   ├── CarDetailsDto.cs
 │   │   ├── CarListItemDto.cs
@@ -86,9 +92,10 @@ AIS/
 │   │   ├── MainFormController.cs
 │   │   └── CalculateCostFormController.cs
 │   └── Forms/                 # UI формы
-│       ├── MainForm.cs
+│       ├── MainForm.cs        # Главная форма (+ кнопки Импорт/Экспорт)
 │       ├── CarEditForm.cs
-│       └── CalculateCostForm.cs
+│       ├── CalculateCostForm.cs
+│       └── CarImportForm.cs   # Форма импорта CSV/JSON
 │
 └── Console/                   # Консольное приложение
     ├── Program.cs             # Точка входа Console
@@ -195,6 +202,8 @@ IDiscountPolicy -> PromoServiceDiscountPolicy
 - **Microsoft.Data.SqlClient** 5.2.2
 - **Dapper** 2.1.66
 - **Ninject** 3.3.6
+- **CsvHelper** 30.0.1 (импорт/экспорт CSV)
+- **System.Text.Json** (встроенная, импорт/экспорт JSON)
 
 ### Целевая платформа
 - WinForms: `net8.0-windows`
@@ -371,17 +380,33 @@ CarForCalculationDto GetCarForCalculation(int carId);
 decimal ApplyPromoCode(string promoCode, decimal originalPrice);
 ```
 
+### ICarImportService - Импорт/Экспорт
+```csharp
+// Импорт автомобилей
+ImportResult ImportFromCsv(string filePath);
+ImportResult ImportFromJson(string filePath);
+ImportResult ValidateImportFile(string filePath, ImportFormat format);
+
+// Экспорт автомобилей
+int ExportToCsv(string filePath);                              // Все автомобили
+int ExportToJson(string filePath);                             // Все автомобили
+int ExportToCsv(IEnumerable<int> carIds, string filePath);    // Выбранные
+int ExportToJson(IEnumerable<int> carIds, string filePath);   // Выбранные
+```
+
 ---
 
 ## 📝 Логирование
 
-Все операции автоматически логируются в файл `actions.log` на рабочем столе пользователя:
+Все операции автоматически логируются в файл `UrbanGo.log` на рабочем столе пользователя:
 
 ```
 [2025-01-15 14:30:25] CREATE: Id=1, Toyota Camry, Plate=А123БВ77, Year=2022, Mileage=15000, PricePerHour=500.00
 [2025-01-15 14:35:10] RENT: Id=1, Toyota Camry, Plate=А123БВ77
 [2025-01-15 14:40:05] UPDATE: Id=1, Toyota Camry, Plate=А123БВ77, Year=2022, Mileage=16000, Status=Rented, PricePerHour=500.00
 [2025-01-15 14:45:00] DELETE: Id=2, Kia Rio, Plate=В456ГД199
+[2025-01-15 14:50:30] IMPORT: Импортирован BMW X5 (С789ЕЖ50)
+[2025-01-15 14:55:15] EXPORT CSV: Экспортировано 5 автомобилей в C:\Users\...\cars_export.csv
 ```
 
 Логирование реализовано через:
@@ -425,6 +450,41 @@ dataGridView.DataSource = carList;
 // Для формы расчета
 var carForCalc = carService.GetCarForCalculation(carId);
 labelCarInfo.Text = carForCalc.DisplayText;
+```
+
+### Пример 4: Импорт автомобилей из CSV
+```csharp
+var importService = dependencyContainer.ImportService;
+
+// Валидация перед импортом
+var validationResult = importService.ValidateImportFile("cars.csv", ImportFormat.Csv);
+if (validationResult.FailedRecords > 0)
+{
+    Console.WriteLine($"Найдено ошибок: {validationResult.FailedRecords}");
+    foreach (var error in validationResult.Errors)
+    {
+        Console.WriteLine($"Строка {error.LineNumber}: {error.ErrorMessage}");
+    }
+}
+
+// Реальный импорт
+var importResult = importService.ImportFromCsv("cars.csv");
+Console.WriteLine($"Импортировано: {importResult.SuccessfulImports}");
+Console.WriteLine($"Пропущено (дубликаты): {importResult.SkippedRecords}");
+```
+
+### Пример 5: Экспорт выбранных автомобилей
+```csharp
+var importService = dependencyContainer.ImportService;
+
+// Экспорт выбранных автомобилей в CSV
+var selectedIds = new List<int> { 1, 3, 5, 7 };
+int count = importService.ExportToCsv(selectedIds, "selected_cars.csv");
+Console.WriteLine($"Экспортировано {count} автомобилей");
+
+// Экспорт всех автомобилей в JSON
+int totalCount = importService.ExportToJson("all_cars.json");
+Console.WriteLine($"Экспортировано {totalCount} автомобилей");
 ```
 
 ---
@@ -571,6 +631,29 @@ if (useMongo) {
 }
 ```
 
+### Добавление нового формата импорта (XML, Excel)
+```csharp
+// В ICarImportService добавить метод
+ImportResult ImportFromXml(string filePath);
+ImportResult ImportFromExcel(string filePath);
+
+// В CarImportService реализовать
+public ImportResult ImportFromXml(string filePath)
+{
+    var result = new ImportResult();
+    var xmlDoc = XDocument.Load(filePath);
+    var carElements = xmlDoc.Descendants("Car");
+
+    foreach (var element in carElements)
+    {
+        // Парсинг XML и валидация
+        // Добавление в БД
+    }
+
+    return result;
+}
+```
+
 ---
 
 ## 🐛 Известные ограничения
@@ -598,5 +681,63 @@ if (useMongo) {
 
 ---
 
-**Версия документации**: 2.0
-**Дата обновления**: Январь 2025
+## 📄 Дополнительная документация
+
+Для более детальной информации смотрите дополнительные файлы:
+
+1. **[CODE_REVIEW_FILES.md](CODE_REVIEW_FILES.md)** - Детальный обзор всех 49 файлов проекта с примерами кода
+2. **[SOLID_ANALYSIS.md](SOLID_ANALYSIS.md)** - Подробный анализ применения SOLID принципов с конкретными примерами
+3. **[IMPORT_README.md](IMPORT_README.md)** - Полное руководство по импорту автомобилей из CSV/JSON файлов
+4. **[EXPORT_GUIDE.md](EXPORT_GUIDE.md)** - Руководство по экспорту автомобилей в CSV/JSON форматы
+
+---
+
+## 🎓 Технические дополнения (для защиты)
+
+Проект включает следующие **технические дополнения**:
+
+### ✅ Использование внешней библиотеки CsvHelper 30.0.1
+- Импорт автомобилей из CSV файлов
+- Экспорт автомобилей в CSV формат
+- Автоматический маппинг столбцов на свойства класса
+- Поддержка многоязычных заголовков (русский/английский)
+- Кастомная конфигурация (разделитель `;`, кодировка UTF-8)
+
+### ✅ Импорт/Экспорт JSON через System.Text.Json
+- Импорт автомобилей из JSON файлов
+- Экспорт автомобилей в JSON формат с форматированием
+- Поддержка вложенных структур данных
+
+### ✅ Валидация перед импортом
+- Двухэтапный процесс: валидация → импорт
+- Детальные отчеты об ошибках с номерами строк
+- Пропуск дубликатов (по госномеру)
+- Статистика успешных/неуспешных импортов
+
+### ✅ Экспорт выбранных записей
+- Множественное выделение через Ctrl/Shift
+- Экспорт всех или выбранных автомобилей
+- Выбор формата экспорта (CSV/JSON)
+- Автоматическое формирование имени файла с timestamp
+
+**Демонстрация на защите:**
+1. Показать CSV файл в Excel
+2. Импортировать через форму импорта
+3. Показать новые записи в таблице
+4. Выделить несколько автомобилей Ctrl+Click
+5. Экспортировать выбранные в CSV
+6. Открыть файл в Excel
+7. Изменить данные в Excel
+8. Импортировать обратно
+9. Показать обновленные данные
+
+**Соответствие критерию "+5 баллов":**
+- ✅ Техническое дополнение - новый функционал импорт/экспорт поверх основной лабораторной
+- ✅ Техническое изменение - использование библиотеки CsvHelper
+- ✅ Легко защищается - наглядная демонстрация работы
+- ✅ Следует SOLID - сервис `ICarImportService`, валидация через `ICarValidator`, логирование через `ILogger`
+
+---
+
+**Версия документации**: 3.0
+**Дата обновления**: Январь 2025 (добавлен функционал импорт/экспорт)

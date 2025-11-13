@@ -167,3 +167,5 @@ C:\Users\kosty\source\repos\AIS\AIS\bin\Debug\net8.0-windows\tr\Microsoft.CodeAn
 C:\Users\kosty\source\repos\AIS\AIS\bin\Debug\net8.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\kosty\source\repos\AIS\AIS\bin\Debug\net8.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\Users\kosty\source\repos\AIS\AIS\bin\Debug\net8.0-windows\Ninject.dll
+C:\Users\kosty\source\repos\AIS\AIS\obj\Debug\net8.0-windows\AIS.Forms.CarImportForm.resources
+C:\Users\kosty\source\repos\AIS\AIS\bin\Debug\net8.0-windows\CsvHelper.dll

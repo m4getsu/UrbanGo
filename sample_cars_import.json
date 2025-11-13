@@ -1,0 +1,92 @@
+[
+  {
+    "brand": "Toyota",
+    "model": "Camry",
+    "licensePlate": "А123ВС77",
+    "year": 2020,
+    "mileage": 45000,
+    "status": 0,
+    "rentalPricePerHour": 500
+  },
+  {
+    "brand": "BMW",
+    "model": "X5",
+    "licensePlate": "В456ЕК99",
+    "year": 2021,
+    "mileage": 30000,
+    "status": 0,
+    "rentalPricePerHour": 1200
+  },
+  {
+    "brand": "Kia",
+    "model": "Rio",
+    "licensePlate": "С789МН50",
+    "year": 2019,
+    "mileage": 60000,
+    "status": 2,
+    "rentalPricePerHour": 350
+  },
+  {
+    "brand": "Mercedes",
+    "model": "E-Class",
+    "licensePlate": "Е012УР177",
+    "year": 2022,
+    "mileage": 15000,
+    "status": 0,
+    "rentalPricePerHour": 1500
+  },
+  {
+    "brand": "Hyundai",
+    "model": "Solaris",
+    "licensePlate": "К345АВ197",
+    "year": 2020,
+    "mileage": 55000,
+    "status": 0,
+    "rentalPricePerHour": 400
+  },
+  {
+    "brand": "Volkswagen",
+    "model": "Polo",
+    "licensePlate": "М678ТТ199",
+    "year": 2021,
+    "mileage": 28000,
+    "status": 0,
+    "rentalPricePerHour": 450
+  },
+  {
+    "brand": "Audi",
+    "model": "A4",
+    "licensePlate": "О234НН777",
+    "year": 2022,
+    "mileage": 12000,
+    "status": 0,
+    "rentalPricePerHour": 1100
+  },
+  {
+    "brand": "Renault",
+    "model": "Logan",
+    "licensePlate": "П901КХ150",
+    "year": 2018,
+    "mileage": 75000,
+    "status": 0,
+    "rentalPricePerHour": 320
+  },
+  {
+    "brand": "Ford",
+    "model": "Focus",
+    "licensePlate": "Р567МР777",
+    "year": 2020,
+    "mileage": 42000,
+    "status": 0,
+    "rentalPricePerHour": 480
+  },
+  {
+    "brand": "Mazda",
+    "model": "CX-5",
+    "licensePlate": "С890АО197",
+    "year": 2021,
+    "mileage": 35000,
+    "status": 0,
+    "rentalPricePerHour": 750
+  }
+]

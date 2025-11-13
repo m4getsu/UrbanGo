@@ -32,6 +32,8 @@ namespace AIS
             buttonDelete = new Button();
             buttonAdd = new Button();
             buttonRefresh = new Button();
+            buttonImport = new Button();
+            buttonExport = new Button();
             panelSearch = new Panel();
             buttonSearch = new Button();
             textBoxSearch = new TextBox();
@@ -63,6 +65,8 @@ namespace AIS
             // panelControls
             // 
             panelControls.BackColor = Color.FromArgb(244, 246, 249);
+            panelControls.Controls.Add(buttonExport);
+            panelControls.Controls.Add(buttonImport);
             panelControls.Controls.Add(buttonCalculate);
             panelControls.Controls.Add(buttonRent);
             panelControls.Controls.Add(buttonEdit);
@@ -153,7 +157,7 @@ namespace AIS
             buttonAdd.Click += buttonAdd_Click;
             // 
             // buttonRefresh
-            // 
+            //
             buttonRefresh.BackColor = Color.FromArgb(0, 120, 215);
             buttonRefresh.Font = new System.Drawing.Font("Impact", 7.8F);
             buttonRefresh.ForeColor = SystemColors.Control;
@@ -166,7 +170,37 @@ namespace AIS
             buttonRefresh.Text = "Обновить 🔄";
             buttonRefresh.UseVisualStyleBackColor = false;
             buttonRefresh.Click += buttonRefresh_Click;
-            // 
+            //
+            // buttonImport
+            //
+            buttonImport.BackColor = Color.FromArgb(34, 139, 34);
+            buttonImport.Font = new System.Drawing.Font("Impact", 7.8F);
+            buttonImport.ForeColor = SystemColors.Control;
+            buttonImport.ImageAlign = ContentAlignment.MiddleLeft;
+            buttonImport.Location = new Point(777, 6);
+            buttonImport.Margin = new Padding(3, 4, 3, 4);
+            buttonImport.Name = "buttonImport";
+            buttonImport.Size = new Size(127, 40);
+            buttonImport.TabIndex = 7;
+            buttonImport.Text = "Импорт 📥";
+            buttonImport.UseVisualStyleBackColor = false;
+            buttonImport.Click += buttonImport_Click;
+            //
+            // buttonExport
+            //
+            buttonExport.BackColor = Color.FromArgb(34, 139, 34);
+            buttonExport.Font = new System.Drawing.Font("Impact", 7.8F);
+            buttonExport.ForeColor = SystemColors.Control;
+            buttonExport.ImageAlign = ContentAlignment.MiddleLeft;
+            buttonExport.Location = new Point(910, 6);
+            buttonExport.Margin = new Padding(3, 4, 3, 4);
+            buttonExport.Name = "buttonExport";
+            buttonExport.Size = new Size(127, 40);
+            buttonExport.TabIndex = 8;
+            buttonExport.Text = "Экспорт 📤";
+            buttonExport.UseVisualStyleBackColor = false;
+            buttonExport.Click += buttonExport_Click;
+            //
             // panelSearch
             // 
             panelSearch.BackColor = Color.FromArgb(244, 246, 249);
@@ -271,6 +305,8 @@ namespace AIS
         private Label labelSearch;
         private Button buttonSearch;
         private Button buttonRefresh;
+        private Button buttonImport;
+        private Button buttonExport;
         private StatusStrip statusStrip;
         private ToolStripStatusLabel toolStripStatusLabel;
     }

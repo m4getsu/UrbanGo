@@ -1,4 +1,5 @@
 using BussinessLogic;
+using BussinessLogic.Services.Import;
 using Ninject;
 
 namespace AIS
@@ -30,5 +31,10 @@ namespace AIS
 		/// Получает сервис для работы с промокодами.
 		/// </summary>
 		public IPromoService PromoService => _kernel.Get<IPromoService>();
+
+		/// <summary>
+		/// Получает сервис для импорта автомобилей из внешних источников.
+		/// </summary>
+		public ICarImportService ImportService => _kernel.Get<ICarImportService>();
 	}
 }
