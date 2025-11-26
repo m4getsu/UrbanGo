@@ -45,7 +45,7 @@ namespace BussinessLogic.Logging
 			}
 			catch
 			{
-				// намеренно подавляем ошибки логирования
+
 			}
 		}
 	}

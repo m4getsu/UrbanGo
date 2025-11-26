@@ -7,6 +7,7 @@ using BussinessLogic.Services.Import.Models;
 using BussinessLogic.Logging;
 using Model;
 using DataAccessLayer;
+using BussinessLogic.Dto;
 
 namespace BussinessLogic.Services.Import
 {
@@ -55,7 +56,7 @@ namespace BussinessLogic.Services.Import
                 var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                 {
                     HasHeaderRecord = true,
-                    Delimiter = ";", // Точка с запятой для совместимости с русской Excel
+                    Delimiter = ";", 
                     MissingFieldFound = null,
                     BadDataFound = null
                 };
@@ -70,18 +71,16 @@ namespace BussinessLogic.Services.Import
 
                 _logger.Log($"Прочитано записей из CSV: {result.TotalRecords}");
 
-                // Получаем существующие госномера для проверки дубликатов
                 var existingPlates = _repository.ReadAll()
                     .Select(c => c.LicensePlate.ToUpperInvariant())
                     .ToHashSet();
 
-                int lineNumber = 2; // Начинаем с 2 (строка 1 - заголовок)
+                int lineNumber = 2; 
 
                 foreach (var record in records)
                 {
                     try
                     {
-                        // Проверка на дубликат по госномеру
                         if (existingPlates.Contains(record.LicensePlate.ToUpperInvariant()))
                         {
                             result.SkippedRecords++;
@@ -95,7 +94,6 @@ namespace BussinessLogic.Services.Import
                             continue;
                         }
 
-                        // Валидация данных через существующий валидатор
                         _validator.ValidateForUpdate(
                             record.Brand,
                             record.Model,
@@ -106,7 +104,6 @@ namespace BussinessLogic.Services.Import
                             (int)record.Status
                         );
 
-                        // Создание и сохранение автомобиля
                         var car = new Car
                         {
                             Brand = record.Brand.Trim(),
@@ -193,7 +190,6 @@ namespace BussinessLogic.Services.Import
                 result.TotalRecords = records.Count;
                 _logger.Log($"Прочитано записей из JSON: {result.TotalRecords}");
 
-                // Получаем существующие госномера
                 var existingPlates = _repository.ReadAll()
                     .Select(c => c.LicensePlate.ToUpperInvariant())
                     .ToHashSet();
@@ -204,7 +200,6 @@ namespace BussinessLogic.Services.Import
                 {
                     try
                     {
-                        // Проверка на дубликат
                         if (existingPlates.Contains(record.LicensePlate.ToUpperInvariant()))
                         {
                             result.SkippedRecords++;
@@ -218,7 +213,6 @@ namespace BussinessLogic.Services.Import
                             continue;
                         }
 
-                        // Валидация через существующий валидатор
                         _validator.ValidateForUpdate(
                             record.Brand,
                             record.Model,
@@ -229,7 +223,6 @@ namespace BussinessLogic.Services.Import
                             (int)record.Status
                         );
 
-                        // Создание и сохранение
                         var car = new Car
                         {
                             Brand = record.Brand.Trim(),
@@ -296,7 +289,6 @@ namespace BussinessLogic.Services.Import
             {
                 if (format == ImportFormat.Csv)
                 {
-                    // Читаем и валидируем CSV без сохранения
                     var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                     {
                         HasHeaderRecord = true,
@@ -312,7 +304,6 @@ namespace BussinessLogic.Services.Import
                     var records = csv.GetRecords<CarImportDto>().ToList();
                     result.TotalRecords = records.Count;
 
-                    // Получаем существующие госномера для проверки дубликатов
                     var existingPlates = _repository.ReadAll()
                         .Select(c => c.LicensePlate.ToUpperInvariant())
                         .ToHashSet();
@@ -322,7 +313,6 @@ namespace BussinessLogic.Services.Import
                     {
                         try
                         {
-                            // Проверка на дубликат
                             if (existingPlates.Contains(record.LicensePlate.ToUpperInvariant()))
                             {
                                 result.SkippedRecords++;
@@ -335,7 +325,6 @@ namespace BussinessLogic.Services.Import
                             }
                             else
                             {
-                                // Только валидация
                                 _validator.ValidateForUpdate(
                                     record.Brand,
                                     record.Model,
@@ -361,7 +350,7 @@ namespace BussinessLogic.Services.Import
                         lineNumber++;
                     }
                 }
-                else // JSON
+                else 
                 {
                     var jsonString = File.ReadAllText(filePath);
                     var records = JsonSerializer.Deserialize<List<CarImportDto>>(jsonString, new JsonSerializerOptions
@@ -463,7 +452,6 @@ namespace BussinessLogic.Services.Import
                 using var writer = new StreamWriter(filePath, false, System.Text.Encoding.UTF8);
                 using var csv = new CsvWriter(writer, config);
 
-                // Конвертируем Car в CarImportDto для экспорта
                 var exportData = cars.Select(c => new CarImportDto
                 {
                     Brand = c.Brand,
@@ -507,7 +495,6 @@ namespace BussinessLogic.Services.Import
                     throw new InvalidOperationException("В базе данных нет автомобилей для экспорта");
                 }
 
-                // Конвертируем Car в CarImportDto для экспорта
                 var exportData = cars.Select(c => new CarImportDto
                 {
                     Brand = c.Brand,
@@ -646,19 +633,7 @@ namespace BussinessLogic.Services.Import
         }
     }
 
-    /// <summary>
-    /// DTO для импорта данных автомобиля из внешнего источника.
-    /// </summary>
-    internal class CarImportDto
-    {
-        public string Brand { get; set; } = string.Empty;
-        public string Model { get; set; } = string.Empty;
-        public string LicensePlate { get; set; } = string.Empty;
-        public int Year { get; set; }
-        public int Mileage { get; set; }
-        public CarStatus Status { get; set; }
-        public decimal RentalPricePerHour { get; set; }
-    }
+
 
     /// <summary>
     /// Маппинг CSV столбцов на свойства CarImportDto для библиотеки CsvHelper.

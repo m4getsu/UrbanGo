@@ -424,7 +424,6 @@ namespace AIS
                     var importService = _dependencyContainer.ImportService;
                     int exportedCount = 0;
 
-                    // Проверяем, есть ли выбранные строки
                     if (dataGridViewCars.SelectedRows.Count > 0)
                     {
                         var confirmResult = MessageBox.Show(
@@ -441,7 +440,6 @@ namespace AIS
 
                         if (confirmResult == DialogResult.Yes)
                         {
-                            // Экспорт выбранных
                             var selectedIds = dataGridViewCars.SelectedRows
                                 .Cast<DataGridViewRow>()
                                 .Select(r => ((CarListItemDto)r.DataBoundItem).Id)
@@ -454,7 +452,6 @@ namespace AIS
                         }
                         else
                         {
-                            // Экспорт всех
                             if (dialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
                                 exportedCount = importService.ExportToCsv(dialog.FileName);
                             else
@@ -463,7 +460,6 @@ namespace AIS
                     }
                     else
                     {
-                        // Нет выбранных строк - экспортируем всё
                         if (dialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
                             exportedCount = importService.ExportToCsv(dialog.FileName);
                         else
@@ -479,7 +475,6 @@ namespace AIS
                         MessageBoxIcon.Information
                     );
 
-                    // Открыть папку с файлом
                     var openFolderResult = MessageBox.Show(
                         "Открыть папку с экспортированным файлом?",
                         "Открыть папку",

@@ -29,14 +29,9 @@ namespace BussinessLogic
 
 		public override void Load()
 		{
-			// Логгер
 			Bind<ILogger>().ToMethod(ctx => new FileLogger()).InSingletonScope();
-
-			// Стратегии ценообразования и скидок (расширяемость OCP)
 			Bind<IPricingStrategy>().To<DefaultPricingStrategy>().InSingletonScope();
 			Bind<IDiscountPolicy>().ToMethod(ctx => new PromoServiceDiscountPolicy(ctx.Kernel.Get<IPromoService>())).InSingletonScope();
-
-			// Валидаторы
 			Bind<ICarValidator>().To<CarValidator>().InSingletonScope();
 
 			if (_useEF)
@@ -52,24 +47,16 @@ namespace BussinessLogic
 			}
 			else
 			{
-				// Используем конкретную реализацию CarDapperRepository вместо DapperRepository<Car>
-				// для соблюдения принципа Open/Closed
 				Bind<IRepository<Car>>().ToConstant(new CarDapperRepository(_connectionString)).InSingletonScope();
 				Bind<IPromoCodeRepository>().ToConstant(new DapperPromoCodeRepository(_connectionString)).InSingletonScope();
 			}
-
-			// Сервисы промокодов
 			Bind<PromoService>().ToSelf().InSingletonScope();
 			Bind<IPromoService>().ToMethod(ctx => new PromoServiceAdapter(ctx.Kernel.Get<PromoService>())).InSingletonScope();
-
-			// Сервисы автомобилей - CarService реализует все интерфейсы
 			Bind<CarService>().ToSelf().InSingletonScope();
 			Bind<ICarService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
 			Bind<ICarManagementService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
 			Bind<ICarQueryService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
 			Bind<ICarDisplayService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
-
-			// Сервис импорта автомобилей
 			Bind<ICarImportService>().To<CarImportService>().InSingletonScope();
 		}
 	}

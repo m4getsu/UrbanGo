@@ -29,7 +29,6 @@ namespace AIS.Forms
 
         private void InitializeFormControls()
         {
-            // Настройка начального состояния элементов управления
             btnValidate.Enabled = false;
             btnImport.Enabled = false;
             rbCsv.Checked = true;
@@ -62,7 +61,6 @@ namespace AIS.Forms
             else if (rbJson.Checked)
                 _selectedFormat = ImportFormat.Json;
 
-            // Сбрасываем выбранный файл при смене формата
             _selectedFilePath = null;
             txtFilePath.Clear();
             txtResults.Clear();
@@ -207,7 +205,6 @@ namespace AIS.Forms
                         result.FailedRecords > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Information
                     );
 
-                    // Закрываем форму с положительным результатом
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }

@@ -65,8 +65,7 @@ namespace ConsoleApp
             Console.Write("Ваш выбор: ");
         }
 
-        // Ниже идут методы взаимодействия с ICarService — копируются из предыдущей Program.cs
-        // Метод для показа всех автомобилей
+
         private void ShowAllCars()
         {
             Console.Clear();
@@ -79,7 +78,6 @@ namespace ConsoleApp
                     Console.WriteLine(description);
             WaitForUser();
         }
-        // Метод для добавления нового автомобиля (с интерактивом)
         private void CreateNewCar()
         {
             Console.Clear();
@@ -260,7 +258,6 @@ namespace ConsoleApp
             }
             WaitForUser();
         }
-        // ----- Утилиты меню -----
         private string ReadNonEmptyString()
         {
             string input;

@@ -8,7 +8,6 @@ namespace DataAccessLayer
     /// Определяет стандартные операции CRUD для сущностей.
     /// </summary>
     /// <typeparam name="T">Тип доменного объекта, реализующего IDomainObject.</typeparam>
-    // Интерфейс только для чтения
     public interface IReadRepository<T> where T : IDomainObject
     {
         /// <summary>
