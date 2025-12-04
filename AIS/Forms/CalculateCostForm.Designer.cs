@@ -34,6 +34,7 @@ namespace AIS
             txtPromoCode = new TextBox();
             btnApplyPromo = new Button();
             lblDiscountInfo = new Label();
+            buttonDetails = new Button();
             ((System.ComponentModel.ISupportInitialize)numericUpDownHours).BeginInit();
             SuspendLayout();
             // 
@@ -114,9 +115,9 @@ namespace AIS
             labelTotalCost.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // buttonOK
-            // 
+            //
             buttonOK.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            buttonOK.Location = new Point(138, 289);
+            buttonOK.Location = new Point(14, 289);
             buttonOK.Margin = new Padding(3, 4, 3, 4);
             buttonOK.Name = "buttonOK";
             buttonOK.Size = new Size(117, 36);
@@ -124,6 +125,18 @@ namespace AIS
             buttonOK.Text = "ОК";
             buttonOK.UseVisualStyleBackColor = true;
             buttonOK.Click += buttonOK_Click;
+            //
+            // buttonDetails
+            //
+            buttonDetails.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            buttonDetails.Location = new Point(138, 289);
+            buttonDetails.Margin = new Padding(3, 4, 3, 4);
+            buttonDetails.Name = "buttonDetails";
+            buttonDetails.Size = new Size(234, 36);
+            buttonDetails.TabIndex = 11;
+            buttonDetails.Text = "Детализация 📊";
+            buttonDetails.UseVisualStyleBackColor = true;
+            buttonDetails.Click += buttonDetails_Click;
             // 
             // txtPromoCode
             // 
@@ -159,6 +172,7 @@ namespace AIS
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(387, 338);
+            Controls.Add(buttonDetails);
             Controls.Add(lblDiscountInfo);
             Controls.Add(btnApplyPromo);
             Controls.Add(txtPromoCode);
@@ -192,6 +206,7 @@ namespace AIS
         private Label labelTotalCaption;
         private Label labelTotalCost;
         private Button buttonOK;
+        private Button buttonDetails;
         private TextBox txtPromoCode;
         private Button btnApplyPromo;
         private Label lblDiscountInfo;

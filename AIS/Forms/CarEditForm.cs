@@ -9,14 +9,19 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using BussinessLogic;
+using Shared;
 
 namespace AIS
 {
     /// <summary>
     /// Форма для создания и редактирования автомобилей.
     /// </summary>
-    public partial class CarEditForm : Form
+    public partial class CarEditForm : Form, ICarEditView
     {
+        // События для MVP
+        public event EventHandler? SaveRequested;
+        public event EventHandler? CancelRequested;
+
         /// <summary>
         /// Получает марку автомобиля.
         /// </summary>
@@ -51,6 +56,11 @@ namespace AIS
         /// Получает статус автомобиля.
         /// </summary>
         public int Status { get; private set; }
+
+        /// <summary>
+        /// Режим редактирования или создания.
+        /// </summary>
+        public bool IsEditMode => _isEditMode;
 
         private readonly bool _isEditMode;
 
@@ -101,6 +111,9 @@ namespace AIS
                 Price = numericUpDownPrice.Value;
                 Status = comboBoxStatus.SelectedIndex;
 
+                // Генерируем событие для MVP
+                SaveRequested?.Invoke(this, EventArgs.Empty);
+
                 DialogResult = DialogResult.OK;
                 Close();
             }
@@ -108,6 +121,9 @@ namespace AIS
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
+            // Генерируем событие для MVP
+            CancelRequested?.Invoke(this, EventArgs.Empty);
+
             DialogResult = DialogResult.Cancel;
             Close();
         }
@@ -188,6 +204,70 @@ namespace AIS
             {
                 errorProvider.SetError(numericUpDownPrice, string.Empty);
             }
+        }
+
+        // Реализация методов ICarEditView
+
+        /// <summary>
+        /// Устанавливает данные автомобиля для редактирования.
+        /// </summary>
+        public void SetCarData(string brand, string model, string licensePlate, int year, int mileage, decimal price, int status)
+        {
+            textBoxBrand.Text = brand;
+            textBoxModel.Text = model;
+            textBoxLicensePlate.Text = licensePlate;
+            numericUpDownYear.Value = year;
+            numericUpDownMileage.Value = mileage;
+            numericUpDownPrice.Value = price;
+            comboBoxStatus.SelectedIndex = status;
+        }
+
+        /// <summary>
+        /// Закрывает представление с результатом OK.
+        /// </summary>
+        public void CloseWithSuccess()
+        {
+            DialogResult = DialogResult.OK;
+            Close();
+        }
+
+        /// <summary>
+        /// Закрывает представление с результатом Cancel.
+        /// </summary>
+        public void CloseWithCancel()
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        /// <summary>
+        /// Отображает ошибку валидации для поля.
+        /// </summary>
+        public void ShowFieldError(string fieldName, string errorMessage)
+        {
+            Control? control = fieldName.ToLower() switch
+            {
+                "brand" => textBoxBrand,
+                "model" => textBoxModel,
+                "licenseplate" => textBoxLicensePlate,
+                "year" => numericUpDownYear,
+                "mileage" => numericUpDownMileage,
+                "price" => numericUpDownPrice,
+                _ => null
+            };
+
+            if (control != null)
+            {
+                errorProvider.SetError(control, errorMessage);
+            }
+        }
+
+        /// <summary>
+        /// Очищает все ошибки валидации.
+        /// </summary>
+        public void ClearErrors()
+        {
+            errorProvider.Clear();
         }
     }
 }

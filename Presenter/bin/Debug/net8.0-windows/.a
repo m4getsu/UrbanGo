@@ -1,0 +1,128 @@
+﻿[
+  {
+    "Brand": "Audi",
+    "Model": "RS 7",
+    "LicensePlate": "О777ОО24",
+    "Year": 2023,
+    "Mileage": 1450,
+    "Status": 0,
+    "RentalPricePerHour": 5000.00
+  },
+  {
+    "Brand": "BMW",
+    "Model": "M5",
+    "LicensePlate": "A421AT03",
+    "Year": 2019,
+    "Mileage": 19000,
+    "Status": 0,
+    "RentalPricePerHour": 3400.00
+  },
+  {
+    "Brand": "Kia",
+    "Model": "Rio",
+    "LicensePlate": "O133OA24",
+    "Year": 2018,
+    "Mileage": 120000,
+    "Status": 0,
+    "RentalPricePerHour": 2200.00
+  },
+  {
+    "Brand": "Toyota",
+    "Model": "Camry",
+    "LicensePlate": "А123ВС77",
+    "Year": 2020,
+    "Mileage": 45000,
+    "Status": 0,
+    "RentalPricePerHour": 500.00
+  },
+  {
+    "Brand": "BMW",
+    "Model": "X5",
+    "LicensePlate": "В456ЕК99",
+    "Year": 2021,
+    "Mileage": 30000,
+    "Status": 0,
+    "RentalPricePerHour": 1200.00
+  },
+  {
+    "Brand": "Kia",
+    "Model": "Rio",
+    "LicensePlate": "С789МН50",
+    "Year": 2019,
+    "Mileage": 60000,
+    "Status": 2,
+    "RentalPricePerHour": 350.00
+  },
+  {
+    "Brand": "Mercedes",
+    "Model": "E-Class",
+    "LicensePlate": "Е012УР177",
+    "Year": 2022,
+    "Mileage": 15000,
+    "Status": 0,
+    "RentalPricePerHour": 1500.00
+  },
+  {
+    "Brand": "Hyundai",
+    "Model": "Solaris",
+    "LicensePlate": "К345АВ197",
+    "Year": 2020,
+    "Mileage": 55000,
+    "Status": 0,
+    "RentalPricePerHour": 400.00
+  },
+  {
+    "Brand": "Volkswagen",
+    "Model": "Polo",
+    "LicensePlate": "М678ТТ199",
+    "Year": 2021,
+    "Mileage": 28000,
+    "Status": 0,
+    "RentalPricePerHour": 450.00
+  },
+  {
+    "Brand": "Audi",
+    "Model": "A4",
+    "LicensePlate": "О234НН777",
+    "Year": 2022,
+    "Mileage": 12000,
+    "Status": 0,
+    "RentalPricePerHour": 1100.00
+  },
+  {
+    "Brand": "Renault",
+    "Model": "Logan",
+    "LicensePlate": "П901КХ150",
+    "Year": 2018,
+    "Mileage": 75000,
+    "Status": 0,
+    "RentalPricePerHour": 320.00
+  },
+  {
+    "Brand": "Ford",
+    "Model": "Focus",
+    "LicensePlate": "Р567МР777",
+    "Year": 2020,
+    "Mileage": 42000,
+    "Status": 0,
+    "RentalPricePerHour": 480.00
+  },
+  {
+    "Brand": "Mazda",
+    "Model": "CX-5",
+    "LicensePlate": "С890АО197",
+    "Year": 2021,
+    "Mileage": 35000,
+    "Status": 0,
+    "RentalPricePerHour": 750.00
+  },
+  {
+    "Brand": "Toyota",
+    "Model": "Land Cruser 200",
+    "LicensePlate": "OO331A03",
+    "Year": 2019,
+    "Mileage": 20000,
+    "Status": 0,
+    "RentalPricePerHour": 5000.00
+  }
+]

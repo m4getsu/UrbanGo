@@ -35,6 +35,7 @@ namespace AIS
             buttonImport = new Button();
             buttonExport = new Button();
             panelSearch = new Panel();
+            labelPricingStrategy = new Label();
             buttonSearch = new Button();
             textBoxSearch = new TextBox();
             labelSearch = new Label();
@@ -202,8 +203,9 @@ namespace AIS
             buttonExport.Click += buttonExport_Click;
             //
             // panelSearch
-            // 
+            //
             panelSearch.BackColor = Color.FromArgb(244, 246, 249);
+            panelSearch.Controls.Add(labelPricingStrategy);
             panelSearch.Controls.Add(buttonSearch);
             panelSearch.Controls.Add(textBoxSearch);
             panelSearch.Controls.Add(labelSearch);
@@ -213,6 +215,17 @@ namespace AIS
             panelSearch.Name = "panelSearch";
             panelSearch.Size = new Size(1125, 54);
             panelSearch.TabIndex = 2;
+            //
+            // labelPricingStrategy
+            //
+            labelPricingStrategy.AutoSize = true;
+            labelPricingStrategy.Font = new System.Drawing.Font("Segoe UI", 9F, FontStyle.Bold);
+            labelPricingStrategy.ForeColor = Color.DarkGreen;
+            labelPricingStrategy.Location = new Point(400, 14);
+            labelPricingStrategy.Name = "labelPricingStrategy";
+            labelPricingStrategy.Size = new Size(220, 20);
+            labelPricingStrategy.TabIndex = 3;
+            labelPricingStrategy.Text = "💵 Стандартное ценообразование";
             // 
             // buttonSearch
             // 
@@ -309,6 +322,7 @@ namespace AIS
         private Button buttonExport;
         private StatusStrip statusStrip;
         private ToolStripStatusLabel toolStripStatusLabel;
+        private Label labelPricingStrategy;
     }
 }
 

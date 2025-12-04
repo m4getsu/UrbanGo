@@ -14,7 +14,8 @@
           "Microsoft.EntityFrameworkCore": "9.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.10",
           "Microsoft.EntityFrameworkCore.Tools": "9.0.10",
-          "Ninject": "3.3.6"
+          "Ninject": "3.3.6",
+          "Shared": "1.0.0"
         },
         "runtime": {
           "WinForm.dll": {}
@@ -1080,13 +1081,23 @@
       },
       "Model/1.0.0": {
         "dependencies": {
+          "CsvHelper": "33.1.0",
           "Dapper": "2.1.66",
           "Microsoft.Data.SqlClient": "6.1.2",
           "Microsoft.EntityFrameworkCore": "9.0.10",
-          "Microsoft.EntityFrameworkCore.SqlServer": "9.0.10"
+          "Microsoft.EntityFrameworkCore.SqlServer": "9.0.10",
+          "Ninject": "3.3.6"
         },
         "runtime": {
           "Model.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Shared/1.0.0": {
+        "runtime": {
+          "Shared.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -1664,6 +1675,11 @@
       "sha512": ""
     },
     "Model/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Shared/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

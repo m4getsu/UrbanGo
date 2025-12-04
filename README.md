@@ -1,10 +1,10 @@
 # 🚗 UrbanGo - Система управления каршерингом
 
-Современная система управления автопарком каршеринга, построенная по принципам **SOLID** с использованием **многослойной архитектуры**, **Dependency Injection (Ninject)** и поддержкой множественных ORM-провайдеров.
+Современная система управления автопарком каршеринга, построенная по принципам **SOLID** с использованием **MVP-архитектуры**, **многослойной архитектуры**, **Dependency Injection (Ninject)** и поддержкой множественных ORM-провайдеров.
 
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple)
 ![C#](https://img.shields.io/badge/C%23-12.0-blue)
-![Architecture](https://img.shields.io/badge/Architecture-N--Layer-green)
+![Architecture](https://img.shields.io/badge/Architecture-MVP%20%2B%20N--Layer-green)
 ![SOLID](https://img.shields.io/badge/Principles-SOLID-orange)
 
 ---
@@ -15,26 +15,92 @@
 
 ### 🎯 Ключевые возможности
 
+- ✅ **MVP-архитектура** - полное разделение Model-View-Presenter для WinForms приложения
 - ✅ **Управление автопарком** - добавление, редактирование, удаление и просмотр автомобилей
 - ✅ **Система статусов** - отслеживание состояния каждого автомобиля (доступен, арендован, на обслуживании)
-- ✅ **Расчет стоимости** - гибкая система ценообразования с поддержкой промокодов
+- ✅ **Динамическое ценообразование** - стратегии расчета стоимости (стандартная и динамическая с учетом времени суток, дня недели, сезона и праздников)
 - ✅ **Промокоды** - применение скидок к аренде
-- ✅ **Импорт/Экспорт** - импорт автомобилей из CSV/JSON и экспорт в CSV/JSON (библиотека CsvHelper 30.0.1)
+- ✅ **Импорт/Экспорт** - импорт автомобилей из CSV/JSON и экспорт в CSV/JSON (библиотека CsvHelper 33.1.0)
 - ✅ **Валидация данных** - проверка корректности вводимой информации и валидация перед импортом
 - ✅ **Логирование** - автоматическая запись всех операций в файл
-- ✅ **Два интерфейса** - WinForms и консольное приложение
+- ✅ **Два интерфейса** - WinForms (MVP) и консольное приложение
 - ✅ **Выбор ORM** - Entity Framework Core или Dapper (на выбор пользователя при запуске)
 
 ---
 
 ## 🏗️ Архитектура проекта
 
-Проект построен по принципу **N-Layer Architecture** с использованием **SOLID принципов** и современных паттернов проектирования.
+Проект построен по принципу **MVP (Model-View-Presenter) + N-Layer Architecture** с использованием **SOLID принципов** и современных паттернов проектирования.
+
+### 🎭 MVP-архитектура
+
+**MVP (Model-View-Presenter)** - архитектурный паттерн, обеспечивающий полное разделение UI-логики от бизнес-логики.
+
+```
+┌──────────────┐      События      ┌──────────────┐
+│              │ ──────────────→    │              │
+│     View     │                    │  Presenter   │
+│  (MainForm)  │ ←──────────────    │ (MainPresenter)│
+└──────────────┘  Обновление UI    └──────────────┘
+                                           │
+                                           │ События
+                                           ↓
+                                    ┌──────────────┐
+                                    │    Model     │
+                                    │(CarSharingModel)│
+                                    └──────────────┘
+                                           │
+                                           ↓
+                                    ┌──────────────┐
+                                    │Business Logic│
+                                    │  (Services)  │
+                                    └──────────────┘
+```
+
+**Компоненты MVP:**
+
+1. **View (IMainView, MainForm)** - отображение данных и генерация событий пользовательских действий
+2. **Presenter (MainPresenter, CarEditPresenter, CalculateCostPresenter)** - обработка событий View, вызов бизнес-логики через Model, обновление View
+3. **Model (CarSharingModel)** - обертка над бизнес-логикой, генерация событий об изменениях данных
+4. **Shared (интерфейсы IView)** - решение проблемы циклических зависимостей между View и Presenter
 
 ### 📁 Структура решения
 
 ```
 AIS/
+├── Presenter/                 # 🎯 MVP СЛОЙ - ГЛАВНАЯ ТОЧКА ВХОДА
+│   ├── Program.cs             # 🚀 Основная точка входа (запускает WinForms или Console)
+│   ├── CarSharingModel.cs     # Model в MVP (обертка над сервисами)
+│   ├── MainPresenter.cs       # Presenter главной формы
+│   ├── CarEditPresenter.cs    # Presenter формы редактирования
+│   └── CalculateCostPresenter.cs # Presenter формы расчета стоимости
+│
+├── Shared/                    # Интерфейсы View (решение циклических зависимостей)
+│   ├── IMainView.cs           # Интерфейс главной формы
+│   ├── ICarEditView.cs        # Интерфейс формы редактирования
+│   ├── ICalculateCostView.cs  # Интерфейс формы расчета
+│   ├── IConsoleView.cs        # Интерфейс консольного меню
+│   └── IConfiguration.cs      # Интерфейс конфигурации приложения
+│
+├── AIS/                       # WinForms VIEW (реализация интерфейсов)
+│   ├── Forms/                 # UI формы - реализуют IView интерфейсы
+│   │   ├── MainForm.cs        # Implements IMainView
+│   │   ├── CarEditForm.cs     # Implements ICarEditView
+│   │   ├── CalculateCostForm.cs # Implements ICalculateCostView
+│   │   └── CarImportForm.cs   # Форма импорта CSV/JSON
+│   ├── Controllers/           # ⚠️ УСТАРЕВШИЕ (до MVP), не используются
+│   │   ├── MainFormController.cs
+│   │   └── CalculateCostFormController.cs
+│   ├── Program.cs             # ⚠️ УСТАРЕВШИЙ (используйте Presenter/Program.cs)
+│   ├── AppConfiguration.cs    # Implements IConfiguration
+│   └── DependencyContainer.cs # Ninject контейнер для WinForms
+│
+├── Console/                   # Консольное приложение (не MVP)
+│   ├── Program.cs             # Точка входа Console
+│   ├── AppConfiguration.cs    # Implements IConfiguration
+│   ├── DependencyContainer.cs # Ninject контейнер
+│   └── MenuController.cs      # Консольное меню (не следует MVP)
+│
 ├── Model/                     # Доменные модели
 │   ├── Car.cs                 # Модель автомобиля
 │   ├── CarStatus.cs           # Enum статусов
@@ -51,70 +117,237 @@ AIS/
 │   ├── DapperPromoCodeRepository.cs
 │   └── CarSharingContext.cs   # EF DbContext
 │
-├── BussinessLogic/            # Бизнес-логика
-│   ├── ICarService.cs         # Интерфейс сервиса автомобилей
-│   ├── CarService.cs          # Реализация бизнес-логики
-│   ├── Services/              # Разделенные интерфейсы (ISP)
-│   │   ├── ICarManagementService.cs  # CRUD + бизнес-операции
-│   │   ├── ICarQueryService.cs       # Запросы данных
-│   │   ├── ICarDisplayService.cs     # Форматирование для UI
-│   │   └── Import/                   # Импорт/Экспорт (CsvHelper)
-│   │       ├── ICarImportService.cs  # Интерфейс импорт/экспорт
-│   │       ├── CarImportService.cs   # Реализация (CSV/JSON)
-│   │       └── Models/
-│   │           └── ImportResult.cs   # Модель результата импорта
-│   ├── Dto/                   # Data Transfer Objects
-│   │   ├── CarDetailsDto.cs
-│   │   ├── CarListItemDto.cs
-│   │   └── CarForCalculationDto.cs
-│   ├── IPromoService.cs       # Интерфейс сервиса промокодов
-│   ├── PromoService.cs        # Реализация
-│   ├── PromoServiceAdapter.cs # Адаптер (Adapter Pattern)
-│   ├── Pricing/               # Стратегии ценообразования (Strategy Pattern)
-│   │   ├── IPricingStrategy.cs
-│   │   ├── DefaultPricingStrategy.cs
-│   │   ├── IDiscountPolicy.cs
-│   │   └── PromoServiceDiscountPolicy.cs
-│   ├── Validation/            # Валидация данных
-│   │   ├── ICarValidator.cs
-│   │   └── CarValidator.cs
-│   ├── Logging/               # Логирование
-│   │   ├── ILogger.cs
-│   │   └── FileLogger.cs
-│   ├── SimpleConfigModule.cs  # Ninject DI конфигурация
-│   └── ServiceFactory.cs      # Фабрика сервисов (устаревший, заменен на Ninject)
-│
-├── AIS/                       # WinForms приложение
-│   ├── Program.cs             # Точка входа WinForms
-│   ├── AppConfiguration.cs    # Конфигурация приложения
-│   ├── DependencyContainer.cs # Ninject контейнер
-│   ├── Controllers/           # Контроллеры для форм
-│   │   ├── MainFormController.cs
-│   │   └── CalculateCostFormController.cs
-│   └── Forms/                 # UI формы
-│       ├── MainForm.cs        # Главная форма (+ кнопки Импорт/Экспорт)
-│       ├── CarEditForm.cs
-│       ├── CalculateCostForm.cs
-│       └── CarImportForm.cs   # Форма импорта CSV/JSON
-│
-└── Console/                   # Консольное приложение
-    ├── Program.cs             # Точка входа Console
-    ├── IConfiguration.cs      # Интерфейс конфигурации
-    ├── AppConfiguration.cs    # Конфигурация
-    ├── DependencyContainer.cs # Ninject контейнер
-    └── MenuController.cs      # Консольное меню
+└── BussinessLogic/            # Бизнес-логика
+    ├── ICarService.cs         # Интерфейс сервиса автомобилей
+    ├── CarService.cs          # Реализация бизнес-логики
+    ├── Services/              # Разделенные интерфейсы (ISP)
+    │   ├── ICarManagementService.cs  # CRUD + бизнес-операции
+    │   ├── ICarQueryService.cs       # Запросы данных
+    │   ├── ICarDisplayService.cs     # Форматирование для UI
+    │   └── Import/                   # Импорт/Экспорт (CsvHelper)
+    │       ├── ICarImportService.cs  # Интерфейс импорт/экспорт
+    │       ├── CarImportService.cs   # Реализация (CSV/JSON)
+    │       └── Models/
+    │           └── ImportResult.cs   # Модель результата импорта
+    ├── Dto/                   # Data Transfer Objects
+    │   ├── CarDetailsDto.cs
+    │   ├── CarListItemDto.cs
+    │   └── CarForCalculationDto.cs
+    ├── IPromoService.cs       # Интерфейс сервиса промокодов
+    ├── PromoService.cs        # Реализация
+    ├── PromoServiceAdapter.cs # Адаптер (Adapter Pattern)
+    ├── Pricing/               # Стратегии ценообразования (Strategy Pattern)
+    │   ├── IPricingStrategy.cs
+    │   ├── DefaultPricingStrategy.cs      # Стандартная стратегия (цена × часы)
+    │   ├── DynamicPricingStrategy.cs      # Динамическая (время, сезон, праздники)
+    │   ├── PricingConfiguration.cs        # Конфигурация множителей
+    │   ├── IDiscountPolicy.cs
+    │   └── PromoServiceDiscountPolicy.cs
+    ├── Validation/            # Валидация данных
+    │   ├── ICarValidator.cs
+    │   └── CarValidator.cs
+    ├── Logging/               # Логирование
+    │   ├── ILogger.cs
+    │   └── FileLogger.cs
+    ├── SimpleConfigModule.cs  # Ninject DI конфигурация
+    └── ServiceFactory.cs      # Фабрика сервисов (устаревший, заменен на Ninject)
+```
+
+**⚠️ ВАЖНО**: Основная точка входа - [Presenter/Program.cs](Presenter/Program.cs). Файл [AIS/Program.cs](AIS/Program.cs) и папка [AIS/Controllers/](AIS/Controllers/) - устаревшие (до внедрения MVP).
+
+### 💡 CarSharingModel - "M" в MVP
+
+**CarSharingModel** - это "Model" в паттерне MVP, который служит оберткой над бизнес-логикой (сервисами) и предоставляет событийно-ориентированный интерфейс для Presenter-ов.
+
+#### Зачем нужен CarSharingModel?
+
+1. **Централизованное управление данными** - все операции с данными проходят через один класс
+2. **Уведомления через события** - Model автоматически оповещает все Presenter-ы об изменениях
+3. **Упрощение Presenter-ов** - Presenter не работают напрямую с сервисами, только через Model
+4. **Соответствие паттерну MVP** - четкое разделение ответственностей
+5. **Легкость тестирования** - Model можно легко замокать
+
+#### Структура CarSharingModel:
+
+```csharp
+public class CarSharingModel
+{
+    private readonly ICarService _carService;
+    private readonly IPromoService _promoService;
+    private readonly ICarImportService _importService;
+
+    // СОБЫТИЯ для уведомления Presenter-ов
+    public event EventHandler<IEnumerable<object>> CarsUpdated;
+    public event EventHandler<string> ErrorOccurred;
+
+    // МЕТОДЫ для работы с данными
+    public void LoadCars()
+    {
+        try
+        {
+            var cars = _carService.GetCarsForDisplay();
+            CarsUpdated?.Invoke(this, cars);  // Уведомляем всех подписчиков!
+        }
+        catch (Exception ex)
+        {
+            ErrorOccurred?.Invoke(this, ex.Message);
+        }
+    }
+
+    public void AddCar(string brand, string model, ...)
+    {
+        try
+        {
+            _carService.CreateCar(brand, model, ...);
+            LoadCars();  // Автоматически обновляем все View
+        }
+        catch (Exception ex)
+        {
+            ErrorOccurred?.Invoke(this, ex.Message);
+        }
+    }
+}
+```
+
+#### Почему не работать напрямую с сервисами?
+
+**Без CarSharingModel** (плохо):
+- Каждый Presenter создает свой экземпляр сервиса
+- При изменении данных нужно вручную обновлять все View
+- Дублирование кода обработки ошибок
+- Сложное тестирование
+
+**С CarSharingModel** (хорошо):
+- Один источник данных для всех Presenter-ов
+- Автоматическое обновление всех View через события
+- Централизованная обработка ошибок
+- Легко тестируется через моки
+
+### 🔗 Shared - Решение циклических зависимостей
+
+**Shared** - специальный проект, содержащий интерфейсы View (IMainView, ICarEditView и т.д.), который решает проблему циклических зависимостей между View и Presenter.
+
+#### Проблема без Shared:
+
+```
+Presenter (проект Presenter)
+   ↓ зависит от
+MainForm (проект AIS/WinForms)
+   ↓ зависит от
+MainPresenter (проект Presenter)
+   ⚠️ ЦИКЛИЧЕСКАЯ ЗАВИСИМОСТЬ!
+```
+
+#### Решение с Shared:
+
+```
+Presenter           AIS/WinForms
+   ↓                    ↓
+   ↓                    ↓
+   ↓──→  Shared  ←─────↓
+      (интерфейсы)
+```
+
+**Как это работает:**
+1. Проект **Shared** содержит только интерфейсы View (IMainView, ICarEditView, etc.)
+2. Проект **Presenter** зависит от Shared и работает с интерфейсами
+3. Проект **AIS/WinForms** зависит от Shared и реализует интерфейсы
+4. **Нет циклических зависимостей!**
+
+```csharp
+// Shared/IMainView.cs
+public interface IMainView
+{
+    event EventHandler ViewLoaded;           // View → Presenter
+    void DisplayCars(IEnumerable<object> cars); // Presenter → View
+}
+
+// AIS/Forms/MainForm.cs (реализация)
+public partial class MainForm : Form, IMainView
+{
+    public event EventHandler ViewLoaded;
+
+    public void DisplayCars(IEnumerable<object> cars)
+    {
+        dataGridViewCars.DataSource = cars;
+    }
+}
+
+// Presenter/MainPresenter.cs (использование)
+public class MainPresenter
+{
+    private readonly IMainView _view;  // Работает через интерфейс!
+
+    public MainPresenter(IMainView view, ...)
+    {
+        _view = view;
+        _view.ViewLoaded += OnViewLoaded;
+    }
+}
 ```
 
 ### 🎨 Архитектурные паттерны
 
-#### 1️⃣ **N-Layer Architecture**
+#### 1️⃣ **MVP (Model-View-Presenter)**
+Полное разделение UI от бизнес-логики:
+
+**View → Presenter:**
+```csharp
+// MainForm.cs (View)
+public event EventHandler ViewLoaded;
+public event EventHandler AddCarRequested;
+
+private void MainForm_Load(object sender, EventArgs e)
+{
+    ViewLoaded?.Invoke(this, EventArgs.Empty);  // Уведомляем Presenter
+}
+```
+
+**Presenter обрабатывает:**
+```csharp
+// MainPresenter.cs
+public MainPresenter(IMainView view, CarSharingModel model)
+{
+    _view = view;
+    _model = model;
+
+    // Подписываемся на события View
+    _view.ViewLoaded += OnViewLoaded;
+    _view.AddCarRequested += OnAddCarRequested;
+
+    // Подписываемся на события Model
+    _model.CarsUpdated += OnCarsUpdated;
+}
+
+private void OnCarsUpdated(object sender, IEnumerable<object> cars)
+{
+    _view.DisplayCars(cars);  // Обновляем View
+}
+```
+
+**Model генерирует события:**
+```csharp
+// CarSharingModel.cs
+public event EventHandler<IEnumerable<object>> CarsUpdated;
+
+public void LoadCars()
+{
+    var cars = _carService.GetCarsForDisplay();
+    CarsUpdated?.Invoke(this, cars);  // Уведомляем всех Presenter-ов
+}
+```
+
+#### 2️⃣ **N-Layer Architecture**
 Четкое разделение на слои:
+- **Presenter** - MVP презентеры и модель
+- **Shared** - интерфейсы View (решение циклических зависимостей)
+- **View (AIS/Forms)** - реализация UI форм
 - **Model** - доменные модели
 - **DataAccessLayer** - доступ к данным
 - **BussinessLogic** - бизнес-правила
-- **Presentation** - UI (WinForms + Console)
+- **Console** - консольный интерфейс
 
-#### 2️⃣ **Repository Pattern**
+#### 3️⃣ **Repository Pattern**
 Абстракция доступа к данным через `IRepository<T>`:
 ```csharp
 public interface IRepository<T> : IReadRepository<T>, IWriteRepository<T>
@@ -123,28 +356,42 @@ public interface IRepository<T> : IReadRepository<T>, IWriteRepository<T>
 }
 ```
 
-#### 3️⃣ **Dependency Injection (Ninject)**
+#### 4️⃣ **Dependency Injection (Ninject)**
 Все зависимости внедряются через конструкторы с использованием IoC-контейнера Ninject:
 ```csharp
-var kernel = new StandardKernel(new SimpleConfigModule(useEF, connectionString));
+var kernel = new StandardKernel(new SimpleConfigModule(useEF, connectionString, useDynamicPricing));
 var carService = kernel.Get<ICarService>();
+var model = new CarSharingModel(carService, promoService);
 ```
 
-#### 4️⃣ **DTO Pattern**
+#### 5️⃣ **DTO Pattern**
 Передача данных между слоями через специализированные объекты:
 - `CarDetailsDto` - для детального просмотра
 - `CarListItemDto` - для списков
 - `CarForCalculationDto` - для расчета стоимости
 
-#### 5️⃣ **Strategy Pattern**
-Гибкая система расчета стоимости:
+#### 6️⃣ **Strategy Pattern**
+Гибкая система расчета стоимости с двумя стратегиями:
 ```csharp
+// Стандартная стратегия
 IPricingStrategy -> DefaultPricingStrategy
-IDiscountPolicy -> PromoServiceDiscountPolicy
+// Цена = pricePerHour × hours × (1 - discount)
+
+// Динамическая стратегия
+IPricingStrategy -> DynamicPricingStrategy
+// Учитывает: время суток, день недели, сезон, праздники, длительность
+// multiplier = TimeOfDay × DayOfWeek × Season × Holiday × Duration
+// Праздники: x2.0, Ночь: x0.7, Выходные: x1.3, Лето: x1.4
 ```
 
-#### 6️⃣ **Adapter Pattern**
+#### 7️⃣ **Adapter Pattern**
 Адаптация `PromoService` к интерфейсу `IPromoService` без изменения исходного класса.
+
+#### 8️⃣ **Observer Pattern**
+События для уведомления об изменениях:
+- `CarSharingModel.CarsUpdated` - изменение списка автомобилей
+- `CarSharingModel.ErrorOccurred` - возникновение ошибок
+- View генерирует события пользовательских действий
 
 ---
 
@@ -162,8 +409,9 @@ IDiscountPolicy -> PromoServiceDiscountPolicy
 ### ✅ **O - Open/Closed Principle**
 Расширение без модификации:
 - `CarDapperRepository` создан вместо изменения `DapperRepository<T>`
-- Новые стратегии цен можно добавлять без изменения существующих классов
+- Новые стратегии цен можно добавлять без изменения существующих классов (DefaultPricingStrategy, DynamicPricingStrategy)
 - Новые политики скидок через интерфейс `IDiscountPolicy`
+- Добавление нового Presenter не требует изменения существующих классов
 
 ### ✅ **L - Liskov Substitution Principle**
 Все реализации взаимозаменяемы:
@@ -181,7 +429,8 @@ IDiscountPolicy -> PromoServiceDiscountPolicy
 
 ### ✅ **D - Dependency Inversion Principle**
 Зависимость от абстракций:
-- UI зависит от `ICarService`, а не от `CarService`
+- Presenter зависит от `IMainView`, а не от `MainForm`
+- Model зависит от `ICarService`, а не от `CarService`
 - `CarService` зависит от `IRepository<Car>`, а не от конкретной реализации
 - Все зависимости внедряются через Ninject
 
@@ -286,23 +535,34 @@ dotnet build --configuration Release
 
 ### Шаг 5: Запуск приложения
 
-#### Запуск WinForms приложения
+#### 🚀 Запуск через Presenter (РЕКОМЕНДУЕТСЯ)
+```bash
+dotnet run --project Presenter
+```
+При запуске выберите режим:
+- **1 (W)** - WinForms MVP приложение
+- **2 (C)** - Консольное приложение
+- **0 (Q)** - Выход
+
+Затем выберите ORM-провайдер:
+- **Да/1** - Entity Framework Core
+- **Нет/2** - Dapper
+
+Затем выберите стратегию ценообразования:
+- **1** - Стандартная (цена × часы)
+- **2** - Динамическая (время суток, день недели, сезон, праздники)
+
+#### Запуск WinForms напрямую (устаревший)
 ```bash
 dotnet run --project AIS
 ```
-При запуске выберите провайдер данных:
-- **Да** - Entity Framework Core
-- **Нет** - Dapper
-- **Отмена** - Выход
+⚠️ Использует старый код до MVP, рекомендуется использовать [Presenter/Program.cs](Presenter/Program.cs)
 
-#### Запуск консольного приложения
+#### Запуск консольного приложения напрямую
 ```bash
 dotnet run --project Console
 ```
-В консольном меню выберите провайдер:
-- **1** - Entity Framework
-- **2** - Dapper
-- **0** - Выход
+В консольном меню выберите провайдер и стратегию ценообразования.
 
 ---
 
@@ -518,38 +778,76 @@ ValidateForUpdate(brand, model, licensePlate, year, mileage, rentalPricePerHour,
 ```csharp
 public class SimpleConfigModule : NinjectModule
 {
+    private readonly bool _useEF;
+    private readonly string _connectionString;
+    private readonly bool _useDynamicPricing;
+
+    public SimpleConfigModule(bool useEF, string connectionString, bool useDynamicPricing = false)
+    {
+        _useEF = useEF;
+        _connectionString = connectionString;
+        _useDynamicPricing = useDynamicPricing;
+    }
+
     public override void Load()
     {
         // Логгер
         Bind<ILogger>().To<FileLogger>().InSingletonScope();
 
-        // Стратегии
-        Bind<IPricingStrategy>().To<DefaultPricingStrategy>().InSingletonScope();
+        // Стратегии ценообразования (выбор стратегии)
+        if (_useDynamicPricing)
+        {
+            Bind<IPricingStrategy>().To<DynamicPricingStrategy>().InSingletonScope();
+        }
+        else
+        {
+            Bind<IPricingStrategy>().To<DefaultPricingStrategy>().InSingletonScope();
+        }
+
         Bind<IDiscountPolicy>().To<PromoServiceDiscountPolicy>().InSingletonScope();
 
         // Валидаторы
         Bind<ICarValidator>().To<CarValidator>().InSingletonScope();
 
         // Репозитории (в зависимости от выбора ORM)
-        if (useEF) {
+        if (_useEF) {
             Bind<IRepository<Car>>().To<EntityRepository<Car>>().InSingletonScope();
+            Bind<IPromoCodeRepository>().To<EFPromoCodeRepository>().InSingletonScope();
         } else {
             Bind<IRepository<Car>>().To<CarDapperRepository>().InSingletonScope();
+            Bind<IPromoCodeRepository>().To<DapperPromoCodeRepository>().InSingletonScope();
         }
 
         // Сервисы
         Bind<ICarService>().To<CarService>().InSingletonScope();
         Bind<IPromoService>().To<PromoServiceAdapter>().InSingletonScope();
+        Bind<ICarImportService>().To<CarImportService>().InSingletonScope();
     }
 }
 ```
 
-### Использование в UI
+### Использование в MVP
 ```csharp
-// Program.cs
-var kernel = new StandardKernel(new SimpleConfigModule(useEF, connectionString));
+// Presenter/Program.cs
+var kernel = new StandardKernel(
+    new SimpleConfigModule(useEF, connectionString, useDynamicPricing)
+);
+
 var carService = kernel.Get<ICarService>();
 var promoService = kernel.Get<IPromoService>();
+var importService = kernel.Get<ICarImportService>();
+
+// Создаем Model в MVP
+var model = new CarSharingModel(carService, promoService, importService);
+
+// Создаем View
+var mainForm = new MainForm();
+
+// Создаем Presenter (связывает View и Model)
+var presenter = new MainPresenter(mainForm, model, carService, promoService, importService);
+
+// Запускаем приложение
+Application.Run(mainForm);
 ```
 
 ---
@@ -557,19 +855,29 @@ var promoService = kernel.Get<IPromoService>();
 ## 🧪 Тестирование
 
 ### Ручное тестирование через UI
-1. Запустите WinForms приложение
-2. Добавьте несколько автомобилей
-3. Проверьте редактирование
-4. Попробуйте арендовать автомобиль
-5. Рассчитайте стоимость с промокодом
-6. Проверьте файл логов на рабочем столе
+1. Запустите WinForms приложение через [Presenter/Program.cs](Presenter/Program.cs)
+2. Выберите режим WinForms (1 или W)
+3. Выберите ORM (EF или Dapper)
+4. Выберите стратегию ценообразования (стандартная или динамическая)
+5. Добавьте несколько автомобилей
+6. Проверьте редактирование через форму CarEditForm
+7. Попробуйте арендовать автомобиль
+8. Рассчитайте стоимость с промокодом (проверьте разницу между стратегиями)
+9. Импортируйте/экспортируйте автомобили из CSV/JSON
+10. Проверьте файл логов на рабочем столе
 
 ### Проверка смены ORM
-1. Запустите приложение с EF
+1. Запустите приложение через Presenter с EF
 2. Добавьте автомобиль
 3. Закройте приложение
 4. Запустите с Dapper
 5. Убедитесь, что данные сохранились
+
+### Проверка MVP архитектуры
+1. Убедитесь, что MainForm не содержит бизнес-логики (только генерация событий)
+2. Проверьте, что MainPresenter обрабатывает все события View
+3. Убедитесь, что при добавлении автомобиля через одну форму, список обновляется автоматически
+4. Проверьте, что ошибки отображаются через события Model → Presenter → View
 
 ---
 
@@ -604,18 +912,30 @@ public Car CreateCar(string brand, string model, string licensePlate,
 ## 🚀 Расширение проекта
 
 ### Добавление новой стратегии ценообразования
+Уже реализованы две стратегии:
+1. **DefaultPricingStrategy** - стандартная (цена × часы)
+2. **DynamicPricingStrategy** - динамическая (время, сезон, праздники)
+
+Пример добавления третьей стратегии:
 ```csharp
+// BussinessLogic/Pricing/WeekendPricingStrategy.cs
 public class WeekendPricingStrategy : IPricingStrategy
 {
     public decimal CalculateBasePrice(decimal pricePerHour, int hours)
     {
         // Повышенная цена в выходные
-        return pricePerHour * hours * 1.5m;
+        var isWeekend = DateTime.Now.DayOfWeek == DayOfWeek.Saturday
+                     || DateTime.Now.DayOfWeek == DayOfWeek.Sunday;
+        var multiplier = isWeekend ? 1.5m : 1.0m;
+        return pricePerHour * hours * multiplier;
     }
 }
 
-// В SimpleConfigModule.cs
-Bind<IPricingStrategy>().To<WeekendPricingStrategy>().InSingletonScope();
+// В SimpleConfigModule.cs добавить условие
+if (useWeekendPricing)
+{
+    Bind<IPricingStrategy>().To<WeekendPricingStrategy>().InSingletonScope();
+}
 ```
 
 ### Добавление нового провайдера данных
@@ -662,6 +982,8 @@ public ImportResult ImportFromXml(string filePath)
 2. **LocalDB** - требуется SQL Server LocalDB
 3. **Однопользовательский режим** - нет поддержки многопользовательского доступа
 4. **Транзакции** - не используются сложные транзакции БД
+5. **Консольное приложение не следует MVP** - Console/MenuController не использует MVP паттерн (только WinForms использует MVP)
+6. **Устаревший код в AIS/Controllers** - папка Controllers и AIS/Program.cs сохранены для истории, но не используются в текущей версии
 
 ---
 
@@ -669,7 +991,16 @@ public ImportResult ImportFromXml(string filePath)
 
 **Автор**: Разработано в рамках учебного проекта по дисциплине "Архитектура информационных систем"
 
-**Цель проекта**: Демонстрация применения принципов SOLID, паттернов проектирования и современных архитектурных подходов в .NET
+**Цель проекта**: Демонстрация применения принципов SOLID, паттернов проектирования (MVP, Repository, Strategy, Adapter, Observer) и современных архитектурных подходов в .NET
+
+**Основные достижения**:
+- ✅ Полная реализация MVP-архитектуры для WinForms
+- ✅ Решение проблемы циклических зависимостей через проект Shared
+- ✅ Динамическое ценообразование с использованием Strategy Pattern
+- ✅ Поддержка двух ORM (Entity Framework Core и Dapper) с возможностью переключения
+- ✅ Полное соблюдение принципов SOLID
+- ✅ Импорт/Экспорт данных в CSV/JSON
+- ✅ Комплексная валидация и логирование
 
 **Год**: 2025
 
@@ -681,6 +1012,5 @@ public ImportResult ImportFromXml(string filePath)
 
 ---
 
-
-**Версия документации**: 3.0
-**Дата обновления**: Январь 2025 (добавлен функционал импорт/экспорт)
+**Версия проекта**: 4.0 (MVP-архитектура)
+**Дата обновления**: Декабрь 2025 (реализован MVP паттерн, добавлено динамическое ценообразование)

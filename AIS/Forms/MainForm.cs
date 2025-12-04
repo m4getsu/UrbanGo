@@ -11,16 +11,30 @@ using System.Windows.Forms;
 using BussinessLogic.Dto;
 using AIS.Controllers;
 using AIS.Forms;
+using Shared;
 
 namespace AIS
 {
     /// <summary>
     /// Главная форма приложения для управления автомобилями.
+    /// Реализует MVP паттерн через интерфейс IMainView.
     /// </summary>
-    public partial class MainForm : Form
+    public partial class MainForm : Form, IMainView
     {
-        private readonly MainFormController _controller;
-        private readonly DependencyContainer _dependencyContainer;
+        private readonly MainFormController? _controller;
+        private readonly DependencyContainer? _dependencyContainer;
+
+        // События для Presenter (MVP)
+        public event EventHandler ViewLoaded;
+        public event EventHandler AddCarRequested;
+        public event EventHandler<int> EditCarRequested;
+        public event EventHandler<int> DeleteCarRequested;
+        public event EventHandler<int> RentCarRequested;
+        public event EventHandler<int> CalculateCostRequested;
+        public event EventHandler RefreshRequested;
+        public event EventHandler<string> SearchTextChanged;
+        public event EventHandler ImportRequested;
+        public event EventHandler<IEnumerable<int>> ExportRequested;
 
         /// <summary>
         /// Инициализирует новый экземпляр главной формы с контроллером.
@@ -36,8 +50,14 @@ namespace AIS
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            RefreshCarsList();
+            // В MVP режиме (когда _controller == null) данные загружает Presenter
+            if (_controller != null)
+            {
+                RefreshCarsList();
+            }
             ConfigureDataGridView();
+            UpdatePricingStrategyLabel();
+            ViewLoaded?.Invoke(this, EventArgs.Empty); // MVP событие
         }
 
         private void ConfigureDataGridView()
@@ -135,6 +155,9 @@ namespace AIS
 
         private void RefreshCarsList()
         {
+            // В MVP режиме этот метод не используется (данные загружает Presenter)
+            if (_controller == null) return;
+
             try
             {
                 var carsForDisplay = _controller.GetCarsForDisplay();
@@ -180,6 +203,13 @@ namespace AIS
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
+            // В MVP режиме используется событие AddCarRequested
+            if (_controller == null)
+            {
+                AddCarRequested?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             using (var addForm = new CarEditForm())
             {
                 if (addForm.ShowDialog() == DialogResult.OK)
@@ -209,6 +239,15 @@ namespace AIS
 
         private void buttonEdit_Click(object sender, EventArgs e)
         {
+            // В MVP режиме используется событие EditCarRequested
+            if (_controller == null)
+            {
+                var carId = GetSelectedCarId();
+                if (carId.HasValue)
+                    EditCarRequested?.Invoke(this, carId.Value);
+                return;
+            }
+
             if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
             {
                 int carId = selectedCar.Id;
@@ -265,6 +304,15 @@ namespace AIS
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
+            // В MVP режиме используется событие DeleteCarRequested
+            if (_controller == null)
+            {
+                var carId = GetSelectedCarId();
+                if (carId.HasValue)
+                    DeleteCarRequested?.Invoke(this, carId.Value);
+                return;
+            }
+
             if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
             {
                 int carId = selectedCar.Id;
@@ -300,6 +348,15 @@ namespace AIS
 
         private void buttonRent_Click(object sender, EventArgs e)
         {
+            // В MVP режиме используется событие RentCarRequested
+            if (_controller == null)
+            {
+                var carId = GetSelectedCarId();
+                if (carId.HasValue)
+                    RentCarRequested?.Invoke(this, carId.Value);
+                return;
+            }
+
             if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
             {
                 int carId = selectedCar.Id;
@@ -325,6 +382,15 @@ namespace AIS
 
         private void buttonCalculate_Click(object sender, EventArgs e)
         {
+            // В MVP режиме используется событие CalculateCostRequested
+            if (_controller == null)
+            {
+                var carId = GetSelectedCarId();
+                if (carId.HasValue)
+                    CalculateCostRequested?.Invoke(this, carId.Value);
+                return;
+            }
+
             if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
             {
                 int carId = selectedCar.Id;
@@ -381,6 +447,13 @@ namespace AIS
 
         private void buttonImport_Click(object sender, EventArgs e)
         {
+            // В MVP режиме используется событие ImportRequested
+            if (_dependencyContainer == null)
+            {
+                ImportRequested?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             try
             {
                 var importService = _dependencyContainer.ImportService;
@@ -410,6 +483,14 @@ namespace AIS
 
         private void buttonExport_Click(object sender, EventArgs e)
         {
+            // В MVP режиме используется событие ExportRequested
+            if (_dependencyContainer == null)
+            {
+                var selectedIds = GetSelectedCarIds();
+                ExportRequested?.Invoke(this, selectedIds);
+                return;
+            }
+
             try
             {
                 using var dialog = new SaveFileDialog
@@ -508,7 +589,108 @@ namespace AIS
             }
         }
 
+        private void UpdatePricingStrategyLabel()
+        {
+            if (_dependencyContainer != null)
+            {
+                var carService = _dependencyContainer.CarService;
+                var carServiceType = carService.GetType();
+                var strategyField = carServiceType.GetField("_pricingStrategy",
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
 
+                if (strategyField != null)
+                {
+                    var strategy = strategyField.GetValue(carService);
+                    if (strategy is BussinessLogic.Pricing.DynamicPricingStrategy dynamicStrategy)
+                    {
+                        var conditions = dynamicStrategy.GetCurrentConditionsDescription();
+                        labelPricingStrategy.Text = conditions;
+                        labelPricingStrategy.ForeColor = Color.OrangeRed;
+                    }
+                    else
+                    {
+                        labelPricingStrategy.Text = "💵 Стандартное ценообразование";
+                        labelPricingStrategy.ForeColor = Color.DarkGreen;
+                    }
+                }
+            }
+        }
+
+        // ===== Реализация интерфейса IMainView для MVP =====
+
+        /// <summary>
+        /// Конструктор без параметров для MVP.
+        /// </summary>
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// Отображает список автомобилей.
+        /// </summary>
+        public void DisplayCars(IEnumerable<object> cars)
+        {
+            if (cars is IEnumerable<CarListItemDto> carDtos)
+            {
+                dataGridViewCars.DataSource = new BindingList<CarListItemDto>(carDtos.ToList());
+            }
+        }
+
+        /// <summary>
+        /// Обновляет строку состояния.
+        /// </summary>
+        public void UpdateStatusBar(int total, int available, int rented, int maintenance)
+        {
+            toolStripStatusLabel.Text =
+                $"Всего: {total} | Свободных: {available} | В аренде: {rented} | На тех. обслуживании: {maintenance}";
+        }
+
+        /// <summary>
+        /// Показывает сообщение об ошибке.
+        /// </summary>
+        public void ShowError(string message)
+        {
+            MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        /// <summary>
+        /// Показывает информационное сообщение.
+        /// </summary>
+        public void ShowInfo(string message)
+        {
+            MessageBox.Show(message, "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        /// <summary>
+        /// Запрашивает подтверждение у пользователя.
+        /// </summary>
+        public bool ConfirmAction(string message)
+        {
+            return MessageBox.Show(message, "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+
+        /// <summary>
+        /// Получает ID выбранного автомобиля.
+        /// </summary>
+        public int? GetSelectedCarId()
+        {
+            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto car)
+                return car.Id;
+            return null;
+        }
+
+        /// <summary>
+        /// Получает список ID выбранных автомобилей.
+        /// </summary>
+        public IEnumerable<int> GetSelectedCarIds()
+        {
+            return dataGridViewCars.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Where(r => r.DataBoundItem is CarListItemDto)
+                .Select(r => ((CarListItemDto)r.DataBoundItem).Id)
+                .ToList();
+        }
     }
 }
 

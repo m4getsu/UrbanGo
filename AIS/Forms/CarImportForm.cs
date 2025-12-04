@@ -4,17 +4,28 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BussinessLogic.Services.Import;
 using BussinessLogic.Services.Import.Models;
+using Shared;
 
 namespace AIS.Forms
 {
     /// <summary>
     /// Форма для импорта автомобилей из CSV и JSON файлов.
     /// </summary>
-    public partial class CarImportForm : Form
+    public partial class CarImportForm : Form, ICarImportView
     {
+        // События для MVP
+        public event EventHandler<string>? FileSelected;
+        public event EventHandler? ValidateRequested;
+        public event EventHandler? ImportRequested;
+        public event EventHandler? CloseRequested;
+
         private readonly ICarImportService _importService;
         private string? _selectedFilePath;
-        private ImportFormat _selectedFormat = ImportFormat.Csv;
+        private BussinessLogic.Services.Import.ImportFormat _selectedFormat = BussinessLogic.Services.Import.ImportFormat.Csv;
+
+        // Свойства интерфейса
+        public string SelectedFilePath => _selectedFilePath ?? string.Empty;
+        string ICarImportView.ImportFormat => _selectedFormat.ToString();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы импорта.
@@ -51,15 +62,18 @@ namespace AIS.Forms
                 btnValidate.Enabled = true;
                 btnImport.Enabled = false;
                 txtResults.Clear();
+
+                // Генерируем событие для MVP
+                FileSelected?.Invoke(this, _selectedFilePath);
             }
         }
 
         private void rbFormat_CheckedChanged(object sender, EventArgs e)
         {
             if (rbCsv.Checked)
-                _selectedFormat = ImportFormat.Csv;
+                _selectedFormat = BussinessLogic.Services.Import.ImportFormat.Csv;
             else if (rbJson.Checked)
-                _selectedFormat = ImportFormat.Json;
+                _selectedFormat = BussinessLogic.Services.Import.ImportFormat.Json;
 
             _selectedFilePath = null;
             txtFilePath.Clear();
@@ -70,6 +84,9 @@ namespace AIS.Forms
 
         private async void btnValidate_Click(object sender, EventArgs e)
         {
+            // Генерируем событие для MVP
+            ValidateRequested?.Invoke(this, EventArgs.Empty);
+
             if (string.IsNullOrEmpty(_selectedFilePath))
             {
                 MessageBox.Show("Выберите файл для проверки", "Ошибка",
@@ -156,6 +173,9 @@ namespace AIS.Forms
 
         private async void btnImport_Click(object sender, EventArgs e)
         {
+            // Генерируем событие для MVP
+            ImportRequested?.Invoke(this, EventArgs.Empty);
+
             if (string.IsNullOrEmpty(_selectedFilePath))
             {
                 MessageBox.Show("Выберите файл для импорта", "Ошибка",
@@ -184,7 +204,7 @@ namespace AIS.Forms
             {
                 ImportResult result;
 
-                if (_selectedFormat == ImportFormat.Csv)
+                if (_selectedFormat == BussinessLogic.Services.Import.ImportFormat.Csv)
                     result = await Task.Run(() => _importService.ImportFromCsv(_selectedFilePath));
                 else
                     result = await Task.Run(() => _importService.ImportFromJson(_selectedFilePath));
@@ -298,7 +318,85 @@ namespace AIS.Forms
 
         private void btnClose_Click(object sender, EventArgs e)
         {
+            // Генерируем событие для MVP
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+
             this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        // Реализация методов ICarImportView
+
+        /// <summary>
+        /// Отображает информацию о выбранном файле.
+        /// </summary>
+        public void DisplayFileInfo(string fileName, long fileSize)
+        {
+            txtFilePath.Text = fileName;
+            txtResults.Text = $"Файл: {Path.GetFileName(fileName)}\r\nРазмер: {fileSize / 1024} КБ";
+        }
+
+        /// <summary>
+        /// Отображает результаты валидации.
+        /// </summary>
+        public void DisplayValidationResult(bool isValid, string message)
+        {
+            txtResults.Text = message;
+            btnImport.Enabled = isValid;
+        }
+
+        /// <summary>
+        /// Отображает прогресс импорта.
+        /// </summary>
+        public void UpdateProgress(int current, int total)
+        {
+            if (progressBar.Style != ProgressBarStyle.Continuous)
+                progressBar.Style = ProgressBarStyle.Continuous;
+
+            progressBar.Maximum = total;
+            progressBar.Value = Math.Min(current, total);
+        }
+
+        /// <summary>
+        /// Отображает результат импорта.
+        /// </summary>
+        public void DisplayImportResult(int successCount, int failedCount, int skippedCount, string errors)
+        {
+            txtResults.Clear();
+            txtResults.AppendText("=== РЕЗУЛЬТАТЫ ИМПОРТА ===\r\n\r\n");
+            txtResults.AppendText($"✓ Успешно импортировано: {successCount}\r\n");
+            txtResults.AppendText($"⊘ Пропущено (дубликаты): {skippedCount}\r\n");
+            txtResults.AppendText($"✗ Ошибок: {failedCount}\r\n");
+
+            if (!string.IsNullOrEmpty(errors))
+            {
+                txtResults.AppendText("\r\n=== ОШИБКИ ===\r\n");
+                txtResults.AppendText(errors);
+            }
+        }
+
+        /// <summary>
+        /// Включает/отключает кнопку импорта.
+        /// </summary>
+        public void SetImportButtonEnabled(bool enabled)
+        {
+            btnImport.Enabled = enabled;
+        }
+
+        /// <summary>
+        /// Отображает сообщение об ошибке.
+        /// </summary>
+        public void ShowError(string message)
+        {
+            MessageBox.Show(message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        /// <summary>
+        /// Закрывает представление с результатом OK.
+        /// </summary>
+        public void CloseWithSuccess()
+        {
+            this.DialogResult = DialogResult.OK;
             this.Close();
         }
     }

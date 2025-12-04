@@ -10,6 +10,7 @@ namespace AIS.Controllers
 	public class CalculateCostFormController
 	{
 		private readonly ICarService _carService;
+		private readonly BussinessLogic.Pricing.IPricingStrategy _pricingStrategy;
 
 		/// <summary>
 		/// Инициализирует новый экземпляр контроллера с сервисом автомобилей.
@@ -18,6 +19,17 @@ namespace AIS.Controllers
 		public CalculateCostFormController(ICarService carService)
 		{
 			_carService = carService;
+
+			// Получаем стратегию ценообразования из CarService через рефлексию
+			// Это необходимо для отображения детализации расчета
+			var carServiceType = carService.GetType();
+			var strategyField = carServiceType.GetField("_pricingStrategy",
+				System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+			if (strategyField != null)
+			{
+				_pricingStrategy = strategyField.GetValue(carService) as BussinessLogic.Pricing.IPricingStrategy;
+			}
 		}
 
 		/// <summary>
@@ -35,5 +47,37 @@ namespace AIS.Controllers
 		/// <param name="promoCode">Необязательный промокод.</param>
 		/// <returns>Итоговая стоимость аренды.</returns>
 		public decimal CalculateRentalCost(int carId, int hours, string promoCode = null) => _carService.CalculateRentalCost(carId, hours, promoCode);
+
+		/// <summary>
+		/// Возвращает детализацию расчета цены, если используется динамическая стратегия.
+		/// </summary>
+		/// <param name="hours">Количество часов аренды.</param>
+		/// <returns>Текстовое описание примененных коэффициентов или null.</returns>
+		public string GetPricingBreakdown(int hours)
+		{
+			if (_pricingStrategy is BussinessLogic.Pricing.DynamicPricingStrategy dynamicStrategy)
+			{
+				return dynamicStrategy.GetDetailedMultiplierBreakdown(hours);
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Возвращает краткое описание условий ценообразования.
+		/// </summary>
+		/// <returns>Описание условий или null.</returns>
+		public string GetCurrentConditions()
+		{
+			if (_pricingStrategy is BussinessLogic.Pricing.DynamicPricingStrategy dynamicStrategy)
+			{
+				return dynamicStrategy.GetCurrentConditionsDescription();
+			}
+			return null;
+		}
+
+		/// <summary>
+		/// Проверяет, используется ли динамическое ценообразование.
+		/// </summary>
+		public bool IsDynamicPricingEnabled => _pricingStrategy is BussinessLogic.Pricing.DynamicPricingStrategy;
 	}
 }

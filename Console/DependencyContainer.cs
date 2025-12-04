@@ -16,9 +16,10 @@ namespace ConsoleApp
         /// </summary>
         /// <param name="config">Конфигурация приложения со строкой подключения.</param>
         /// <param name="useEF">True для использования Entity Framework, False для Dapper.</param>
-        public DependencyContainer(IConfiguration config, bool useEF)
+        /// <param name="useDynamicPricing">True для использования динамического ценообразования.</param>
+        public DependencyContainer(IConfiguration config, bool useEF, bool useDynamicPricing = false)
         {
-            _kernel = new StandardKernel(new BussinessLogic.SimpleConfigModule(useEF, config.ConnectionString));
+            _kernel = new StandardKernel(new BussinessLogic.SimpleConfigModule(useEF, config.ConnectionString, useDynamicPricing));
         }
 
         /// <summary>
