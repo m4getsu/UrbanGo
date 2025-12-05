@@ -46,19 +46,18 @@ namespace BussinessLogic.Pricing
         {
             return new PricingConfiguration
             {
-                // Время суток: пиковые часы дороже, ночь дешевле
                 TimeOfDayMultipliers = new Dictionary<int, decimal>
                 {
-                    { 0, 0.8m },  // Ночь (00:00-07:00): -20%
+                    { 0, 0.8m },  
                     { 1, 0.8m },
                     { 2, 0.8m },
                     { 3, 0.8m },
                     { 4, 0.8m },
                     { 5, 0.8m },
                     { 6, 0.8m },
-                    { 7, 1.5m },  // Утренний пик (07:00-09:00): +50%
+                    { 7, 1.5m },  
                     { 8, 1.5m },
-                    { 9, 1.2m },  // День (09:00-17:00): +20%
+                    { 9, 1.2m },  
                     { 10, 1.2m },
                     { 11, 1.2m },
                     { 12, 1.2m },
@@ -66,75 +65,69 @@ namespace BussinessLogic.Pricing
                     { 14, 1.2m },
                     { 15, 1.2m },
                     { 16, 1.2m },
-                    { 17, 1.5m }, // Вечерний пик (17:00-19:00): +50%
+                    { 17, 1.5m }, 
                     { 18, 1.5m },
-                    { 19, 1.1m }, // Вечер (19:00-22:00): +10%
+                    { 19, 1.1m }, 
                     { 20, 1.1m },
                     { 21, 1.1m },
-                    { 22, 0.8m }, // Поздний вечер (22:00-00:00): -20%
+                    { 22, 0.8m }, 
                     { 23, 0.8m },
                 },
 
-                // Дни недели: выходные дороже
                 DayOfWeekMultipliers = new Dictionary<DayOfWeek, decimal>
                 {
                     { DayOfWeek.Monday, 1.0m },
                     { DayOfWeek.Tuesday, 1.0m },
                     { DayOfWeek.Wednesday, 1.0m },
                     { DayOfWeek.Thursday, 1.0m },
-                    { DayOfWeek.Friday, 1.2m },    // Пятница: +20%
-                    { DayOfWeek.Saturday, 1.3m },  // Суббота: +30%
-                    { DayOfWeek.Sunday, 1.3m },    // Воскресенье: +30%
+                    { DayOfWeek.Friday, 1.2m },    
+                    { DayOfWeek.Saturday, 1.3m },  
+                    { DayOfWeek.Sunday, 1.3m },    
                 },
 
-                // Продолжительность: длительная аренда дешевле
                 DurationMultipliers = new Dictionary<int, decimal>
                 {
-                    { 1, 1.1m },   // 1-2 часа: +10%
-                    { 3, 1.0m },   // 3-7 часов: базовая цена
-                    { 8, 0.95m },  // 8-23 часа: -5%
-                    { 24, 0.9m },  // 24+ часов: -10%
-                    { 72, 0.85m }, // 72+ часов (3 дня): -15%
+                    { 1, 1.1m },   
+                    { 3, 1.0m },   
+                    { 8, 0.95m },  
+                    { 24, 0.9m },  
+                    { 72, 0.85m },
                 },
 
-                // Сезоны: лето дороже, зима дешевле
                 SeasonalMultipliers = new Dictionary<int, decimal>
                 {
-                    { 1, 0.9m },   // Январь: -10% (низкий сезон)
-                    { 2, 0.9m },   // Февраль: -10%
-                    { 3, 1.0m },   // Март: базовая цена
-                    { 4, 1.0m },   // Апрель: базовая цена
-                    { 5, 1.1m },   // Май: +10% (майские праздники)
-                    { 6, 1.2m },   // Июнь: +20% (начало лета)
-                    { 7, 1.3m },   // Июль: +30% (высокий сезон)
-                    { 8, 1.3m },   // Август: +30% (высокий сезон)
-                    { 9, 1.1m },   // Сентябрь: +10%
-                    { 10, 1.0m },  // Октябрь: базовая цена
-                    { 11, 0.95m }, // Ноябрь: -5%
-                    { 12, 1.1m },  // Декабрь: +10% (новогодние праздники)
+                    { 1, 0.9m },  
+                    { 2, 0.9m },   
+                    { 3, 1.0m },   
+                    { 4, 1.0m },   
+                    { 5, 1.1m },   
+                    { 6, 1.2m },   
+                    { 7, 1.3m },   
+                    { 8, 1.3m },   
+                    { 9, 1.1m },   
+                    { 10, 1.0m },  
+                    { 11, 0.95m }, 
+                    { 12, 1.1m },  
                 },
 
-                // Праздничные дни: значительное повышение цен
                 HolidayMultipliers = new Dictionary<DateTime, decimal>
                 {
-                    // Новогодние праздники
-                    { new DateTime(DateTime.Now.Year, 1, 1), 2.0m },  // Новый год: +100%
-                    { new DateTime(DateTime.Now.Year, 1, 2), 1.8m },  // 2 января: +80%
-                    { new DateTime(DateTime.Now.Year, 1, 3), 1.5m },  // 3 января: +50%
-                    { new DateTime(DateTime.Now.Year, 1, 4), 1.5m },  // 4 января: +50%
-                    { new DateTime(DateTime.Now.Year, 1, 5), 1.5m },  // 5 января: +50%
-                    { new DateTime(DateTime.Now.Year, 1, 6), 1.5m },  // 6 января: +50%
-                    { new DateTime(DateTime.Now.Year, 1, 7), 1.5m },  // 7 января: +50%
-                    { new DateTime(DateTime.Now.Year, 1, 8), 1.3m },  // 8 января: +30%
+                    { new DateTime(DateTime.Now.Year, 1, 1), 2.0m },  
+                    { new DateTime(DateTime.Now.Year, 1, 2), 1.8m },  
+                    { new DateTime(DateTime.Now.Year, 1, 3), 1.5m }, 
+                    { new DateTime(DateTime.Now.Year, 1, 4), 1.5m },  
+                    { new DateTime(DateTime.Now.Year, 1, 5), 1.5m },  
+                    { new DateTime(DateTime.Now.Year, 1, 6), 1.5m },  
+                    { new DateTime(DateTime.Now.Year, 1, 7), 1.5m },  
+                    { new DateTime(DateTime.Now.Year, 1, 8), 1.3m },  
 
-                    // Другие праздники
-                    { new DateTime(DateTime.Now.Year, 2, 23), 1.5m }, // 23 февраля: +50%
-                    { new DateTime(DateTime.Now.Year, 3, 8), 1.5m },  // 8 марта: +50%
-                    { new DateTime(DateTime.Now.Year, 5, 1), 1.5m },  // 1 мая: +50%
-                    { new DateTime(DateTime.Now.Year, 5, 9), 1.5m },  // 9 мая: +50%
-                    { new DateTime(DateTime.Now.Year, 6, 12), 1.3m }, // День России: +30%
-                    { new DateTime(DateTime.Now.Year, 11, 4), 1.3m }, // День народного единства: +30%
-                    { new DateTime(DateTime.Now.Year, 12, 31), 2.0m }, // Новый год: +100%
+                    { new DateTime(DateTime.Now.Year, 2, 23), 1.5m }, 
+                    { new DateTime(DateTime.Now.Year, 3, 8), 1.5m },  
+                    { new DateTime(DateTime.Now.Year, 5, 1), 1.5m },  
+                    { new DateTime(DateTime.Now.Year, 5, 9), 1.5m },  
+                    { new DateTime(DateTime.Now.Year, 6, 12), 1.3m }, 
+                    { new DateTime(DateTime.Now.Year, 11, 4), 1.3m }, 
+                    { new DateTime(DateTime.Now.Year, 12, 31), 2.0m }, 
                 }
             };
         }

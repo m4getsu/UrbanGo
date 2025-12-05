@@ -38,25 +38,20 @@ namespace BussinessLogic.Pricing
             var now = DateTime.Now;
             var multiplier = 1.0m;
 
-            // Приоритет: праздник > остальные коэффициенты
             var holidayMultiplier = GetHolidayMultiplier(now);
             if (holidayMultiplier > 1.0m)
             {
-                // В праздники применяется только праздничный коэффициент
                 multiplier = holidayMultiplier;
             }
             else
             {
-                // Комбинируем все коэффициенты
                 multiplier *= GetSeasonalMultiplier(now);
                 multiplier *= GetDayOfWeekMultiplier(now);
                 multiplier *= GetTimeOfDayMultiplier(now);
             }
 
-            // Продолжительность применяется всегда
             multiplier *= GetDurationMultiplier(hours);
 
-            // Расчет финальной цены
             var basePrice = pricePerHour * hours;
             var finalPrice = basePrice * multiplier;
 
@@ -90,7 +85,6 @@ namespace BussinessLogic.Pricing
         /// </summary>
         private decimal GetDurationMultiplier(int hours)
         {
-            // Найти максимальный порог, который не превышает количество часов
             var applicableThresholds = _config.DurationMultipliers.Keys
                 .Where(threshold => hours >= threshold)
                 .OrderByDescending(t => t);
@@ -159,7 +153,6 @@ namespace BussinessLogic.Pricing
             var durationMult = GetDurationMultiplier(hours);
             sb.AppendLine($"⏱️  Продолжительность ({hours}ч): {FormatMultiplier(durationMult)}");
 
-            // Итоговый коэффициент
             var totalMultiplier = CalculateTotalMultiplier(hours);
             sb.AppendLine();
             sb.AppendLine($"📈 Итоговый коэффициент: {totalMultiplier:F2}x ({FormatMultiplier(totalMultiplier)})");

@@ -72,7 +72,7 @@ namespace Presenter
             _model.ImportExportPerformed += OnImportExportPerformed;
         }
 
-        // Обработчики событий View
+
 
         private void OnViewLoaded(object? sender, EventArgs e)
         {
@@ -84,13 +84,11 @@ namespace Presenter
             var editView = _carEditViewFactory();
             var editPresenter = new CarEditPresenter(editView, _model, null);
 
-            // Открываем диалог (WinForms)
             if (editView is Form form)
             {
                 form.ShowDialog();
             }
 
-            // После закрытия диалога обновляем список
             LoadCarsList();
         }
 
@@ -106,7 +104,6 @@ namespace Presenter
             var editView = _carEditViewFactory();
             var editPresenter = new CarEditPresenter(editView, _model, carId);
 
-            // Открываем диалог редактирования (WinForms)
             if (editView is Form form)
             {
                 form.ShowDialog();
@@ -156,7 +153,6 @@ namespace Presenter
             var calculateView = _calculateCostViewFactory(carId);
             var calculatePresenter = new CalculateCostPresenter(calculateView, _model);
 
-            // Открываем диалог расчета (WinForms)
             if (calculateView is Form form)
             {
                 form.ShowDialog();
@@ -178,7 +174,6 @@ namespace Presenter
             var importView = _carImportViewFactory();
             var importPresenter = new CarImportPresenter(importView, _model);
 
-            // Открываем диалог импорта (WinForms)
             if (importView is Form form)
             {
                 form.ShowDialog();
@@ -189,7 +184,6 @@ namespace Presenter
 
         private void OnExportRequested(object? sender, IEnumerable<int> carIds)
         {
-            // Открываем диалог выбора файла для экспорта
             using (var dialog = new SaveFileDialog
             {
                 Filter = "CSV файлы (*.csv)|*.csv|JSON файлы (*.json)|*.json",
@@ -204,13 +198,13 @@ namespace Presenter
                         var carIdsList = carIds?.ToList();
                         int exportedCount;
 
-                        if (dialog.FilterIndex == 1) // CSV
+                        if (dialog.FilterIndex == 1) 
                         {
                             exportedCount = carIdsList != null && carIdsList.Any()
                                 ? _model.ExportToCsv(carIdsList, dialog.FileName)
                                 : _model.ExportToCsv(dialog.FileName);
                         }
-                        else // JSON
+                        else
                         {
                             exportedCount = carIdsList != null && carIdsList.Any()
                                 ? _model.ExportToJson(carIdsList, dialog.FileName)
@@ -227,11 +221,9 @@ namespace Presenter
             }
         }
 
-        // Обработчики событий Model
 
         private void OnCarOperationPerformed(object? sender, CarOperationEventArgs e)
         {
-            // Можно логировать или показывать уведомления
             if (!e.IsSuccess)
             {
                 _view.ShowError($"Операция '{e.OperationType}' не выполнена: {e.Details}");
@@ -248,7 +240,6 @@ namespace Presenter
             _view.ShowInfo(e.Message);
         }
 
-        // Вспомогательные методы
 
         /// <summary>
         /// Загружает и отображает список автомобилей.
@@ -269,7 +260,6 @@ namespace Presenter
 
             _view.DisplayCars(cars);
 
-            // Обновляем статистику
             UpdateStatistics(cars);
         }
 

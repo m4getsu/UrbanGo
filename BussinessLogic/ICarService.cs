@@ -131,5 +131,12 @@ namespace BussinessLogic
         /// <returns>Объект с данными для расчета или null.</returns>
         CarForCalculationDto? GetCarForCalculation(int carId);
 
+        /// <summary>
+        /// Получает детальное описание примененных коэффициентов динамического ценообразования.
+        /// </summary>
+        /// <param name="hours">Количество часов аренды.</param>
+        /// <returns>Текстовое описание всех примененных коэффициентов.</returns>
+        string GetPricingBreakdown(int hours);
+
     }
 }

@@ -10,8 +10,8 @@ using Presenter.Events;
 namespace Presenter
 {
     /// <summary>
-    /// Основной класс модели системы каршеринга с поддержкой событий для MVP паттерна.
-    /// Объединяет бизнес-логику и публикует события для Presenter.
+    /// Фасад над бизнес-логикой для MVP паттерна.
+    /// Предоставляет единую точку доступа к сервисам и публикует события.
     /// </summary>
     public class CarSharingModel : IModelEventPublisher
     {
@@ -19,7 +19,6 @@ namespace Presenter
         private readonly IPromoService _promoService;
         private readonly ICarImportService _importService;
 
-        // События для Presenter
 
         /// <summary>
         /// Событие выполнения операции с автомобилем.
@@ -56,7 +55,6 @@ namespace Presenter
             _importService = importService ?? throw new ArgumentNullException(nameof(importService));
         }
 
-        // Методы работы с автомобилями
 
         /// <summary>
         /// Создает новый автомобиль.
@@ -281,6 +279,24 @@ namespace Presenter
             {
                 ErrorOccurred?.Invoke(this, new ModelEventArgs($"Ошибка расчета стоимости: {ex.Message}"));
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Получает детальное описание примененных коэффициентов динамического ценообразования.
+        /// </summary>
+        /// <param name="hours">Количество часов аренды.</param>
+        /// <returns>Текстовое описание всех примененных коэффициентов.</returns>
+        public string GetPricingBreakdown(int hours)
+        {
+            try
+            {
+                return _carService.GetPricingBreakdown(hours);
+            }
+            catch (Exception ex)
+            {
+                ErrorOccurred?.Invoke(this, new ModelEventArgs($"Ошибка получения детализации: {ex.Message}"));
+                return $"Ошибка: {ex.Message}";
             }
         }
 

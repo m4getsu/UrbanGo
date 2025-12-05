@@ -387,5 +387,19 @@ namespace BussinessLogic
                 DisplayText = $"{car.Brand} {car.Model} ({car.LicensePlate})"
             };
         }
+
+        /// <summary>
+        /// Получает детальное описание примененных коэффициентов динамического ценообразования.
+        /// </summary>
+        /// <param name="hours">Количество часов аренды.</param>
+        /// <returns>Текстовое описание всех примененных коэффициентов.</returns>
+        public string GetPricingBreakdown(int hours)
+        {
+            if (_pricingStrategy is Pricing.DynamicPricingStrategy dynamicStrategy)
+            {
+                return dynamicStrategy.GetDetailedMultiplierBreakdown(hours);
+            }
+            return "Динамическое ценообразование не используется.";
+        }
     }
 }

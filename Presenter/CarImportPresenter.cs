@@ -51,7 +51,6 @@ namespace Presenter
             _model.ErrorOccurred += OnModelErrorOccurred;
         }
 
-        // Обработчики событий View
 
         private void OnFileSelected(object? sender, string filePath)
         {
@@ -116,7 +115,6 @@ namespace Presenter
                     ? _model.ImportFromCsv(_view.SelectedFilePath)
                     : _model.ImportFromJson(_view.SelectedFilePath);
 
-                // Формируем список ошибок для отображения
                 string errors = result.Errors.Any()
                     ? string.Join("\n", result.Errors.Take(10).Select(e => $"Строка {e.LineNumber}: {e.ErrorMessage}"))
                     : string.Empty;
@@ -141,19 +139,15 @@ namespace Presenter
 
         private void OnCloseRequested(object? sender, EventArgs e)
         {
-            // Представление само закроется
         }
 
-        // Обработчики событий Model
 
         private void OnValidationPerformed(object? sender, ValidationEventArgs e)
         {
-            // Событие уже обработано в OnValidateRequested
         }
 
         private void OnImportExportPerformed(object? sender, ImportExportEventArgs e)
         {
-            // Событие уже обработано в OnImportRequested
         }
 
         private void OnModelErrorOccurred(object? sender, ModelEventArgs e)
@@ -161,7 +155,6 @@ namespace Presenter
             _view.ShowError(e.Message);
         }
 
-        // Вспомогательные методы
 
         /// <summary>
         /// Определяет формат файла по расширению.

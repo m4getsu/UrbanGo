@@ -25,7 +25,6 @@ namespace Presenter
             Console.WriteLine("==============================================");
             Console.WriteLine();
 
-            // Выбор режима запуска
             Console.WriteLine("Выберите режим запуска:");
             Console.WriteLine("1. WinForms (графический интерфейс)");
             Console.WriteLine("2. Console (консольный интерфейс)");
@@ -61,7 +60,6 @@ namespace Presenter
             Console.WriteLine("Запуск WinForms приложения...");
             Console.WriteLine();
 
-            // Выбор ORM провайдера
             Console.WriteLine("Выберите провайдер данных:");
             Console.WriteLine("1. Entity Framework Core");
             Console.WriteLine("2. Dapper");
@@ -73,7 +71,6 @@ namespace Presenter
             Console.WriteLine($"Выбран провайдер: {(useEF ? "Entity Framework" : "Dapper")}");
             Console.WriteLine();
 
-            // Выбор стратегии ценообразования
             Console.WriteLine("Выберите стратегию ценообразования:");
             Console.WriteLine("1. Стандартная (цена × часы)");
             Console.WriteLine("2. Динамическая (время суток, день недели, сезон, праздники)");
@@ -87,38 +84,37 @@ namespace Presenter
 
             try
             {
-                // Настройка DI контейнера с выбранной стратегией ценообразования
                 string connectionString = "Server=(localdb)\\mssqllocaldb;Database=UrbanGoDB;Trusted_Connection=True;";
                 var kernel = new StandardKernel(new BussinessLogic.SimpleConfigModule(useEF, connectionString, useDynamicPricing));
 
-                // Получаем сервисы из контейнера
                 var carService = kernel.Get<ICarService>();
                 var promoService = kernel.Get<IPromoService>();
                 var importService = kernel.Get<BussinessLogic.Services.Import.ICarImportService>();
 
-                // Создаем модель
                 var model = new CarSharingModel(carService, promoService, importService);
 
                 Console.WriteLine("Инициализация завершена. Открытие главной формы...");
                 Console.WriteLine();
 
-                // Настройка WinForms (ВАЖНО: до создания форм!)
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                // Создаем главное представление
                 var mainForm = new MainForm();
 
-                // Фабрики для дочерних представлений
                 Func<ICarEditView> carEditFactory = () => new CarEditForm();
                 Func<int, ICalculateCostView> calcFactory = (carId) =>
                 {
-                    var calcController = new AIS.Controllers.CalculateCostFormController(carService);
-                    return new CalculateCostForm(carId, calcController);
+                    var calcView = new CalculateCostForm(carId);
+                    var calcPresenter = new CalculateCostPresenter(calcView, model);
+                    return calcView;
                 };
-                Func<ICarImportView> importFactory = () => new CarImportForm(importService);
+                Func<ICarImportView> importFactory = () =>
+                {
+                    var importView = new CarImportForm();
+                    var importPresenter = new CarImportPresenter(importView, model);
+                    return importView;
+                };
 
-                // Создаем главный presenter
                 var mainPresenter = new MainPresenter(mainForm, model, carEditFactory, calcFactory, importFactory);
 
                 Console.WriteLine("✓ MVP архитектура инициализирована!");
@@ -126,7 +122,6 @@ namespace Presenter
                 Console.WriteLine();
                 Console.WriteLine("Запуск WinForms приложения...");
 
-                // Запуск приложения
                 Application.Run(mainForm);
             }
             catch (Exception ex)
@@ -148,7 +143,6 @@ namespace Presenter
             Console.WriteLine("Запуск консольного приложения...");
             Console.WriteLine();
 
-            // Выбор ORM провайдера
             Console.WriteLine("Выберите провайдер данных:");
             Console.WriteLine("1. Entity Framework Core");
             Console.WriteLine("2. Dapper");
@@ -160,7 +154,6 @@ namespace Presenter
             Console.WriteLine($"Выбран провайдер: {(useEF ? "Entity Framework" : "Dapper")}");
             Console.WriteLine();
 
-            // Выбор стратегии ценообразования
             Console.WriteLine("Выберите стратегию ценообразования:");
             Console.WriteLine("1. Стандартная (цена × часы)");
             Console.WriteLine("2. Динамическая (время суток, день недели, сезон, праздники)");
@@ -174,14 +167,12 @@ namespace Presenter
 
             try
             {
-                // Настройка DI контейнера через Console проект
                 var config = new ConsoleApp.AppConfiguration();
                 var di = new ConsoleApp.DependencyContainer(config, useEF, useDynamicPricing);
 
                 Console.WriteLine("Инициализация завершена!");
                 Console.WriteLine();
 
-                // Запуск консольного меню из Console проекта
                 var menu = new ConsoleApp.MenuController(di.CarService, di.PromoService);
                 menu.Run();
             }

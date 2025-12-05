@@ -1,16 +1,10 @@
-using BussinessLogic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BussinessLogic.Dto;
-using AIS.Controllers;
-using AIS.Forms;
 using Shared;
 
 namespace AIS
@@ -21,10 +15,6 @@ namespace AIS
     /// </summary>
     public partial class MainForm : Form, IMainView
     {
-        private readonly MainFormController? _controller;
-        private readonly DependencyContainer? _dependencyContainer;
-
-        // События для Presenter (MVP)
         public event EventHandler ViewLoaded;
         public event EventHandler AddCarRequested;
         public event EventHandler<int> EditCarRequested;
@@ -36,28 +26,11 @@ namespace AIS
         public event EventHandler ImportRequested;
         public event EventHandler<IEnumerable<int>> ExportRequested;
 
-        /// <summary>
-        /// Инициализирует новый экземпляр главной формы с контроллером.
-        /// </summary>
-        /// <param name="controller">Контроллер для взаимодействия с бизнес-логикой.</param>
-        /// <param name="dependencyContainer">Контейнер зависимостей для доступа к сервисам.</param>
-        public MainForm(MainFormController controller, DependencyContainer dependencyContainer)
-        {
-            InitializeComponent();
-            _controller = controller;
-            _dependencyContainer = dependencyContainer;
-        }
-
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // В MVP режиме (когда _controller == null) данные загружает Presenter
-            if (_controller != null)
-            {
-                RefreshCarsList();
-            }
             ConfigureDataGridView();
             UpdatePricingStrategyLabel();
-            ViewLoaded?.Invoke(this, EventArgs.Empty); // MVP событие
+            ViewLoaded?.Invoke(this, EventArgs.Empty); 
         }
 
         private void ConfigureDataGridView()
@@ -153,273 +126,53 @@ namespace AIS
             });
         }
 
-        private void RefreshCarsList()
-        {
-            // В MVP режиме этот метод не используется (данные загружает Presenter)
-            if (_controller == null) return;
-
-            try
-            {
-                var carsForDisplay = _controller.GetCarsForDisplay();
-                var items = new List<CarListItemDto>(carsForDisplay ?? Enumerable.Empty<CarListItemDto>());
-
-                if (!string.IsNullOrWhiteSpace(textBoxSearch.Text))
-                {
-                    var searchTerm = textBoxSearch.Text.ToLower();
-                    items = items.Where(c =>
-                        c.Brand.ToLower().Contains(searchTerm) ||
-                        c.Model.ToLower().Contains(searchTerm) ||
-                        c.LicensePlate.ToLower().Contains(searchTerm)
-                    ).ToList();
-                }
-
-                dataGridViewCars.DataSource = new BindingList<CarListItemDto>(items);
-                UpdateStatusBar(items);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Ошибка при обновлении списка: {ex.Message}",
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void UpdateStatusBar(List<CarListItemDto> cars)
-        {
-            try
-            {
-                int total = cars.Count;
-                int availableCount = cars.Count(c => c.StatusText == "Свободен");
-                int rentedCount = cars.Count(c => c.StatusText == "В аренде");
-                int maintenanceCount = cars.Count(c => c.StatusText == "На тех. обслуживании");
-
-                toolStripStatusLabel.Text =
-                    $"Всего: {total} | Свбободных: {availableCount} | В аренде:  {rentedCount} | На тех. обслуживании: {maintenanceCount}";
-            }
-            catch (Exception ex)
-            {
-                toolStripStatusLabel.Text = $"Ошибка: {ex.Message}";
-            }
-        }
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            // В MVP режиме используется событие AddCarRequested
-            if (_controller == null)
-            {
-                AddCarRequested?.Invoke(this, EventArgs.Empty);
-                return;
-            }
-
-            using (var addForm = new CarEditForm())
-            {
-                if (addForm.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        _controller.CreateCar(
-                            addForm.Brand,
-                            addForm.Model,
-                            addForm.LicensePlate,
-                            addForm.Year,
-                            addForm.Mileage,
-                            addForm.Price
-                        );
-                        RefreshCarsList();
-                        MessageBox.Show("Автомобиль успешно добавлен!", "Успех",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    catch (ArgumentException ex)
-                    {
-                        MessageBox.Show($"Ошибка при добавлении: {ex.Message}", "Ошибка",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
+            AddCarRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void buttonEdit_Click(object sender, EventArgs e)
         {
-            // В MVP режиме используется событие EditCarRequested
-            if (_controller == null)
-            {
-                var carId = GetSelectedCarId();
-                if (carId.HasValue)
-                    EditCarRequested?.Invoke(this, carId.Value);
-                return;
-            }
-
-            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
-            {
-                int carId = selectedCar.Id;
-
-                var currentValues = _controller.GetCarValuesForEdit(carId);
-                if (currentValues == null)
-                {
-                    MessageBox.Show("Автомобиль не найден!", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                using (var editForm = new CarEditForm(
-                    (string)currentValues[0],
-                    (string)currentValues[1],
-                    (string)currentValues[2],
-                    (int)currentValues[3],
-                    (int)currentValues[4],
-                    (decimal)currentValues[5],
-                    (int)currentValues[6]
-                ))
-                {
-                    if (editForm.ShowDialog() == DialogResult.OK)
-                    {
-                        try
-                        {
-                            if (_controller.UpdateCarDetails(carId, editForm.Brand, editForm.Model,
-                                editForm.LicensePlate, editForm.Year, editForm.Mileage, editForm.Price, editForm.Status))
-                            {
-                                RefreshCarsList();
-                                MessageBox.Show("Данные автомобиля успешно обновлены!", "Успех",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            }
-                            else
-                            {
-                                MessageBox.Show("Не удалось обновить автомобиль. Проверьте уникальность гос. номера.",
-                                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                        }
-                        catch (ArgumentException ex)
-                        {
-                            MessageBox.Show($"Ошибка при обновлении: {ex.Message}", "Ошибка",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, выберите автомобиль для редактирования.", "Информация",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            var carId = GetSelectedCarId();
+            if (carId.HasValue)
+                EditCarRequested?.Invoke(this, carId.Value);
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            // В MVP режиме используется событие DeleteCarRequested
-            if (_controller == null)
-            {
-                var carId = GetSelectedCarId();
-                if (carId.HasValue)
-                    DeleteCarRequested?.Invoke(this, carId.Value);
-                return;
-            }
-
-            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
-            {
-                int carId = selectedCar.Id;
-                string carInfo = $"{selectedCar.Brand} {selectedCar.Model}";
-
-                var result = MessageBox.Show(
-                   $"Вы уверены, что хотите удалить автомобиль '{carInfo}'?",
-                   "Подтверждение удаления",
-                   MessageBoxButtons.YesNo,
-                   MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
-                {
-                    if (_controller.DeleteCar(carId))
-                    {
-                        RefreshCarsList();
-                        MessageBox.Show("Автомобиль успешно удален!", "Успех",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Не удалось удалить автомобиль. Возможно, он арендован.",
-                            "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, выберите автомобиль для удаления.", "Информация",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            var carId = GetSelectedCarId();
+            if (carId.HasValue)
+                DeleteCarRequested?.Invoke(this, carId.Value);
         }
 
         private void buttonRent_Click(object sender, EventArgs e)
         {
-            // В MVP режиме используется событие RentCarRequested
-            if (_controller == null)
-            {
-                var carId = GetSelectedCarId();
-                if (carId.HasValue)
-                    RentCarRequested?.Invoke(this, carId.Value);
-                return;
-            }
-
-            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
-            {
-                int carId = selectedCar.Id;
-
-                if (_controller.RentCar(carId))
-                {
-                    RefreshCarsList();
-                    MessageBox.Show("Автомобиль успешно арендован!", "Успех",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show("Не удалось арендовать автомобиль. Возможно, он уже арендован или недоступен.",
-                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, выберите автомобиль для аренды.", "Информация",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            var carId = GetSelectedCarId();
+            if (carId.HasValue)
+                RentCarRequested?.Invoke(this, carId.Value);
         }
 
         private void buttonCalculate_Click(object sender, EventArgs e)
         {
-            // В MVP режиме используется событие CalculateCostRequested
-            if (_controller == null)
-            {
-                var carId = GetSelectedCarId();
-                if (carId.HasValue)
-                    CalculateCostRequested?.Invoke(this, carId.Value);
-                return;
-            }
-
-            if (dataGridViewCars.CurrentRow?.DataBoundItem is CarListItemDto selectedCar)
-            {
-                int carId = selectedCar.Id;
-
-                using (var calcForm = new CalculateCostForm(carId, _controller.CreateCalculateCostFormController()))
-                {
-                    calcForm.ShowDialog();
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, выберите автомобиль для расчета стоимости.", "Информация",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            var carId = GetSelectedCarId();
+            if (carId.HasValue)
+                CalculateCostRequested?.Invoke(this, carId.Value);
         }
 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
-            RefreshCarsList();
+            RefreshRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
-            RefreshCarsList();
+            SearchTextChanged?.Invoke(this, textBoxSearch.Text);
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            RefreshCarsList();
+            SearchTextChanged?.Invoke(this, textBoxSearch.Text);
         }
 
         private void dataGridViewCars_SelectionChanged(object sender, EventArgs e)
@@ -447,176 +200,19 @@ namespace AIS
 
         private void buttonImport_Click(object sender, EventArgs e)
         {
-            // В MVP режиме используется событие ImportRequested
-            if (_dependencyContainer == null)
-            {
-                ImportRequested?.Invoke(this, EventArgs.Empty);
-                return;
-            }
-
-            try
-            {
-                var importService = _dependencyContainer.ImportService;
-                using var importForm = new CarImportForm(importService);
-
-                if (importForm.ShowDialog() == DialogResult.OK)
-                {
-                    RefreshCarsList();
-                    MessageBox.Show(
-                        "Список автомобилей обновлен после импорта",
-                        "Импорт завершен",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    $"Ошибка при открытии формы импорта:\n{ex.Message}",
-                    "Ошибка",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
+            ImportRequested?.Invoke(this, EventArgs.Empty);
         }
 
         private void buttonExport_Click(object sender, EventArgs e)
         {
-            // В MVP режиме используется событие ExportRequested
-            if (_dependencyContainer == null)
-            {
-                var selectedIds = GetSelectedCarIds();
-                ExportRequested?.Invoke(this, selectedIds);
-                return;
-            }
-
-            try
-            {
-                using var dialog = new SaveFileDialog
-                {
-                    Filter = "CSV файлы (*.csv)|*.csv|JSON файлы (*.json)|*.json",
-                    Title = "Экспорт автомобилей",
-                    FileName = $"cars_export_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}"
-                };
-
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    var importService = _dependencyContainer.ImportService;
-                    int exportedCount = 0;
-
-                    if (dataGridViewCars.SelectedRows.Count > 0)
-                    {
-                        var confirmResult = MessageBox.Show(
-                            $"Экспортировать только выбранные автомобили ({dataGridViewCars.SelectedRows.Count} шт.)?\n\n" +
-                            "Да - экспорт выбранных\n" +
-                            "Нет - экспорт всех автомобилей",
-                            "Выбор данных для экспорта",
-                            MessageBoxButtons.YesNoCancel,
-                            MessageBoxIcon.Question
-                        );
-
-                        if (confirmResult == DialogResult.Cancel)
-                            return;
-
-                        if (confirmResult == DialogResult.Yes)
-                        {
-                            var selectedIds = dataGridViewCars.SelectedRows
-                                .Cast<DataGridViewRow>()
-                                .Select(r => ((CarListItemDto)r.DataBoundItem).Id)
-                                .ToList();
-
-                            if (dialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
-                                exportedCount = importService.ExportToCsv(selectedIds, dialog.FileName);
-                            else
-                                exportedCount = importService.ExportToJson(selectedIds, dialog.FileName);
-                        }
-                        else
-                        {
-                            if (dialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
-                                exportedCount = importService.ExportToCsv(dialog.FileName);
-                            else
-                                exportedCount = importService.ExportToJson(dialog.FileName);
-                        }
-                    }
-                    else
-                    {
-                        if (dialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
-                            exportedCount = importService.ExportToCsv(dialog.FileName);
-                        else
-                            exportedCount = importService.ExportToJson(dialog.FileName);
-                    }
-
-                    MessageBox.Show(
-                        $"Экспорт выполнен успешно!\n\n" +
-                        $"Экспортировано автомобилей: {exportedCount}\n" +
-                        $"Файл сохранен: {dialog.FileName}",
-                        "Экспорт завершен",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-
-                    var openFolderResult = MessageBox.Show(
-                        "Открыть папку с экспортированным файлом?",
-                        "Открыть папку",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question
-                    );
-
-                    if (openFolderResult == DialogResult.Yes)
-                    {
-                        System.Diagnostics.Process.Start("explorer.exe", $"/select,\"{dialog.FileName}\"");
-                    }
-                }
-            }
-            catch (InvalidOperationException ex)
-            {
-                MessageBox.Show(
-                    ex.Message,
-                    "Невозможно выполнить экспорт",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    $"Ошибка при экспорте данных:\n{ex.Message}",
-                    "Ошибка",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
+            var selectedIds = GetSelectedCarIds();
+            ExportRequested?.Invoke(this, selectedIds);
         }
 
         private void UpdatePricingStrategyLabel()
         {
-            if (_dependencyContainer != null)
-            {
-                var carService = _dependencyContainer.CarService;
-                var carServiceType = carService.GetType();
-                var strategyField = carServiceType.GetField("_pricingStrategy",
-                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-
-                if (strategyField != null)
-                {
-                    var strategy = strategyField.GetValue(carService);
-                    if (strategy is BussinessLogic.Pricing.DynamicPricingStrategy dynamicStrategy)
-                    {
-                        var conditions = dynamicStrategy.GetCurrentConditionsDescription();
-                        labelPricingStrategy.Text = conditions;
-                        labelPricingStrategy.ForeColor = Color.OrangeRed;
-                    }
-                    else
-                    {
-                        labelPricingStrategy.Text = "💵 Стандартное ценообразование";
-                        labelPricingStrategy.ForeColor = Color.DarkGreen;
-                    }
-                }
-            }
         }
 
-        // ===== Реализация интерфейса IMainView для MVP =====
 
         /// <summary>
         /// Конструктор без параметров для MVP.

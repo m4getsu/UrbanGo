@@ -29,7 +29,6 @@ namespace Presenter
             SubscribeToViewEvents();
             SubscribeToModelEvents();
 
-            // Если редактируем существующий автомобиль, загружаем его данные
             if (_carId.HasValue)
             {
                 LoadCarData(_carId.Value);
@@ -80,7 +79,6 @@ namespace Presenter
             }
         }
 
-        // Обработчики событий View
 
         private void OnSaveRequested(object? sender, EventArgs e)
         {
@@ -90,7 +88,6 @@ namespace Presenter
             {
                 if (_carId.HasValue)
                 {
-                    // Обновление существующего автомобиля
                     bool success = _model.UpdateCarDetails(
                         _carId.Value,
                         _view.Brand,
@@ -113,7 +110,6 @@ namespace Presenter
                 }
                 else
                 {
-                    // Создание нового автомобиля
                     var car = _model.CreateCar(
                         _view.Brand,
                         _view.Model,
@@ -131,7 +127,6 @@ namespace Presenter
             }
             catch (ArgumentException ex)
             {
-                // Ошибки валидации
                 _view.ShowFieldError("General", ex.Message);
             }
             catch (Exception ex)
@@ -145,7 +140,6 @@ namespace Presenter
             _view.CloseWithCancel();
         }
 
-        // Обработчики событий Model
 
         private void OnValidationPerformed(object? sender, ValidationEventArgs e)
         {

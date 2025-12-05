@@ -18,7 +18,6 @@ namespace AIS
     /// </summary>
     public partial class CarEditForm : Form, ICarEditView
     {
-        // События для MVP
         public event EventHandler? SaveRequested;
         public event EventHandler? CancelRequested;
 
@@ -111,7 +110,6 @@ namespace AIS
                 Price = numericUpDownPrice.Value;
                 Status = comboBoxStatus.SelectedIndex;
 
-                // Генерируем событие для MVP
                 SaveRequested?.Invoke(this, EventArgs.Empty);
 
                 DialogResult = DialogResult.OK;
@@ -121,7 +119,6 @@ namespace AIS
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            // Генерируем событие для MVP
             CancelRequested?.Invoke(this, EventArgs.Empty);
 
             DialogResult = DialogResult.Cancel;
@@ -206,7 +203,6 @@ namespace AIS
             }
         }
 
-        // Реализация методов ICarEditView
 
         /// <summary>
         /// Устанавливает данные автомобиля для редактирования.

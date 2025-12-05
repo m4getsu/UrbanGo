@@ -31,6 +31,11 @@ namespace Shared
         /// </summary>
         event EventHandler CloseRequested;
 
+        /// <summary>
+        /// Событие запроса отображения детализации расчета.
+        /// </summary>
+        event EventHandler ShowDetailsRequested;
+
         // Свойства
 
         /// <summary>

@@ -37,6 +37,7 @@ namespace Presenter
             _view.HoursChanged += OnHoursChanged;
             _view.ApplyPromoCodeRequested += OnApplyPromoCodeRequested;
             _view.CloseRequested += OnCloseRequested;
+            _view.ShowDetailsRequested += OnShowDetailsRequested;
         }
 
         /// <summary>
@@ -47,7 +48,6 @@ namespace Presenter
             _model.ErrorOccurred += OnModelErrorOccurred;
         }
 
-        // Обработчики событий View
 
         private void OnViewLoaded(object? sender, EventArgs e)
         {
@@ -70,7 +70,6 @@ namespace Presenter
 
             try
             {
-                // Рассчитываем стоимость без промокода и с промокодом
                 decimal originalCost = _model.CalculateRentalCost(_view.CarId, _view.Hours);
                 decimal discountedCost = _model.CalculateRentalCost(_view.CarId, _view.Hours, promoCode);
 
@@ -104,14 +103,29 @@ namespace Presenter
             _view.Close();
         }
 
-        // Обработчики событий Model
+        private void OnShowDetailsRequested(object? sender, EventArgs e)
+        {
+            try
+            {
+                string breakdown = _model.GetPricingBreakdown(_view.Hours);
+                System.Windows.Forms.MessageBox.Show(
+                    breakdown,
+                    "Детализация расчета стоимости",
+                    System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                _view.ShowError($"Ошибка получения детализации: {ex.Message}");
+            }
+        }
+
 
         private void OnModelErrorOccurred(object? sender, ModelEventArgs e)
         {
             _view.ShowError(e.Message);
         }
 
-        // Вспомогательные методы
 
         /// <summary>
         /// Загружает информацию об автомобиле.
