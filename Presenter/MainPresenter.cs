@@ -3,46 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Shared;
-using Model;
-using Presenter.Events;
+using BussinessLogic;
+using BussinessLogic.Services.Import;
 
 namespace Presenter
 {
     /// <summary>
     /// Presenter для главного представления.
-    /// Связывает IMainView с CarSharingModel, обрабатывает события и управляет бизнес-логикой.
+    /// Связывает IMainView с бизнес-сервисами, обрабатывает события и управляет бизнес-логикой.
     /// </summary>
     public class MainPresenter
     {
         private readonly IMainView _view;
-        private readonly CarSharingModel _model;
+        private readonly ICarService _carService;
+        private readonly ICarImportService _exportService;
         private readonly Func<ICarEditView> _carEditViewFactory;
         private readonly Func<int, ICalculateCostView> _calculateCostViewFactory;
         private readonly Func<ICarImportView> _carImportViewFactory;
 
         /// <summary>
-        /// Инициализирует presenter с представлением и моделью.
+        /// Инициализирует presenter с представлением и сервисами.
         /// </summary>
         /// <param name="view">Главное представление.</param>
-        /// <param name="model">Модель системы.</param>
+        /// <param name="carService">Сервис управления автомобилями.</param>
+        /// <param name="exportService">Сервис экспорта данных.</param>
         /// <param name="carEditViewFactory">Фабрика для создания представления редактирования.</param>
         /// <param name="calculateCostViewFactory">Фабрика для создания представления расчета.</param>
         /// <param name="carImportViewFactory">Фабрика для создания представления импорта.</param>
         public MainPresenter(
             IMainView view,
-            CarSharingModel model,
+            ICarService carService,
+            ICarImportService exportService,
             Func<ICarEditView> carEditViewFactory,
             Func<int, ICalculateCostView> calculateCostViewFactory,
             Func<ICarImportView> carImportViewFactory)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _carService = carService ?? throw new ArgumentNullException(nameof(carService));
+            _exportService = exportService ?? throw new ArgumentNullException(nameof(exportService));
             _carEditViewFactory = carEditViewFactory ?? throw new ArgumentNullException(nameof(carEditViewFactory));
             _calculateCostViewFactory = calculateCostViewFactory ?? throw new ArgumentNullException(nameof(calculateCostViewFactory));
             _carImportViewFactory = carImportViewFactory ?? throw new ArgumentNullException(nameof(carImportViewFactory));
 
             SubscribeToViewEvents();
-            SubscribeToModelEvents();
         }
 
         /// <summary>
@@ -62,16 +65,6 @@ namespace Presenter
             _view.ExportRequested += OnExportRequested;
         }
 
-        /// <summary>
-        /// Подписка на события модели.
-        /// </summary>
-        private void SubscribeToModelEvents()
-        {
-            _model.CarOperationPerformed += OnCarOperationPerformed;
-            _model.ErrorOccurred += OnModelErrorOccurred;
-            _model.ImportExportPerformed += OnImportExportPerformed;
-        }
-
 
 
         private void OnViewLoaded(object? sender, EventArgs e)
@@ -82,7 +75,7 @@ namespace Presenter
         private void OnAddCarRequested(object? sender, EventArgs e)
         {
             var editView = _carEditViewFactory();
-            var editPresenter = new CarEditPresenter(editView, _model, null);
+            var editPresenter = new CarEditPresenter(editView, _carService, null);
 
             if (editView is Form form)
             {
@@ -94,7 +87,7 @@ namespace Presenter
 
         private void OnEditCarRequested(object? sender, int carId)
         {
-            var carValues = _model.GetCarValuesForEdit(carId);
+            var carValues = _carService.GetCarValuesForEdit(carId);
             if (carValues == null)
             {
                 _view.ShowError("Автомобиль не найден!");
@@ -102,7 +95,7 @@ namespace Presenter
             }
 
             var editView = _carEditViewFactory();
-            var editPresenter = new CarEditPresenter(editView, _model, carId);
+            var editPresenter = new CarEditPresenter(editView, _carService, carId);
 
             if (editView is Form form)
             {
@@ -114,7 +107,7 @@ namespace Presenter
 
         private void OnDeleteCarRequested(object? sender, int carId)
         {
-            var car = _model.GetCar(carId);
+            var car = _carService.GetCar(carId);
             if (car == null)
             {
                 _view.ShowError("Автомобиль не найден!");
@@ -123,7 +116,7 @@ namespace Presenter
 
             if (_view.ConfirmAction($"Вы уверены, что хотите удалить автомобиль '{car.Brand} {car.Model}'?"))
             {
-                if (_model.DeleteCar(carId))
+                if (_carService.DeleteCar(carId))
                 {
                     _view.ShowInfo("Автомобиль успешно удален!");
                     LoadCarsList();
@@ -137,7 +130,7 @@ namespace Presenter
 
         private void OnRentCarRequested(object? sender, int carId)
         {
-            if (_model.RentCar(carId))
+            if (_carService.RentCar(carId))
             {
                 _view.ShowInfo("Автомобиль успешно арендован!");
                 LoadCarsList();
@@ -151,7 +144,7 @@ namespace Presenter
         private void OnCalculateCostRequested(object? sender, int carId)
         {
             var calculateView = _calculateCostViewFactory(carId);
-            var calculatePresenter = new CalculateCostPresenter(calculateView, _model);
+            var calculatePresenter = new CalculateCostPresenter(calculateView, _carService);
 
             if (calculateView is Form form)
             {
@@ -172,7 +165,6 @@ namespace Presenter
         private void OnImportRequested(object? sender, EventArgs e)
         {
             var importView = _carImportViewFactory();
-            var importPresenter = new CarImportPresenter(importView, _model);
 
             if (importView is Form form)
             {
@@ -198,17 +190,17 @@ namespace Presenter
                         var carIdsList = carIds?.ToList();
                         int exportedCount;
 
-                        if (dialog.FilterIndex == 1) 
+                        if (dialog.FilterIndex == 1)
                         {
                             exportedCount = carIdsList != null && carIdsList.Any()
-                                ? _model.ExportToCsv(carIdsList, dialog.FileName)
-                                : _model.ExportToCsv(dialog.FileName);
+                                ? _exportService.ExportToCsv(carIdsList, dialog.FileName)
+                                : _exportService.ExportToCsv(dialog.FileName);
                         }
                         else
                         {
                             exportedCount = carIdsList != null && carIdsList.Any()
-                                ? _model.ExportToJson(carIdsList, dialog.FileName)
-                                : _model.ExportToJson(dialog.FileName);
+                                ? _exportService.ExportToJson(carIdsList, dialog.FileName)
+                                : _exportService.ExportToJson(dialog.FileName);
                         }
 
                         _view.ShowInfo($"Успешно экспортировано {exportedCount} автомобилей в файл:\n{dialog.FileName}");
@@ -222,31 +214,12 @@ namespace Presenter
         }
 
 
-        private void OnCarOperationPerformed(object? sender, CarOperationEventArgs e)
-        {
-            if (!e.IsSuccess)
-            {
-                _view.ShowError($"Операция '{e.OperationType}' не выполнена: {e.Details}");
-            }
-        }
-
-        private void OnModelErrorOccurred(object? sender, ModelEventArgs e)
-        {
-            _view.ShowError(e.Message);
-        }
-
-        private void OnImportExportPerformed(object? sender, ImportExportEventArgs e)
-        {
-            _view.ShowInfo(e.Message);
-        }
-
-
         /// <summary>
         /// Загружает и отображает список автомобилей.
         /// </summary>
         private void LoadCarsList(string? searchText = null)
         {
-            var cars = _model.GetCarsForDisplay();
+            var cars = _carService.GetCarsForDisplay();
 
             if (!string.IsNullOrWhiteSpace(searchText))
             {

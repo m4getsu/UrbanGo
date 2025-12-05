@@ -88,10 +88,8 @@ namespace Presenter
                 var kernel = new StandardKernel(new BussinessLogic.SimpleConfigModule(useEF, connectionString, useDynamicPricing));
 
                 var carService = kernel.Get<ICarService>();
-                var promoService = kernel.Get<IPromoService>();
+                var exportService = kernel.Get<BussinessLogic.Services.Import.ICarImportService>();
                 var importService = kernel.Get<BussinessLogic.Services.Import.ICarImportService>();
-
-                var model = new CarSharingModel(carService, promoService, importService);
 
                 Console.WriteLine("Инициализация завершена. Открытие главной формы...");
                 Console.WriteLine();
@@ -105,20 +103,20 @@ namespace Presenter
                 Func<int, ICalculateCostView> calcFactory = (carId) =>
                 {
                     var calcView = new CalculateCostForm(carId);
-                    var calcPresenter = new CalculateCostPresenter(calcView, model);
+                    var calcPresenter = new CalculateCostPresenter(calcView, carService);
                     return calcView;
                 };
                 Func<ICarImportView> importFactory = () =>
                 {
                     var importView = new CarImportForm();
-                    var importPresenter = new CarImportPresenter(importView, model);
+                    var importPresenter = new CarImportPresenter(importView, importService);
                     return importView;
                 };
 
-                var mainPresenter = new MainPresenter(mainForm, model, carEditFactory, calcFactory, importFactory);
+                var mainPresenter = new MainPresenter(mainForm, carService, exportService, carEditFactory, calcFactory, importFactory);
 
                 Console.WriteLine("✓ MVP архитектура инициализирована!");
-                Console.WriteLine("✓ MainPresenter создан и подписан на события View и Model");
+                Console.WriteLine("✓ MainPresenter создан и подписан на события View");
                 Console.WriteLine();
                 Console.WriteLine("Запуск WinForms приложения...");
 

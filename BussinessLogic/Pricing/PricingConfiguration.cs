@@ -120,7 +120,7 @@ namespace BussinessLogic.Pricing
                     { new DateTime(DateTime.Now.Year, 1, 6), 1.5m },  
                     { new DateTime(DateTime.Now.Year, 1, 7), 1.5m },  
                     { new DateTime(DateTime.Now.Year, 1, 8), 1.3m },  
-
+                        
                     { new DateTime(DateTime.Now.Year, 2, 23), 1.5m }, 
                     { new DateTime(DateTime.Now.Year, 3, 8), 1.5m },  
                     { new DateTime(DateTime.Now.Year, 5, 1), 1.5m },  

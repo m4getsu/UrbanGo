@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using Shared;
-using Model;
-using Presenter.Events;
 using BussinessLogic.Services.Import;
 
 namespace Presenter
@@ -14,20 +12,19 @@ namespace Presenter
     public class CarImportPresenter
     {
         private readonly ICarImportView _view;
-        private readonly CarSharingModel _model;
+        private readonly ICarImportService _importService;
 
         /// <summary>
         /// Инициализирует presenter для импорта.
         /// </summary>
         /// <param name="view">Представление импорта.</param>
-        /// <param name="model">Модель системы.</param>
-        public CarImportPresenter(ICarImportView view, CarSharingModel model)
+        /// <param name="importService">Сервис импорта автомобилей.</param>
+        public CarImportPresenter(ICarImportView view, ICarImportService importService)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _importService = importService ?? throw new ArgumentNullException(nameof(importService));
 
             SubscribeToViewEvents();
-            SubscribeToModelEvents();
         }
 
         /// <summary>
@@ -39,16 +36,6 @@ namespace Presenter
             _view.ValidateRequested += OnValidateRequested;
             _view.ImportRequested += OnImportRequested;
             _view.CloseRequested += OnCloseRequested;
-        }
-
-        /// <summary>
-        /// Подписка на события модели.
-        /// </summary>
-        private void SubscribeToModelEvents()
-        {
-            _model.ValidationPerformed += OnValidationPerformed;
-            _model.ImportExportPerformed += OnImportExportPerformed;
-            _model.ErrorOccurred += OnModelErrorOccurred;
         }
 
 
@@ -84,7 +71,7 @@ namespace Presenter
             try
             {
                 var format = DetermineImportFormat(_view.SelectedFilePath);
-                var result = _model.ValidateImportFile(_view.SelectedFilePath, format);
+                var result = _importService.ValidateImportFile(_view.SelectedFilePath, format);
 
                 bool isValid = result.FailedRecords == 0;
                 string message = isValid
@@ -112,8 +99,8 @@ namespace Presenter
             {
                 var format = DetermineImportFormat(_view.SelectedFilePath);
                 var result = format == ImportFormat.Csv
-                    ? _model.ImportFromCsv(_view.SelectedFilePath)
-                    : _model.ImportFromJson(_view.SelectedFilePath);
+                    ? _importService.ImportFromCsv(_view.SelectedFilePath)
+                    : _importService.ImportFromJson(_view.SelectedFilePath);
 
                 string errors = result.Errors.Any()
                     ? string.Join("\n", result.Errors.Take(10).Select(e => $"Строка {e.LineNumber}: {e.ErrorMessage}"))
@@ -139,20 +126,6 @@ namespace Presenter
 
         private void OnCloseRequested(object? sender, EventArgs e)
         {
-        }
-
-
-        private void OnValidationPerformed(object? sender, ValidationEventArgs e)
-        {
-        }
-
-        private void OnImportExportPerformed(object? sender, ImportExportEventArgs e)
-        {
-        }
-
-        private void OnModelErrorOccurred(object? sender, ModelEventArgs e)
-        {
-            _view.ShowError(e.Message);
         }
 
 

@@ -1,7 +1,6 @@
 using System;
 using Shared;
-using Model;
-using Presenter.Events;
+using BussinessLogic;
 
 namespace Presenter
 {
@@ -11,21 +10,20 @@ namespace Presenter
     public class CalculateCostPresenter
     {
         private readonly ICalculateCostView _view;
-        private readonly CarSharingModel _model;
+        private readonly ICarService _carService;
         private string? _currentPromoCode;
 
         /// <summary>
         /// Инициализирует presenter для расчета стоимости.
         /// </summary>
         /// <param name="view">Представление расчета.</param>
-        /// <param name="model">Модель системы.</param>
-        public CalculateCostPresenter(ICalculateCostView view, CarSharingModel model)
+        /// <param name="carService">Сервис управления автомобилями.</param>
+        public CalculateCostPresenter(ICalculateCostView view, ICarService carService)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _carService = carService ?? throw new ArgumentNullException(nameof(carService));
 
             SubscribeToViewEvents();
-            SubscribeToModelEvents();
         }
 
         /// <summary>
@@ -38,14 +36,6 @@ namespace Presenter
             _view.ApplyPromoCodeRequested += OnApplyPromoCodeRequested;
             _view.CloseRequested += OnCloseRequested;
             _view.ShowDetailsRequested += OnShowDetailsRequested;
-        }
-
-        /// <summary>
-        /// Подписка на события модели.
-        /// </summary>
-        private void SubscribeToModelEvents()
-        {
-            _model.ErrorOccurred += OnModelErrorOccurred;
         }
 
 
@@ -70,8 +60,8 @@ namespace Presenter
 
             try
             {
-                decimal originalCost = _model.CalculateRentalCost(_view.CarId, _view.Hours);
-                decimal discountedCost = _model.CalculateRentalCost(_view.CarId, _view.Hours, promoCode);
+                decimal originalCost = _carService.CalculateRentalCost(_view.CarId, _view.Hours);
+                decimal discountedCost = _carService.CalculateRentalCost(_view.CarId, _view.Hours, promoCode);
 
                 if (discountedCost < originalCost)
                 {
@@ -107,7 +97,7 @@ namespace Presenter
         {
             try
             {
-                string breakdown = _model.GetPricingBreakdown(_view.Hours);
+                string breakdown = _carService.GetPricingBreakdown(_view.Hours);
                 System.Windows.Forms.MessageBox.Show(
                     breakdown,
                     "Детализация расчета стоимости",
@@ -121,12 +111,6 @@ namespace Presenter
         }
 
 
-        private void OnModelErrorOccurred(object? sender, ModelEventArgs e)
-        {
-            _view.ShowError(e.Message);
-        }
-
-
         /// <summary>
         /// Загружает информацию об автомобиле.
         /// </summary>
@@ -134,7 +118,7 @@ namespace Presenter
         {
             try
             {
-                var carInfo = _model.GetCarForCalculation(_view.CarId);
+                var carInfo = _carService.GetCarForCalculation(_view.CarId);
 
                 if (carInfo != null)
                 {
@@ -160,7 +144,7 @@ namespace Presenter
         {
             try
             {
-                decimal cost = _model.CalculateRentalCost(_view.CarId, _view.Hours, _currentPromoCode);
+                decimal cost = _carService.CalculateRentalCost(_view.CarId, _view.Hours, _currentPromoCode);
                 _view.DisplayTotalCost(cost);
             }
             catch (ArgumentException ex)

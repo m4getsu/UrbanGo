@@ -1,7 +1,6 @@
 using System;
 using Shared;
-using Model;
-using Presenter.Events;
+using BussinessLogic;
 
 namespace Presenter
 {
@@ -11,23 +10,22 @@ namespace Presenter
     public class CarEditPresenter
     {
         private readonly ICarEditView _view;
-        private readonly CarSharingModel _model;
+        private readonly ICarService _carService;
         private readonly int? _carId;
 
         /// <summary>
         /// Инициализирует presenter для редактирования существующего автомобиля.
         /// </summary>
         /// <param name="view">Представление редактирования.</param>
-        /// <param name="model">Модель системы.</param>
+        /// <param name="carService">Сервис управления автомобилями.</param>
         /// <param name="carId">ID редактируемого автомобиля (null для создания нового).</param>
-        public CarEditPresenter(ICarEditView view, CarSharingModel model, int? carId)
+        public CarEditPresenter(ICarEditView view, ICarService carService, int? carId)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
-            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _carService = carService ?? throw new ArgumentNullException(nameof(carService));
             _carId = carId;
 
             SubscribeToViewEvents();
-            SubscribeToModelEvents();
 
             if (_carId.HasValue)
             {
@@ -45,20 +43,11 @@ namespace Presenter
         }
 
         /// <summary>
-        /// Подписка на события модели.
-        /// </summary>
-        private void SubscribeToModelEvents()
-        {
-            _model.ValidationPerformed += OnValidationPerformed;
-            _model.ErrorOccurred += OnModelErrorOccurred;
-        }
-
-        /// <summary>
         /// Загружает данные автомобиля для редактирования.
         /// </summary>
         private void LoadCarData(int carId)
         {
-            var carValues = _model.GetCarValuesForEdit(carId);
+            var carValues = _carService.GetCarValuesForEdit(carId);
 
             if (carValues != null && carValues.Length >= 7)
             {
@@ -88,7 +77,7 @@ namespace Presenter
             {
                 if (_carId.HasValue)
                 {
-                    bool success = _model.UpdateCarDetails(
+                    bool success = _carService.UpdateCarDetails(
                         _carId.Value,
                         _view.Brand,
                         _view.Model,
@@ -110,7 +99,7 @@ namespace Presenter
                 }
                 else
                 {
-                    var car = _model.CreateCar(
+                    var car = _carService.CreateCar(
                         _view.Brand,
                         _view.Model,
                         _view.LicensePlate,
@@ -138,23 +127,6 @@ namespace Presenter
         private void OnCancelRequested(object? sender, EventArgs e)
         {
             _view.CloseWithCancel();
-        }
-
-
-        private void OnValidationPerformed(object? sender, ValidationEventArgs e)
-        {
-            if (!e.IsValid)
-            {
-                foreach (var error in e.Errors)
-                {
-                    _view.ShowFieldError("General", error);
-                }
-            }
-        }
-
-        private void OnModelErrorOccurred(object? sender, ModelEventArgs e)
-        {
-            _view.ShowFieldError("General", e.Message);
         }
     }
 }
