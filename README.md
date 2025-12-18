@@ -1,11 +1,12 @@
 # 🚗 UrbanGo - Система управления каршерингом
 
-Современная система управления автопарком каршеринга, построенная по принципам **SOLID** с использованием **MVP-архитектуры**, **многослойной архитектуры**, **Dependency Injection (Ninject)** и поддержкой множественных ORM-провайдеров.
+Современная система управления автопарком каршеринга, построенная по принципам **SOLID** с использованием **MVP (WinForms)** и **MVVM (WPF)** архитектур, **многослойной архитектуры**, **Dependency Injection (Ninject)** и поддержкой множественных ORM-провайдеров.
 
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple)
 ![C#](https://img.shields.io/badge/C%23-12.0-blue)
-![Architecture](https://img.shields.io/badge/Architecture-MVP%20%2B%20N--Layer-green)
+![Architecture](https://img.shields.io/badge/Architecture-MVP%20%2B%20MVVM%20%2B%20N--Layer-green)
 ![SOLID](https://img.shields.io/badge/Principles-SOLID-orange)
+![UI](https://img.shields.io/badge/UI-WinForms%20%2B%20WPF-blue)
 
 ---
 
@@ -15,8 +16,9 @@
 
 ### 🎯 Ключевые возможности
 
-- ✅ **Чистая MVP-архитектура** - Presenter работает напрямую с бизнес-сервисами без промежуточных слоев
+- ✅ **Две архитектуры UI** - MVP для WinForms и MVVM для WPF с ViewModelFirst подходом
 - ✅ **Управление автопарком** - добавление, редактирование, удаление и просмотр автомобилей
+- ✅ **QR-коды автомобилей** - генерация QR-кодов с информацией об автомобиле (библиотека QRCoder 1.6.0)
 - ✅ **Система статусов** - отслеживание состояния каждого автомобиля (доступен, арендован, на обслуживании)
 - ✅ **Динамическое ценообразование** - стратегии расчета стоимости (стандартная и динамическая с учетом времени суток, дня недели, сезона и праздников)
 - ✅ **Детализация расчетов** - подробная информация о всех примененных коэффициентах ценообразования
@@ -24,18 +26,22 @@
 - ✅ **Импорт/Экспорт** - импорт автомобилей из CSV/JSON и экспорт в CSV/JSON (библиотека CsvHelper 30.0.1)
 - ✅ **Валидация данных** - проверка корректности вводимой информации и валидация перед импортом
 - ✅ **Логирование** - автоматическая запись всех операций в файл
-- ✅ **Два интерфейса** - WinForms (MVP) и консольное приложение
+- ✅ **Три интерфейса** - WinForms (MVP), WPF (MVVM) и консольное приложение
 - ✅ **Выбор ORM** - Entity Framework Core или Dapper (на выбор пользователя при запуске)
 
 ---
 
 ## 🏗️ Архитектура проекта
 
-Проект построен по принципу **MVP (Model-View-Presenter) + N-Layer Architecture** с использованием **SOLID принципов** и современных паттернов проектирования.
+Проект построен по принципу **MVP (WinForms) + MVVM (WPF) + N-Layer Architecture** с использованием **SOLID принципов** и современных паттернов проектирования.
 
-### 🎭 MVP-архитектура
+### 🎭 Две архитектуры UI
 
-**MVP (Model-View-Presenter)** - архитектурный паттерн, обеспечивающий полное разделение UI-логики от бизнес-логики.
+Проект демонстрирует два разных подхода к построению пользовательского интерфейса:
+
+#### 1. MVP (Model-View-Presenter) для WinForms
+
+**MVP** - архитектурный паттерн, обеспечивающий полное разделение UI-логики от бизнес-логики.
 
 ```
 ┌──────────────┐      События      ┌──────────────┐
@@ -55,7 +61,7 @@
                                     └──────────────┘
 ```
 
-**Компоненты MVP:**
+**Компоненты MVP (WinForms):**
 
 1. **View (IMainView, MainForm)** - отображение данных и генерация событий пользовательских действий
 2. **Presenter (MainPresenter, CarEditPresenter, CalculateCostPresenter, CarImportPresenter)** - обработка событий View, вызов бизнес-сервисов напрямую, обновление View
@@ -63,37 +69,96 @@
 4. **Model (Car, PromoCode)** - доменные модели данных
 5. **Shared (интерфейсы IView)** - решение проблемы циклических зависимостей между View и Presenter
 
+#### 2. MVVM (Model-View-ViewModel) для WPF
+
+**MVVM** - архитектурный паттерн для WPF с двусторонним биндингом данных.
+
+```
+┌──────────────┐     Data Binding    ┌──────────────┐
+│              │ ←──────────────────→ │              │
+│     View     │                      │  ViewModel   │
+│  (MainWindow)│                      │(MainViewModel)│
+└──────────────┘                      └──────────────┘
+                                             │
+                                             │ Вызовы методов
+                                             ↓
+                                      ┌──────────────┐
+                                      │Business Logic│
+                                      │  (Services)  │
+                                      │ ICarService  │
+                                      │IQRCodeService│
+                                      └──────────────┘
+```
+
+**Компоненты MVVM (WPF):**
+
+1. **View (MainWindow, CarEditWindow, CarQRWindow)** - XAML разметка с биндингами к ViewModel
+2. **ViewModel (MainViewModel, CarEditViewModel, CarQRViewModel)** - состояние UI и команды, наследуются от BaseViewModel с INotifyPropertyChanged
+3. **ViewManager** - управление жизненным циклом окон, связывание View с ViewModel через событие ViewModelReady
+4. **VMManager** - создание и инициализация ViewModel, Dependency Injection для сервисов
+5. **Commands (RelayCommand)** - реализация ICommand для обработки действий пользователя
+6. **ObservableDTO** - наблюдаемые объекты данных для биндинга (ObservableCarListItemDto, ObservableCarEditDto)
+7. **Business Services** - те же сервисы что и для MVP (ICarService, ICarImportService, IQRCodeService)
+
 ### 📁 Структура решения
 
 ```
 AIS/
-├── Presenter/                 # 🎯 MVP СЛОЙ - ГЛАВНАЯ ТОЧКА ВХОДА
+├── Presenter/                 # 🎯 MVP СЛОЙ (WinForms)
 │   ├── Program.cs             # 🚀 Основная точка входа (запускает WinForms или Console)
 │   ├── MainPresenter.cs       # Presenter главной формы
 │   ├── CarEditPresenter.cs    # Presenter формы редактирования
 │   ├── CalculateCostPresenter.cs # Presenter формы расчета стоимости
-│   └── CarImportPresenter.cs  # Presenter формы импорта
+│   ├── CarImportPresenter.cs  # Presenter формы импорта
+│   ├── BaseViewModel.cs       # Базовый класс для ViewModel (MVVM WPF)
+│   ├── VMManager.cs           # Менеджер жизненного цикла ViewModel
+│   ├── ViewModels/            # ViewModels для WPF MVVM
+│   │   ├── MainViewModel.cs   # ViewModel главного окна
+│   │   ├── CarEditViewModel.cs # ViewModel редактирования
+│   │   ├── CalculateCostViewModel.cs # ViewModel расчета
+│   │   ├── CarImportViewModel.cs # ViewModel импорта
+│   │   └── CarQRViewModel.cs  # ViewModel QR-кода
+│   ├── Commands/              # Commands для MVVM
+│   │   ├── IUndoableCommand.cs # Интерфейс отменяемых команд
+│   │   └── RelayCommand.cs    # Реализация ICommand
+│   ├── ObservableDTO/         # Observable объекты для WPF биндинга
+│   │   ├── ObservableCarListItemDto.cs
+│   │   ├── ObservableCarEditDto.cs
+│   │   └── Mappers/           # Маппинг DTO → ObservableDTO
+│   └── Events/                # События для ViewModelFirst
+│       └── ViewModelReadyEventArgs.cs
 │
-├── Shared/                    # Интерфейсы View (решение циклических зависимостей)
+├── ViewWPF/                   # 🎨 WPF VIEW (MVVM)
+│   ├── App.xaml.cs            # Главная точка входа WPF приложения
+│   ├── ViewManager.cs         # Менеджер окон (связывает ViewModel и View)
+│   ├── MainWindow.xaml        # Главное окно
+│   ├── MainWindow.xaml.cs     # Code-behind главного окна
+│   ├── CarEditWindow.xaml     # Окно редактирования
+│   ├── CalculateCostWindow.xaml # Окно расчета стоимости
+│   ├── CarImportWindow.xaml   # Окно импорта
+│   ├── CarQRWindow.xaml       # Окно QR-кода
+│   └── ConfigWindow.xaml      # Окно выбора конфигурации (ORM, ценообразование)
+│
+├── Shared/                    # Интерфейсы View для MVP (WinForms)
 │   ├── IMainView.cs           # Интерфейс главной формы
 │   ├── ICarEditView.cs        # Интерфейс формы редактирования
 │   ├── ICalculateCostView.cs  # Интерфейс формы расчета
 │   ├── ICarImportView.cs      # Интерфейс формы импорта
 │   └── IConfiguration.cs      # Интерфейс конфигурации приложения
 │
-├── AIS/                       # WinForms VIEW (реализация интерфейсов)
+├── AIS/                       # WinForms VIEW (MVP)
 │   ├── Forms/                 # UI формы - реализуют IView интерфейсы
 │   │   ├── MainForm.cs        # Implements IMainView
 │   │   ├── CarEditForm.cs     # Implements ICarEditView
 │   │   ├── CalculateCostForm.cs # Implements ICalculateCostView
 │   │   └── CarImportForm.cs   # Implements ICarImportView
-│   
 │
-├── Console/                   # Консольное приложение (не MVP)
+│
+├── Console/                   # Консольное приложение
 │   ├── Program.cs             # Точка входа Console
 │   ├── AppConfiguration.cs    # Implements IConfiguration
 │   ├── DependencyContainer.cs # Ninject контейнер
-│   └── MenuController.cs      # Консольное меню (не следует MVP)
+│   └── MenuController.cs      # Консольное меню
 │
 ├── Model/                     # Доменные модели
 │   ├── Car.cs                 # Модель автомобиля
@@ -118,11 +183,14 @@ AIS/
     │   ├── ICarManagementService.cs  # CRUD + бизнес-операции
     │   ├── ICarQueryService.cs       # Запросы данных
     │   ├── ICarDisplayService.cs     # Форматирование для UI
-    │   └── Import/                   # Импорт/Экспорт (CsvHelper)
-    │       ├── ICarImportService.cs  # Интерфейс импорт/экспорт
-    │       ├── CarImportService.cs   # Реализация (CSV/JSON)
-    │       └── Models/
-    │           └── ImportResult.cs   # Модель результата импорта
+    │   ├── Import/                   # Импорт/Экспорт (CsvHelper)
+    │   │   ├── ICarImportService.cs  # Интерфейс импорт/экспорт
+    │   │   ├── CarImportService.cs   # Реализация (CSV/JSON)
+    │   │   └── Models/
+    │   │       └── ImportResult.cs   # Модель результата импорта
+    │   └── QRCode/                   # Генерация QR-кодов (QRCoder)
+    │       ├── IQRCodeService.cs     # Интерфейс сервиса QR
+    │       └── QRCodeService.cs      # Реализация (генерация + сохранение)
     ├── Dto/                   # Data Transfer Objects
     │   ├── CarDetailsDto.cs
     │   ├── CarListItemDto.cs
@@ -149,7 +217,7 @@ AIS/
 
 ### 🎨 Архитектурные паттерны
 
-#### 1️⃣ **MVP (Model-View-Presenter)**
+#### 1️⃣ **MVP (Model-View-Presenter) для WinForms**
 Полное разделение UI от бизнес-логики:
 
 **View → Presenter:**
@@ -195,17 +263,74 @@ private void LoadCarsList()
 }
 ```
 
-#### 2️⃣ **N-Layer Architecture**
+#### 2️⃣ **MVVM (Model-View-ViewModel) для WPF**
+Двустороннее связывание данных через биндинг:
+
+**View ↔ ViewModel:**
+```xaml
+<!-- MainWindow.xaml (View) -->
+<DataGrid ItemsSource="{Binding Cars}"
+          SelectedItem="{Binding SelectedCar, Mode=TwoWay}"/>
+<Button Content="Добавить" Command="{Binding AddNewCommand}"/>
+<Button Content="QR-код" Click="ButtonQRCode_Click"
+        IsEnabled="{Binding SelectedCar, Converter={StaticResource NotNullConverter}}"/>
+```
+
+**ViewModel обрабатывает:**
+```csharp
+// MainViewModel.cs
+public class MainViewModel : BaseViewModel
+{
+    private BindingList<ObservableCarListItemDto> _cars;
+    private ObservableCarListItemDto? _selectedCar;
+
+    public BindingList<ObservableCarListItemDto> Cars
+    {
+        get => _cars;
+        set => SetProperty(ref _cars, value);  // Автоматический вызов PropertyChanged
+    }
+
+    public ICommand AddNewCommand { get; }  // RelayCommand
+    public ICommand DeleteCommand { get; }
+
+    public MainViewModel(VMManager vmManager, ICarService carService)
+    {
+        _vmManager = vmManager;
+        _carService = carService;
+
+        AddNewCommand = new RelayCommand(_ => AddNew());
+        DeleteCommand = new RelayCommand(_ => Delete(), _ => SelectedCar != null);
+    }
+
+    private void AddNew()
+    {
+        var editVm = _vmManager.CreateViewModelWithNullableParameter<CarEditViewModel>(null);
+        LoadData();  // ViewModel обновляет данные, View автоматически обновляется
+    }
+}
+```
+
+**ViewModelFirst подход:**
+1. VMManager создает ViewModel
+2. ViewModel.Initialize() вызывается
+3. Событие ViewModelReady запускается
+4. ViewManager создает соответствующее окно (View)
+5. ViewManager устанавливает DataContext = ViewModel
+6. Окно отображается с уже заполненными данными
+
+#### 3️⃣ **N-Layer Architecture**
 Четкое разделение на слои:
-- **Presenter** - MVP презентеры (MainPresenter, CarEditPresenter, CalculateCostPresenter, CarImportPresenter)
-- **Shared** - интерфейсы View (решение циклических зависимостей)
-- **View (AIS/Forms)** - реализация UI форм
+- **Presenter (MVP)** - презентеры для WinForms (MainPresenter, CarEditPresenter, CalculateCostPresenter, CarImportPresenter)
+- **Presenter/ViewModels (MVVM)** - ViewModels для WPF (MainViewModel, CarEditViewModel, CarQRViewModel)
+- **ViewWPF** - WPF окна с XAML разметкой и биндингами
+- **Shared** - интерфейсы View для MVP (решение циклических зависимостей)
+- **View (AIS/Forms)** - реализация UI форм для MVP
 - **Model** - доменные модели данных (Car, PromoCode)
 - **DataAccessLayer** - доступ к данным (Repository Pattern)
-- **BussinessLogic** - бизнес-сервисы (ICarService, ICarImportService, ICarExportService, IPromoService)
+- **BussinessLogic** - бизнес-сервисы (ICarService, ICarImportService, IQRCodeService, IPromoService)
 - **Console** - консольный интерфейс
 
-#### 3️⃣ **Repository Pattern**
+#### 4️⃣ **Repository Pattern**
 Абстракция доступа к данным через `IRepository<T>`:
 ```csharp
 public interface IRepository<T> : IReadRepository<T>, IWriteRepository<T>
@@ -214,7 +339,7 @@ public interface IRepository<T> : IReadRepository<T>, IWriteRepository<T>
 }
 ```
 
-#### 4️⃣ **Dependency Injection (Ninject)**
+#### 5️⃣ **Dependency Injection (Ninject)**
 Все зависимости внедряются через конструкторы с использованием IoC-контейнера Ninject:
 ```csharp
 var kernel = new StandardKernel(new SimpleConfigModule(useEF, connectionString, useDynamicPricing));
@@ -222,13 +347,13 @@ var carService = kernel.Get<ICarService>();
 var model = new CarSharingModel(carService, promoService);
 ```
 
-#### 5️⃣ **DTO Pattern**
+#### 6️⃣ **DTO Pattern**
 Передача данных между слоями через специализированные объекты:
 - `CarDetailsDto` - для детального просмотра
 - `CarListItemDto` - для списков
 - `CarForCalculationDto` - для расчета стоимости
 
-#### 6️⃣ **Strategy Pattern**
+#### 7️⃣ **Strategy Pattern**
 Гибкая система расчета стоимости с двумя стратегиями:
 ```csharp
 // Стандартная стратегия
@@ -242,10 +367,29 @@ IPricingStrategy -> DynamicPricingStrategy
 // Праздники: x2.0, Ночь: x0.7, Выходные: x1.3, Лето: x1.4
 ```
 
-#### 7️⃣ **Adapter Pattern**
+#### 8️⃣ **Adapter Pattern**
 Адаптация `PromoService` к интерфейсу `IPromoService` без изменения исходного класса.
 
-#### 8️⃣ **Factory Pattern**
+#### 9️⃣ **Observer Pattern**
+Используется в MVVM через INotifyPropertyChanged:
+```csharp
+public class BaseViewModel : INotifyPropertyChanged
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value))
+            return false;
+
+        field = value;
+        OnPropertyChanged(propertyName);  // Уведомляем View об изменении
+        return true;
+    }
+}
+```
+
+#### 🔟 **Factory Pattern**
 Фабрики для создания дочерних форм с их презентерами:
 ```csharp
 Func<int, ICalculateCostView> calcFactory = (carId) =>
@@ -274,10 +418,14 @@ Func<int, ICalculateCostView> calcFactory = (carId) =>
 - **Dapper** 2.1.66
 - **Ninject** 3.3.6
 - **CsvHelper** 30.0.1 (импорт/экспорт CSV)
+- **QRCoder** 1.6.0 (генерация QR-кодов)
+- **System.Drawing.Common** 8.0.0 (для работы с Bitmap в QR-кодах)
 - **System.Text.Json** (встроенная, импорт/экспорт JSON)
 
 ### Целевая платформа
-- WinForms: `net8.0-windows`
+- WinForms (MVP): `net8.0-windows`
+- WPF (MVVM): `net8.0-windows`
+- Presenter (ViewModels + Presenters): `net8.0-windows`
 - Console: `net8.0`
 - Библиотеки: `net8.0`
 
@@ -357,7 +505,26 @@ dotnet build --configuration Release
 
 ### Шаг 5: Запуск приложения
 
-#### 🚀 Запуск через Presenter (РЕКОМЕНДУЕТСЯ)
+#### 🚀 Запуск WPF MVVM приложения (РЕКОМЕНДУЕТСЯ)
+```bash
+dotnet run --project ViewWPF
+```
+При запуске откроется окно выбора конфигурации:
+1. Выберите ORM-провайдер:
+   - **Entity Framework** (рекомендуется)
+   - **Dapper**
+2. Выберите стратегию ценообразования:
+   - **Стандартная** (цена × часы)
+   - **Динамическая** (время суток, день недели, сезон, праздники)
+
+**Возможности WPF MVVM:**
+- Современный UI с Material Design элементами
+- Генерация QR-кодов для автомобилей
+- Импорт/Экспорт в CSV и JSON
+- Расчет стоимости с промокодами
+- Двусторонний биндинг данных
+
+#### Запуск через Presenter (WinForms MVP)
 ```bash
 dotnet run --project Presenter
 ```
@@ -478,6 +645,13 @@ int ExportToCsv(string filePath);                              // Все авт�
 int ExportToJson(string filePath);                             // Все автомобили
 int ExportToCsv(IEnumerable<int> carIds, string filePath);    // Выбранные
 int ExportToJson(IEnumerable<int> carIds, string filePath);   // Выбранные
+```
+
+### IQRCodeService - QR-коды
+```csharp
+byte[] GenerateQRCode(Car car, int pixelsPerModule = 20);     // Генерация в память
+void SaveQRCodeToFile(Car car, string filePath, int pixelsPerModule = 20);  // Сохранение в файл
+string FormatCarInfo(Car car);                                 // Форматирование информации
 ```
 
 ---
@@ -626,7 +800,22 @@ Application.Run(mainForm);
 
 ## 🧪 Тестирование
 
-### Ручное тестирование через UI
+### Ручное тестирование через WPF UI (MVVM)
+1. Запустите WPF приложение через `dotnet run --project ViewWPF`
+2. Выберите ORM (EF или Dapper) и стратегию ценообразования
+3. Добавьте несколько автомобилей через кнопку "Добавить ➕"
+4. Проверьте редактирование через кнопку "Изменить ✏️"
+5. Выберите автомобиль и нажмите "QR-код 📱"
+   - Проверьте отображение QR-кода в окне
+   - Сохраните QR-код в PNG файл
+   - Отсканируйте QR-код мобильным телефоном
+6. Попробуйте арендовать автомобиль
+7. Рассчитайте стоимость с промокодом через кнопку "Рассчитать 🧮"
+8. Импортируйте автомобили из CSV/JSON через кнопку "Импорт 📥"
+9. Экспортируйте автомобили (все или выбранные) через кнопку "Экспорт 📤"
+10. Проверьте файл логов на рабочем столе
+
+### Ручное тестирование через WinForms UI (MVP)
 1. Запустите WinForms приложение через [Presenter/Program.cs](Presenter/Program.cs)
 2. Выберите режим WinForms (1 или W)
 3. Выберите ORM (EF или Dapper)
@@ -645,7 +834,13 @@ Application.Run(mainForm);
 4. Запустите с Dapper
 5. Убедитесь, что данные сохранились
 
-### Проверка MVP архитектуры
+### Проверка MVVM архитектуры (WPF)
+1. Убедитесь, что изменения в ViewModel автоматически отражаются в View (двусторонний биндинг)
+2. Проверьте, что при добавлении автомобиля ObservableCollection автоматически обновляет DataGrid
+3. Проверьте работу команд (RelayCommand) - кнопки становятся неактивными при отсутствии выбранного элемента
+4. Убедитесь, что ViewModelFirst работает корректно - окно QR-кода создается после инициализации ViewModel
+
+### Проверка MVP архитектуры (WinForms)
 1. Убедитесь, что MainForm не содержит бизнес-логики (только генерация событий)
 2. Проверьте, что MainPresenter обрабатывает все события View
 3. Убедитесь, что при добавлении автомобиля через одну форму, список обновляется автоматически
@@ -683,11 +878,12 @@ public Car CreateCar(string brand, string model, string licensePlate,
 
 ## 🐛 Известные ограничения
 
-1. **Только Windows Forms** - WinForms работает только на Windows
+1. **Только Windows** - WinForms и WPF работают только на Windows
 2. **LocalDB** - требуется SQL Server LocalDB
 3. **Однопользовательский режим** - нет поддержки многопользовательского доступа
 4. **Транзакции** - не используются сложные транзакции БД
-5. **Консольное приложение не следует MVP** - Console/MenuController не использует MVP паттерн (только WinForms использует MVP)
+5. **Консольное приложение** - Console/MenuController не использует MVP/MVVM паттерны
+6. **QR-коды** - генерация QR-кодов использует System.Drawing.Common (только Windows)
 
 ---
 
@@ -698,9 +894,14 @@ public Car CreateCar(string brand, string model, string licensePlate,
 **Цель проекта**: Демонстрация применения принципов SOLID, паттернов проектирования (MVP, Repository, Strategy, Adapter, Observer) и современных архитектурных подходов в .NET
 
 **Основные достижения**:
+- ✅ Две UI архитектуры: **MVP для WinForms** и **MVVM для WPF** с ViewModelFirst подходом
+- ✅ Генерация QR-кодов для автомобилей с сохранением в PNG файлы
+- ✅ Чистая MVVM архитектура с двусторонним биндингом и INotifyPropertyChanged
+- ✅ VMManager/ViewManager для управления жизненным циклом ViewModel и View
+- ✅ ObservableDTO для реактивного обновления UI при изменении данных
 - ✅ Чистая MVP-архитектура для WinForms без промежуточных слоев
-- ✅ Presenter работает напрямую с бизнес-сервисами (ICarService, IImportService, IExportService)
-- ✅ Решение проблемы циклических зависимостей через проект Shared
+- ✅ Presenter работает напрямую с бизнес-сервисами (ICarService, IImportService, IQRCodeService)
+- ✅ Решение проблемы циклических зависимостей через проект Shared (для MVP)
 - ✅ Динамическое ценообразование с детализацией расчетов
 - ✅ Поддержка двух ORM (Entity Framework Core и Dapper) с возможностью переключения
 - ✅ Полное соблюдение принципов SOLID
@@ -717,5 +918,5 @@ public Car CreateCar(string brand, string model, string licensePlate,
 
 ---
 
-**Версия проекта**: 4.0 (Чистая MVP-архитектура)
-**Дата обновления**: Декабрь 2025 
+**Версия проекта**: 5.0 (MVP + MVVM + QR-коды)
+**Дата обновления**: Январь 2025 

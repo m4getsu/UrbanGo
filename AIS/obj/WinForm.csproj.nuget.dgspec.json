@@ -189,6 +189,14 @@
             "Ninject": {
               "target": "Package",
               "version": "[3.3.6, )"
+            },
+            "QRCoder": {
+              "target": "Package",
+              "version": "[1.7.0, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[10.0.1, )"
             }
           },
           "imports": [

@@ -169,3 +169,9 @@ C:\Users\kosty\source\repos\AIS\Console\obj\Debug\net8.0\refint\ConsoleApp.dll
 C:\Users\kosty\source\repos\AIS\Console\obj\Debug\net8.0\ConsoleApp.pdb
 C:\Users\kosty\source\repos\AIS\Console\obj\Debug\net8.0\ConsoleApp.genruntimeconfig.cache
 C:\Users\kosty\source\repos\AIS\Console\obj\Debug\net8.0\ref\ConsoleApp.dll
+C:\Users\kosty\source\repos\AIS\Console\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\kosty\source\repos\AIS\Console\bin\Debug\net8.0\QRCoder.dll
+C:\Users\kosty\source\repos\AIS\Console\bin\Debug\net8.0\System.Drawing.Common.dll
+C:\Users\kosty\source\repos\AIS\Console\bin\Debug\net8.0\System.Private.Windows.Core.dll
+C:\Users\kosty\source\repos\AIS\Console\bin\Debug\net8.0\System.Private.Windows.GdiPlus.dll
+C:\Users\kosty\source\repos\AIS\Console\bin\Debug\net8.0\runtimes\win\lib\net8.0\Microsoft.Win32.SystemEvents.dll

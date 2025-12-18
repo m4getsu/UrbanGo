@@ -9,6 +9,7 @@ using BussinessLogic.Pricing;
 using BussinessLogic.Validation;
 using BussinessLogic.Services;
 using BussinessLogic.Services.Import;
+using BussinessLogic.Services.QRCode;
 
 namespace BussinessLogic
 {
@@ -76,6 +77,7 @@ namespace BussinessLogic
 			Bind<ICarQueryService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
 			Bind<ICarDisplayService>().ToMethod(ctx => ctx.Kernel.Get<CarService>()).InSingletonScope();
 			Bind<ICarImportService>().To<CarImportService>().InSingletonScope();
+			Bind<IQRCodeService>().To<QRCodeService>().InSingletonScope();
 		}
 	}
 }
