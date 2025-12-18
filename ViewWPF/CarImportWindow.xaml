@@ -1,0 +1,72 @@
+<Window x:Class="ViewWPF.CarImportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ViewWPF"
+        mc:Ignorable="d"
+        Title="Импорт автомобилей" Height="575" Width="700"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Grid Margin="12,9,12,12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" Text="Импорт автомобилей из файла" FontSize="19" FontWeight="Bold" Margin="0,0,0,16"/>
+
+        <!-- File Selection -->
+        <TextBlock Grid.Row="1" Text="Выберите файл импорта:" Margin="0,0,0,5"/>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,11">
+            <TextBox Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged}" Width="560" Height="23"
+                     IsReadOnly="True" VerticalAlignment="Center"/>
+            <Button Content="Обзор..." Click="ButtonBrowse_Click" Width="94" Height="25"
+                    VerticalAlignment="Center" Margin="6,0,0,0"/>
+        </StackPanel>
+
+        <!-- Format Selection and Buttons -->
+        <Grid Grid.Row="3" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Format GroupBox -->
+            <GroupBox Grid.Column="0" Header="Формат файла" Padding="10">
+                <StackPanel>
+                    <RadioButton Content="CSV" IsChecked="{Binding IsCsvFormat}" Margin="5,7,0,8"/>
+                    <RadioButton Content="JSON" IsChecked="{Binding IsJsonFormat}" Margin="5,0,0,0"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Column="1" Margin="18,10,0,0">
+                <Button Content="Проверить файл" Command="{Binding ValidateCommand}" Width="140" Height="30" Margin="0,0,0,6"/>
+                <Button Content="Импортировать" Command="{Binding ImportCommand}" Width="140" Height="30" FontWeight="Bold"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Results Label -->
+        <TextBlock Grid.Row="4" Text="Результаты проверки/импорта:" Margin="0,0,0,5"/>
+
+        <!-- Results TextBox -->
+        <TextBox Grid.Row="5" Text="{Binding Results, UpdateSourceTrigger=PropertyChanged}"
+                 IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                 FontFamily="Consolas" FontSize="12" Margin="0,0,0,10"/>
+
+        <!-- Progress Bar -->
+        <ProgressBar Grid.Row="6" Value="{Binding ProgressValue}" Height="23" Margin="0,0,0,6"/>
+
+        <!-- Close Button -->
+        <Button Grid.Row="7" Content="Закрыть" Command="{Binding CloseCommand}" Width="94" Height="30"
+                HorizontalAlignment="Right" Click="ButtonClose_Click"/>
+    </Grid>
+</Window>
