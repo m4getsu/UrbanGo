@@ -4,7 +4,7 @@ using System.Linq;
 using Shared;
 using BussinessLogic.Services.Import;
 
-namespace Presenter
+namespace Presenter.Presenters
 {
     /// <summary>
     /// Presenter для представления импорта автомобилей.

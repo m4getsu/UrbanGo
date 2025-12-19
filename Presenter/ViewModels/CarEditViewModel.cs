@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using BussinessLogic;
 using Presenter.Commands;
-using Model;
+using Presenter.ObservableDTO;
 
 namespace Presenter.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Presenter.ViewModels
         private int _year = DateTime.Now.Year;
         private int _mileage = 0;
         private decimal _rentalPricePerHour = 100m;
-        private CarStatus _status = CarStatus.Available;
+        private ObservableCarStatus _selectedStatus;
 
         /// <summary>
         /// Марка автомобиля.
@@ -78,13 +79,18 @@ namespace Presenter.ViewModels
         }
 
         /// <summary>
-        /// Статус автомобиля.
+        /// Выбранный статус автомобиля.
         /// </summary>
-        public CarStatus Status
+        public ObservableCarStatus SelectedStatus
         {
-            get => _status;
-            set => SetProperty(ref _status, value);
+            get => _selectedStatus;
+            set => SetProperty(ref _selectedStatus, value);
         }
+
+        /// <summary>
+        /// Список всех доступных статусов автомобиля.
+        /// </summary>
+        public List<ObservableCarStatus> AvailableStatuses { get; }
 
         /// <summary>
         /// Команда сохранения изменений.
@@ -112,6 +118,12 @@ namespace Presenter.ViewModels
             _vmManager = vmManager ?? throw new ArgumentNullException(nameof(vmManager));
             _carService = carService ?? throw new ArgumentNullException(nameof(carService));
             _carId = carId;
+
+            // Инициализируем список статусов
+            AvailableStatuses = ObservableCarStatus.GetAll();
+
+            // Устанавливаем статус по умолчанию (Доступен)
+            _selectedStatus = AvailableStatuses[0];
 
             SaveCommand = new RelayCommand(_ => Save());
             CancelCommand = new RelayCommand(_ => Cancel());
@@ -144,7 +156,8 @@ namespace Presenter.ViewModels
                 Year = car.Year;
                 Mileage = car.Mileage;
                 RentalPricePerHour = car.RentalPricePerHour;
-                Status = car.Status;
+
+                SelectedStatus = ObservableCarStatus.GetById((int)car.Status);
             }
         }
 
@@ -157,7 +170,7 @@ namespace Presenter.ViewModels
             {
                 if (_carId.HasValue)
                 {
-                    _carService.UpdateCarDetails(_carId.Value, Brand, Model, LicensePlate, Year, Mileage, RentalPricePerHour, (int)Status);
+                    _carService.UpdateCarDetails(_carId.Value, Brand, Model, LicensePlate, Year, Mileage, RentalPricePerHour, SelectedStatus.Id);
                 }
                 else
                 {
@@ -165,7 +178,6 @@ namespace Presenter.ViewModels
                 }
 
                 DialogResult = true;
-                // Закрываем окно (будет реализовано в View)
             }
             catch (Exception ex)
             {
@@ -180,7 +192,6 @@ namespace Presenter.ViewModels
         private void Cancel()
         {
             DialogResult = false;
-            // Закрываем окно (будет реализовано в View)
         }
     }
 }

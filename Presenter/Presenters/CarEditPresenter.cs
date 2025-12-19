@@ -2,7 +2,7 @@ using System;
 using Shared;
 using BussinessLogic;
 
-namespace Presenter
+namespace Presenter.Presenters
 {
     /// <summary>
     /// Presenter для представления редактирования/создания автомобиля.

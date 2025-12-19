@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Windows;
 using Presenter;
 using Presenter.Events;
@@ -98,16 +96,14 @@ namespace ViewWPF
             var window = (Window)Activator.CreateInstance(viewType)!;
             window.DataContext = viewModel;
 
-            // Для MainWindow устанавливаем ICarImportService
             if (window is MainWindow mainWindow)
             {
                 mainWindow.SetImportService(_importService);
             }
 
-            // Для CarQRWindow устанавливаем зависимости для сохранения
             if (window is CarQRWindow qrWindow && viewModel is CarQRViewModel qrViewModel)
             {
-                qrWindow.SetDependencies(_qrService, qrViewModel.GetCar());
+                qrWindow.SetDependencies(_qrService, qrViewModel.GetCarDto());
             }
 
             _openWindows[viewModel] = window;
@@ -117,14 +113,12 @@ namespace ViewWPF
                 _openWindows.Remove(viewModel);
                 _vmManager.CloseViewModel(viewModel);
 
-                // Если закрыли главное окно - завершаем приложение
                 if (viewModel is MainViewModel)
                 {
                     Application.Current.Shutdown();
                 }
             };
 
-            // Главное окно открывается как обычное, дочерние как модальные
             if (viewModel is MainViewModel)
             {
                 _mainWindow = window;
@@ -132,7 +126,6 @@ namespace ViewWPF
             }
             else
             {
-                // Дочерние окна открываются как модальные диалоги
                 if (_mainWindow != null)
                 {
                     window.Owner = _mainWindow;

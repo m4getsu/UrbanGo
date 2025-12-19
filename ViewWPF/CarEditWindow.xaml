@@ -54,11 +54,11 @@
 
         <!-- Статус -->
         <TextBlock Grid.Row="12" Text="Статус" Margin="0,0,0,4"/>
-        <ComboBox Grid.Row="13" SelectedValue="{Binding Status, Mode=TwoWay}" SelectedValuePath="Tag" Width="242" Height="28" Margin="0,0,0,16" HorizontalAlignment="Left">
-            <ComboBoxItem Content="Свободен" Tag="0"/>
-            <ComboBoxItem Content="В аренде" Tag="1"/>
-            <ComboBoxItem Content="На тех. обслуживании" Tag="2"/>
-        </ComboBox>
+        <ComboBox Grid.Row="13"
+                  ItemsSource="{Binding AvailableStatuses}"
+                  SelectedItem="{Binding SelectedStatus, Mode=TwoWay}"
+                  DisplayMemberPath="Name"
+                  Width="242" Height="28" Margin="0,0,0,16" HorizontalAlignment="Left"/>
 
         <!-- Кнопки -->
         <StackPanel Grid.Row="15" Orientation="Horizontal" Margin="0,8,0,16">

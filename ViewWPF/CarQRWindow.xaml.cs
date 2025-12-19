@@ -1,7 +1,6 @@
-using System;
 using System.Windows;
 using Microsoft.Win32;
-using Presenter.ViewModels;
+using BussinessLogic.Dto;
 using BussinessLogic.Services.QRCode;
 
 namespace ViewWPF
@@ -12,7 +11,7 @@ namespace ViewWPF
     public partial class CarQRWindow : Window
     {
         private IQRCodeService? _qrService;
-        private Model.Car? _car;
+        private CarQRDto? _carDto;
 
         /// <summary>
         /// Инициализирует новый экземпляр CarQRWindow.
@@ -26,11 +25,11 @@ namespace ViewWPF
         /// Устанавливает зависимости для сохранения QR-кода.
         /// </summary>
         /// <param name="qrService">Сервис генерации QR-кодов.</param>
-        /// <param name="car">Автомобиль для которого генерируется QR-код.</param>
-        public void SetDependencies(IQRCodeService qrService, Model.Car car)
+        /// <param name="carDto">DTO автомобиля для которого генерируется QR-код.</param>
+        public void SetDependencies(IQRCodeService qrService, CarQRDto carDto)
         {
             _qrService = qrService;
-            _car = car;
+            _carDto = carDto;
         }
 
         /// <summary>
@@ -38,7 +37,7 @@ namespace ViewWPF
         /// </summary>
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
-            if (_qrService == null || _car == null)
+            if (_qrService == null || _carDto == null)
             {
                 MessageBox.Show(
                     "Ошибка: сервис QR-кодов не инициализирован",
@@ -51,7 +50,7 @@ namespace ViewWPF
             var saveDialog = new SaveFileDialog
             {
                 Filter = "PNG файлы (*.png)|*.png",
-                FileName = $"QR_{_car.LicensePlate}.png",
+                FileName = $"QR_{_carDto.LicensePlate}.png",
                 Title = "Сохранить QR-код"
             };
 
@@ -59,7 +58,7 @@ namespace ViewWPF
             {
                 try
                 {
-                    _qrService.SaveQRCodeToFile(_car, saveDialog.FileName, pixelsPerModule: 20);
+                    _qrService.SaveQRCodeToFile(_carDto, saveDialog.FileName, pixelsPerModule: 20);
                     MessageBox.Show(
                         $"QR-код успешно сохранён:\n{saveDialog.FileName}",
                         "Успех",

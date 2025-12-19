@@ -70,7 +70,6 @@ namespace Presenter.ViewModels
 
         private void Browse()
         {
-            // Открытие файлового диалога будет реализовано в View
             Results = "Выберите файл для импорта...";
         }
 
@@ -157,7 +156,6 @@ namespace Presenter.ViewModels
 
         private void Close()
         {
-            // Закрытие окна будет обработано в View
         }
     }
 }

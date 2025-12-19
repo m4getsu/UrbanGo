@@ -6,7 +6,7 @@ using Shared;
 using BussinessLogic;
 using BussinessLogic.Services.Import;
 
-namespace Presenter
+namespace Presenter.Presenters
 {
     /// <summary>
     /// Presenter для главного представления.

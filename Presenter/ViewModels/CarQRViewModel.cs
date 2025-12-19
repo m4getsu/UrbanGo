@@ -3,8 +3,8 @@ using System.IO;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using BussinessLogic;
+using BussinessLogic.Dto;
 using BussinessLogic.Services.QRCode;
-using Model;
 using Presenter.Commands;
 
 namespace Presenter.ViewModels
@@ -17,20 +17,20 @@ namespace Presenter.ViewModels
         private readonly VMManager _vmManager;
         private readonly ICarService _carService;
         private readonly IQRCodeService _qrService;
-        private readonly Car _car;
+        private readonly CarQRDto _carDto;
 
         private BitmapImage? _qrCodeImage;
         private string _carInfo = string.Empty;
 
-        public CarQRViewModel(VMManager vmManager, ICarService carService, IQRCodeService qrService, Car car)
+        public CarQRViewModel(VMManager vmManager, ICarService carService, IQRCodeService qrService, CarQRDto carDto)
         {
             _vmManager = vmManager ?? throw new ArgumentNullException(nameof(vmManager));
             _carService = carService ?? throw new ArgumentNullException(nameof(carService));
             _qrService = qrService ?? throw new ArgumentNullException(nameof(qrService));
-            _car = car ?? throw new ArgumentNullException(nameof(car));
+            _carDto = carDto ?? throw new ArgumentNullException(nameof(carDto));
 
             SaveCommand = new RelayCommand(_ => SaveQRCode());
-            CloseCommand = new RelayCommand(_ => { }); // Закрытие обрабатывается в View
+            CloseCommand = new RelayCommand(_ => { }); 
         }
 
         public BitmapImage? QRCodeImage
@@ -45,15 +45,15 @@ namespace Presenter.ViewModels
             set => SetProperty(ref _carInfo, value);
         }
 
-        public string WindowTitle => $"QR-код автомобиля {_car.LicensePlate}";
+        public string WindowTitle => $"QR-код автомобиля {_carDto.LicensePlate}";
 
         public ICommand SaveCommand { get; }
         public ICommand CloseCommand { get; }
 
         /// <summary>
-        /// Получает автомобиль для которого создан QR-код
+        /// Получает DTO автомобиля для которого создан QR-код
         /// </summary>
-        public Car GetCar() => _car;
+        public CarQRDto GetCarDto() => _carDto;
 
         public override void Initialize()
         {
@@ -65,13 +65,10 @@ namespace Presenter.ViewModels
         {
             try
             {
-                // Получаем форматированную информацию об автомобиле
-                CarInfo = _qrService.FormatCarInfo(_car);
+                CarInfo = _qrService.FormatCarInfo(_carDto);
 
-                // Генерируем QR-код в виде массива байтов
-                var qrCodeBytes = _qrService.GenerateQRCode(_car, pixelsPerModule: 15);
+                var qrCodeBytes = _qrService.GenerateQRCode(_carDto, pixelsPerModule: 15);
 
-                // Конвертируем byte[] в BitmapImage для WPF
                 QRCodeImage = ConvertByteArrayToBitmapImage(qrCodeBytes);
             }
             catch (Exception ex)
@@ -82,7 +79,6 @@ namespace Presenter.ViewModels
 
         private void SaveQRCode()
         {
-            // Сохранение будет обработано в View с использованием SaveFileDialog
         }
 
         /// <summary>
@@ -100,7 +96,7 @@ namespace Presenter.ViewModels
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.StreamSource = memoryStream;
                 bitmapImage.EndInit();
-                bitmapImage.Freeze(); // Делаем immutable для многопоточности
+                bitmapImage.Freeze(); 
 
                 return bitmapImage;
             }

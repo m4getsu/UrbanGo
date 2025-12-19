@@ -1,13 +1,4 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using Microsoft.Win32;
 
 namespace ViewWPF;
@@ -44,7 +35,6 @@ public partial class MainWindow : Window
         var selectedItems = dataGridCars.SelectedItems;
         bool exportAll = false;
 
-        // Спрашиваем, что экспортировать
         if (selectedItems.Count > 0)
         {
             var result = MessageBox.Show(
@@ -92,7 +82,6 @@ public partial class MainWindow : Window
 
                 if (exportAll)
                 {
-                    // Экспортируем все автомобили
                     if (isCsv)
                     {
                         exportedCount = _importService.ExportToCsv(dialog.FileName);
@@ -104,7 +93,6 @@ public partial class MainWindow : Window
                 }
                 else
                 {
-                    // Экспортируем только выбранные автомобили
                     var selectedIds = new List<int>();
                     foreach (var item in selectedItems)
                     {
@@ -163,7 +151,6 @@ public partial class MainWindow : Window
 
             try
             {
-                // Получаем полный объект Car из сервиса
                 var car = viewModel.CarService.GetCar(selectedCar.Id);
                 if (car == null)
                 {
@@ -175,9 +162,19 @@ public partial class MainWindow : Window
                     return;
                 }
 
-                // Создаём CarQRViewModel через VMManager
-                var qrViewModel = viewModel.VMManager.CreateCarQRViewModel(car);
-                // ViewModel готов, ViewManager автоматически откроет окно через событие ViewModelReady
+                var carQRDto = new BussinessLogic.Dto.CarQRDto
+                {
+                    Id = car.Id,
+                    Brand = car.Brand,
+                    Model = car.Model,
+                    LicensePlate = car.LicensePlate,
+                    Year = car.Year,
+                    Mileage = car.Mileage,
+                    RentalPricePerHour = car.RentalPricePerHour,
+                    Status = car.Status.ToString()
+                };
+
+                var qrViewModel = viewModel.VMManager.CreateCarQRViewModel(carQRDto);
             }
             catch (Exception ex)
             {

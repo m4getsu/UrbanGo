@@ -104,29 +104,33 @@
 
 ```
 AIS/
-├── Presenter/                 # 🎯 MVP СЛОЙ (WinForms)
+├── Presenter/                 # 🎯 MVP + MVVM СЛОЙ
 │   ├── Program.cs             # 🚀 Основная точка входа (запускает WinForms или Console)
-│   ├── MainPresenter.cs       # Presenter главной формы
-│   ├── CarEditPresenter.cs    # Presenter формы редактирования
-│   ├── CalculateCostPresenter.cs # Presenter формы расчета стоимости
-│   ├── CarImportPresenter.cs  # Presenter формы импорта
-│   ├── BaseViewModel.cs       # Базовый класс для ViewModel (MVVM WPF)
-│   ├── VMManager.cs           # Менеджер жизненного цикла ViewModel
-│   ├── ViewModels/            # ViewModels для WPF MVVM
+│   ├── MainPresenter.cs       # Presenter главной формы (MVP)
+│   ├── CarEditPresenter.cs    # Presenter формы редактирования (MVP)
+│   ├── CalculateCostPresenter.cs # Presenter формы расчета стоимости (MVP)
+│   ├── CarImportPresenter.cs  # Presenter формы импорта (MVP)
+│   ├── BaseViewModel.cs       # 🎨 Базовый класс для ViewModel (MVVM WPF)
+│   ├── VMManager.cs           # 🎨 Менеджер жизненного цикла ViewModel
+│   ├── ViewModels/            # 🎨 ViewModels для WPF MVVM
 │   │   ├── MainViewModel.cs   # ViewModel главного окна
 │   │   ├── CarEditViewModel.cs # ViewModel редактирования
 │   │   ├── CalculateCostViewModel.cs # ViewModel расчета
 │   │   ├── CarImportViewModel.cs # ViewModel импорта
 │   │   └── CarQRViewModel.cs  # ViewModel QR-кода
-│   ├── Commands/              # Commands для MVVM
-│   │   ├── IUndoableCommand.cs # Интерфейс отменяемых команд
-│   │   └── RelayCommand.cs    # Реализация ICommand
-│   ├── ObservableDTO/         # Observable объекты для WPF биндинга
-│   │   ├── ObservableCarListItemDto.cs
-│   │   ├── ObservableCarEditDto.cs
-│   │   └── Mappers/           # Маппинг DTO → ObservableDTO
-│   └── Events/                # События для ViewModelFirst
-│       └── ViewModelReadyEventArgs.cs
+│   ├── Commands/              # 🎨 Commands для MVVM
+│   │   └── RelayCommand.cs    # Реализация ICommand (паттерн Command)
+│   ├── ObservableDTO/         # 🎨 Observable объекты для WPF биндинга
+│   │   ├── ObservableCarListItemDto.cs   # DTO с INotifyPropertyChanged для списка
+│   │   ├── ObservableCarDetailsDto.cs    # DTO с INotifyPropertyChanged для деталей
+│   │   ├── ObservableCarForCalculationDto.cs # DTO для расчётов
+│   │   ├── ObservableCarStatus.cs        # DTO для статусов (без Model зависимости)
+│   │   └── Mappers/           # Маппинг DTO ↔ ObservableDTO
+│   │       ├── CarListItemMapper.cs      # DTO → Observable конвертация
+│   │       ├── CarDetailsMapper.cs
+│   │       └── CarForCalculationMapper.cs
+│   └── Events/                # 🎨 События для ViewModelFirst
+│       └── ViewModelReadyEventArgs.cs    # Событие готовности ViewModel
 │
 ├── ViewWPF/                   # 🎨 WPF VIEW (MVVM)
 │   ├── App.xaml.cs            # Главная точка входа WPF приложения
@@ -189,12 +193,13 @@ AIS/
     │   │   └── Models/
     │   │       └── ImportResult.cs   # Модель результата импорта
     │   └── QRCode/                   # Генерация QR-кодов (QRCoder)
-    │       ├── IQRCodeService.cs     # Интерфейс сервиса QR
+    │       ├── IQRCodeService.cs     # Интерфейс сервиса QR (работает с CarQRDto)
     │       └── QRCodeService.cs      # Реализация (генерация + сохранение)
     ├── Dto/                   # Data Transfer Objects
-    │   ├── CarDetailsDto.cs
-    │   ├── CarListItemDto.cs
-    │   └── CarForCalculationDto.cs
+    │   ├── CarDetailsDto.cs          # DTO для детальной информации о машине
+    │   ├── CarListItemDto.cs         # DTO для отображения в списке
+    │   ├── CarForCalculationDto.cs   # DTO для расчёта стоимости
+    │   └── CarQRDto.cs               # DTO для генерации QR-кода (без Model зависимости)
     ├── IPromoService.cs       # Интерфейс сервиса промокодов
     ├── PromoService.cs        # Реализация
     ├── PromoServiceAdapter.cs # Адаптер (Adapter Pattern)

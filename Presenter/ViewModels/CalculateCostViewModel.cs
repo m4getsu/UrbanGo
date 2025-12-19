@@ -137,7 +137,6 @@ namespace Presenter.ViewModels
 
         private void Close()
         {
-            // Закрытие окна будет обработано в View
         }
     }
 }

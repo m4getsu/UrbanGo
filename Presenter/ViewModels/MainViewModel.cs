@@ -44,7 +44,6 @@ namespace Presenter.ViewModels
             {
                 if (SetProperty(ref _selectedCar, value))
                 {
-                    // Обновляем состояние команд
                     System.Windows.Input.CommandManager.InvalidateRequerySuggested();
                 }
             }
@@ -203,7 +202,6 @@ namespace Presenter.ViewModels
 
         private void Export()
         {
-            // Export будет обработан в View через событие
             OnPropertyChanged(nameof(ExportCommand));
         }
 

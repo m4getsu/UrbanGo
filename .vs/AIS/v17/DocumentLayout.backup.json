@@ -3,32 +3,52 @@
   "WorkspaceRootPath": "C:\\Users\\kosty\\source\\repos\\AIS\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|c:\\users\\kosty\\source\\repos\\ais\\viewwpf\\viewmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|solutionrelative:viewwpf\\viewmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|c:\\users\\kosty\\source\\repos\\ais\\viewwpf\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|solutionrelative:viewwpf\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|c:\\users\\kosty\\source\\repos\\ais\\viewwpf\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|solutionrelative:viewwpf\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|c:\\users\\kosty\\source\\repos\\ais\\bussinesslogic\\services\\qrcode\\qrcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|solutionrelative:bussinesslogic\\services\\qrcode\\qrcodeservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|c:\\users\\kosty\\source\\repos\\ais\\bussinesslogic\\simpleconfigmodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|solutionrelative:bussinesslogic\\simpleconfigmodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|c:\\users\\kosty\\source\\repos\\ais\\viewwpf\\carqrwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|solutionrelative:viewwpf\\carqrwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|c:\\users\\kosty\\source\\repos\\ais\\viewwpf\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|solutionrelative:viewwpf\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|c:\\users\\kosty\\source\\repos\\ais\\viewwpf\\mainwindow.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|",
-      "RelativeMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|solutionrelative:viewwpf\\mainwindow.xaml.cs||{8B382828-6202-11D1-8870-0000F87579D2}|"
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\observabledto\\mappers\\carlistitemmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\observabledto\\mappers\\carlistitemmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\vmmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\vmmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\observabledto\\mappers\\carforcalculationmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\observabledto\\mappers\\carforcalculationmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\observabledto\\mappers\\cardetailsmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\observabledto\\mappers\\cardetailsmapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\observabledto\\observablecarstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\observabledto\\observablecarstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\observabledto\\observablecarlistitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\observabledto\\observablecarlistitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\observabledto\\observablecarforcalculationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\observabledto\\observablecarforcalculationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\observabledto\\observablecardetailsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\observabledto\\observablecardetailsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\events\\viewmodelreadyeventargs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -39,32 +59,36 @@
       "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\viewmodels\\carqrviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\viewmodels\\carqrviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\viewmodels\\carimportviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\viewmodels\\carimportviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\viewmodels\\careditviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\viewmodels\\careditviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\viewmodels\\calculatecostviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\viewmodels\\calculatecostviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\baseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\baseviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\vmmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\vmmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|c:\\users\\kosty\\source\\repos\\ais\\viewwpf\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|solutionrelative:viewwpf\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|c:\\users\\kosty\\source\\repos\\ais\\bussinesslogic\\pricing\\pricingconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|solutionrelative:bussinesslogic\\pricing\\pricingconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|c:\\users\\kosty\\source\\repos\\ais\\bussinesslogic\\pricing\\dynamicpricingstrategy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5AB69B38-8CE9-4250-851B-EB4BC73AFDE9}|BussinessLogic\\BussinessLogic.csproj|solutionrelative:bussinesslogic\\pricing\\dynamicpricingstrategy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|c:\\users\\kosty\\source\\repos\\ais\\presenter\\mainpresenter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{77108C6F-373D-6AA7-44A7-DC845F9DA0E5}|Presenter\\Presenter.csproj|solutionrelative:presenter\\mainpresenter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|c:\\users\\kosty\\source\\repos\\ais\\ais\\forms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{EE77A663-09F3-42A6-AC1F-86461B5D3E3F}|AIS\\WinForm.csproj|solutionrelative:ais\\forms\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|c:\\users\\kosty\\source\\repos\\ais\\viewwpf\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{8327A887-94E1-CF3F-EFE5-0D78073AFD40}|ViewWPF\\ViewWPF.csproj|solutionrelative:viewwpf\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
   "DocumentGroupContainers": [
@@ -74,7 +98,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 23,
           "Children": [
             {
               "$type": "Bookmark",
@@ -90,91 +114,87 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "AssemblyInfo.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\AssemblyInfo.cs",
-              "RelativeDocumentMoniker": "ViewWPF\\AssemblyInfo.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\AssemblyInfo.cs",
-              "RelativeToolTip": "ViewWPF\\AssemblyInfo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T14:09:58.338Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "QRCodeService.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\Services\\QRCode\\QRCodeService.cs",
-              "RelativeDocumentMoniker": "BussinessLogic\\Services\\QRCode\\QRCodeService.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\Services\\QRCode\\QRCodeService.cs",
-              "RelativeToolTip": "BussinessLogic\\Services\\QRCode\\QRCodeService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T14:09:37.249Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SimpleConfigModule.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\SimpleConfigModule.cs",
-              "RelativeDocumentMoniker": "BussinessLogic\\SimpleConfigModule.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\SimpleConfigModule.cs",
-              "RelativeToolTip": "BussinessLogic\\SimpleConfigModule.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T14:09:29.383Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CarQRWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\CarQRWindow.xaml",
-              "RelativeDocumentMoniker": "ViewWPF\\CarQRWindow.xaml",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\CarQRWindow.xaml",
-              "RelativeToolTip": "ViewWPF\\CarQRWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-18T14:01:53.779Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "App.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\App.xaml.cs",
-              "RelativeDocumentMoniker": "ViewWPF\\App.xaml.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\App.xaml.cs",
-              "RelativeToolTip": "ViewWPF\\App.xaml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAeAAAAAAAAAA==",
+              "Title": "CarListItemMapper.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\Mappers\\CarListItemMapper.cs",
+              "RelativeDocumentMoniker": "Presenter\\ObservableDTO\\Mappers\\CarListItemMapper.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\Mappers\\CarListItemMapper.cs",
+              "RelativeToolTip": "Presenter\\ObservableDTO\\Mappers\\CarListItemMapper.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T09:05:37.831Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-19T04:28:41.363Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CarForCalculationMapper.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\Mappers\\CarForCalculationMapper.cs",
+              "RelativeDocumentMoniker": "Presenter\\ObservableDTO\\Mappers\\CarForCalculationMapper.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\Mappers\\CarForCalculationMapper.cs",
+              "RelativeToolTip": "Presenter\\ObservableDTO\\Mappers\\CarForCalculationMapper.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:28:38.475Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CarDetailsMapper.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\Mappers\\CarDetailsMapper.cs",
+              "RelativeDocumentMoniker": "Presenter\\ObservableDTO\\Mappers\\CarDetailsMapper.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\Mappers\\CarDetailsMapper.cs",
+              "RelativeToolTip": "Presenter\\ObservableDTO\\Mappers\\CarDetailsMapper.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:28:31.648Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "ViewModelReadyEventArgs.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\Events\\ViewModelReadyEventArgs.cs",
-              "RelativeDocumentMoniker": "Presenter\\Events\\ViewModelReadyEventArgs.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\Events\\ViewModelReadyEventArgs.cs",
-              "RelativeToolTip": "Presenter\\Events\\ViewModelReadyEventArgs.cs",
+              "Title": "ObservableCarStatus.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\ObservableCarStatus.cs",
+              "RelativeDocumentMoniker": "Presenter\\ObservableDTO\\ObservableCarStatus.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\ObservableCarStatus.cs",
+              "RelativeToolTip": "Presenter\\ObservableDTO\\ObservableCarStatus.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T08:49:48.192Z"
+              "WhenOpened": "2025-12-19T04:28:21.26Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "MainViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\MainViewModel.cs",
-              "RelativeDocumentMoniker": "Presenter\\ViewModels\\MainViewModel.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\MainViewModel.cs",
-              "RelativeToolTip": "Presenter\\ViewModels\\MainViewModel.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAA9wAAAAAAAAAAAAAAAAA==",
+              "Title": "ObservableCarListItemDto.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\ObservableCarListItemDto.cs",
+              "RelativeDocumentMoniker": "Presenter\\ObservableDTO\\ObservableCarListItemDto.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\ObservableCarListItemDto.cs",
+              "RelativeToolTip": "Presenter\\ObservableDTO\\ObservableCarListItemDto.cs",
+              "ViewState": "AgIAAKMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T08:49:29.976Z"
+              "WhenOpened": "2025-12-19T04:28:18.178Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ObservableCarForCalculationDto.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\ObservableCarForCalculationDto.cs",
+              "RelativeDocumentMoniker": "Presenter\\ObservableDTO\\ObservableCarForCalculationDto.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\ObservableCarForCalculationDto.cs",
+              "RelativeToolTip": "Presenter\\ObservableDTO\\ObservableCarForCalculationDto.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:28:13.862Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ObservableCarDetailsDto.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\ObservableCarDetailsDto.cs",
+              "RelativeDocumentMoniker": "Presenter\\ObservableDTO\\ObservableCarDetailsDto.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ObservableDTO\\ObservableCarDetailsDto.cs",
+              "RelativeToolTip": "Presenter\\ObservableDTO\\ObservableCarDetailsDto.cs",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAowIQAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:26:39.652Z"
             },
             {
               "$type": "Document",
@@ -184,104 +204,176 @@
               "RelativeDocumentMoniker": "Presenter\\Commands\\RelayCommand.cs",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\Commands\\RelayCommand.cs",
               "RelativeToolTip": "Presenter\\Commands\\RelayCommand.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T08:27:19.14Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "VMManager.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\VMManager.cs",
-              "RelativeDocumentMoniker": "Presenter\\VMManager.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\VMManager.cs",
-              "RelativeToolTip": "Presenter\\VMManager.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-17T18:55:13.869Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "ViewWPF\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\MainWindow.xaml.cs",
-              "RelativeToolTip": "ViewWPF\\MainWindow.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-17T18:54:52.492Z"
+              "WhenOpened": "2025-12-19T04:26:11.315Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 12,
+              "Title": "ViewModelReadyEventArgs.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\Events\\ViewModelReadyEventArgs.cs",
+              "RelativeDocumentMoniker": "Presenter\\Events\\ViewModelReadyEventArgs.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\Events\\ViewModelReadyEventArgs.cs",
+              "RelativeToolTip": "Presenter\\Events\\ViewModelReadyEventArgs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:26:07.771Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CarQRViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\CarQRViewModel.cs",
+              "RelativeDocumentMoniker": "Presenter\\ViewModels\\CarQRViewModel.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\CarQRViewModel.cs",
+              "RelativeToolTip": "Presenter\\ViewModels\\CarQRViewModel.cs",
+              "ViewState": "AgIAAE4AAAAAAAAAAAAIwGIAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:25:23.402Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "CarEditViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\CarEditViewModel.cs",
+              "RelativeDocumentMoniker": "Presenter\\ViewModels\\CarEditViewModel.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\CarEditViewModel.cs",
+              "RelativeToolTip": "Presenter\\ViewModels\\CarEditViewModel.cs",
+              "ViewState": "AgIAAKYAAAAAAAAAAAAqwMIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:24:32.698Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "CalculateCostViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\CalculateCostViewModel.cs",
+              "RelativeDocumentMoniker": "Presenter\\ViewModels\\CalculateCostViewModel.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\CalculateCostViewModel.cs",
+              "RelativeToolTip": "Presenter\\ViewModels\\CalculateCostViewModel.cs",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAuwIsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:24:26.667Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "MainViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\MainViewModel.cs",
+              "RelativeDocumentMoniker": "Presenter\\ViewModels\\MainViewModel.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\MainViewModel.cs",
+              "RelativeToolTip": "Presenter\\ViewModels\\MainViewModel.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAAMwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:23:56.592Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "BaseViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\BaseViewModel.cs",
+              "RelativeDocumentMoniker": "Presenter\\BaseViewModel.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\BaseViewModel.cs",
+              "RelativeToolTip": "Presenter\\BaseViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:11:59.705Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "ViewWPF\\AssemblyInfo.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\AssemblyInfo.cs",
+              "RelativeToolTip": "ViewWPF\\AssemblyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T04:11:20.607Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\MainWindow.xaml",
               "RelativeDocumentMoniker": "ViewWPF\\MainWindow.xaml",
               "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\MainWindow.xaml",
               "RelativeToolTip": "ViewWPF\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-12-17T18:53:43.72Z"
+              "WhenOpened": "2025-12-19T04:09:35.126Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\Program.cs",
-              "RelativeDocumentMoniker": "Presenter\\Program.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\Program.cs",
-              "RelativeToolTip": "Presenter\\Program.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T06:52:33.231Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "MainPresenter.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\MainPresenter.cs",
-              "RelativeDocumentMoniker": "Presenter\\MainPresenter.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\MainPresenter.cs",
-              "RelativeToolTip": "Presenter\\MainPresenter.cs",
-              "ViewState": "AgIAAFIAAAAAAAAAAAAkwDkAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T06:51:49.175Z"
+              "DocumentIndex": 21,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\App.xaml",
+              "RelativeDocumentMoniker": "ViewWPF\\App.xaml",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\App.xaml",
+              "RelativeToolTip": "ViewWPF\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-12-19T04:08:20.979Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 15,
-              "Title": "MainForm.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\Forms\\MainForm.cs",
-              "RelativeDocumentMoniker": "AIS\\Forms\\MainForm.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\AIS\\Forms\\MainForm.cs",
-              "RelativeToolTip": "AIS\\Forms\\MainForm.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAIBJwBoAAABEAAAAAAAAAA==",
+              "Title": "CarImportViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\CarImportViewModel.cs",
+              "RelativeDocumentMoniker": "Presenter\\ViewModels\\CarImportViewModel.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\ViewModels\\CarImportViewModel.cs",
+              "RelativeToolTip": "Presenter\\ViewModels\\CarImportViewModel.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAA3wGwAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T06:51:38.142Z"
+              "WhenOpened": "2025-12-19T03:58:57.429Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "PricingConfiguration.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\Pricing\\PricingConfiguration.cs",
-              "RelativeDocumentMoniker": "BussinessLogic\\Pricing\\PricingConfiguration.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\Pricing\\PricingConfiguration.cs",
-              "RelativeToolTip": "BussinessLogic\\Pricing\\PricingConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHQAAABFAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\App.xaml.cs",
+              "RelativeDocumentMoniker": "ViewWPF\\App.xaml.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\App.xaml.cs",
+              "RelativeToolTip": "ViewWPF\\App.xaml.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAQwDEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T06:40:35.931Z"
+              "WhenOpened": "2025-12-19T03:57:16.979Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "DynamicPricingStrategy.cs",
-              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\Pricing\\DynamicPricingStrategy.cs",
-              "RelativeDocumentMoniker": "BussinessLogic\\Pricing\\DynamicPricingStrategy.cs",
-              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\BussinessLogic\\Pricing\\DynamicPricingStrategy.cs",
-              "RelativeToolTip": "BussinessLogic\\Pricing\\DynamicPricingStrategy.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "ViewWPF\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\MainWindow.xaml.cs",
+              "RelativeToolTip": "ViewWPF\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAK8AAAAAAAAAAAAAALEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-05T06:40:32.206Z"
+              "WhenOpened": "2025-12-19T03:57:12.323Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ViewManager.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\ViewManager.cs",
+              "RelativeDocumentMoniker": "ViewWPF\\ViewManager.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\ViewWPF\\ViewManager.cs",
+              "RelativeToolTip": "ViewWPF\\ViewManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIAAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T03:48:18.853Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "VMManager.cs",
+              "DocumentMoniker": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\VMManager.cs",
+              "RelativeDocumentMoniker": "Presenter\\VMManager.cs",
+              "ToolTip": "C:\\Users\\kosty\\source\\repos\\AIS\\Presenter\\VMManager.cs",
+              "RelativeToolTip": "Presenter\\VMManager.cs",
+              "ViewState": "AgIAAGYAAAAAAAAAAAAowHIAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-19T03:42:33.447Z"
             }
           ]
         }

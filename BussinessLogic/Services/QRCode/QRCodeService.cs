@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using Model;
+using BussinessLogic.Dto;
 using QRCoder;
 
 namespace BussinessLogic.Services.QRCode
@@ -15,15 +15,15 @@ namespace BussinessLogic.Services.QRCode
         /// <summary>
         /// Генерирует QR-код с информацией об автомобиле.
         /// </summary>
-        /// <param name="car">Автомобиль для которого генерируется QR-код.</param>
+        /// <param name="carDto">Данные автомобиля для генерации QR-кода.</param>
         /// <param name="pixelsPerModule">Размер модуля QR-кода (по умолчанию 20).</param>
         /// <returns>Изображение QR-кода в формате PNG (массив байтов).</returns>
-        public byte[] GenerateQRCode(Car car, int pixelsPerModule = 20)
+        public byte[] GenerateQRCode(CarQRDto carDto, int pixelsPerModule = 20)
         {
-            if (car == null)
-                throw new ArgumentNullException(nameof(car));
+            if (carDto == null)
+                throw new ArgumentNullException(nameof(carDto));
 
-            var carInfo = FormatCarInfo(car);
+            var carInfo = FormatCarInfo(carDto);
 
             using (var qrGenerator = new QRCodeGenerator())
             {
@@ -41,17 +41,17 @@ namespace BussinessLogic.Services.QRCode
         /// <summary>
         /// Сохраняет QR-код автомобиля в файл.
         /// </summary>
-        /// <param name="car">Автомобиль для которого генерируется QR-код.</param>
+        /// <param name="carDto">Данные автомобиля для генерации QR-кода.</param>
         /// <param name="filePath">Путь к файлу для сохранения QR-кода.</param>
         /// <param name="pixelsPerModule">Размер модуля QR-кода (по умолчанию 20).</param>
-        public void SaveQRCodeToFile(Car car, string filePath, int pixelsPerModule = 20)
+        public void SaveQRCodeToFile(CarQRDto carDto, string filePath, int pixelsPerModule = 20)
         {
-            if (car == null)
-                throw new ArgumentNullException(nameof(car));
+            if (carDto == null)
+                throw new ArgumentNullException(nameof(carDto));
             if (string.IsNullOrWhiteSpace(filePath))
                 throw new ArgumentException("Путь к файлу не может быть пустым", nameof(filePath));
 
-            var carInfo = FormatCarInfo(car);
+            var carInfo = FormatCarInfo(carDto);
 
             using (var qrGenerator = new QRCodeGenerator())
             {
@@ -69,24 +69,24 @@ namespace BussinessLogic.Services.QRCode
         /// <summary>
         /// Форматирует информацию об автомобиле для отображения в QR-коде.
         /// </summary>
-        /// <param name="car">Автомобиль для форматирования.</param>
+        /// <param name="carDto">Данные автомобиля для форматирования.</param>
         /// <returns>Форматированная строка с информацией об автомобиле.</returns>
-        public string FormatCarInfo(Car car)
+        public string FormatCarInfo(CarQRDto carDto)
         {
-            if (car == null)
-                throw new ArgumentNullException(nameof(car));
+            if (carDto == null)
+                throw new ArgumentNullException(nameof(carDto));
 
             return $"UrbanGo - Аренда автомобилей\n" +
                    $"══════════════════════════════\n" +
-                   $"Гос. номер: {car.LicensePlate}\n" +
-                   $"Марка: {car.Brand}\n" +
-                   $"Модель: {car.Model}\n" +
-                   $"Год выпуска: {car.Year}\n" +
-                   $"Пробег: {car.Mileage:N0} км\n" +
-                   $"Цена/час: {car.RentalPricePerHour:N2} ₽\n" +
-                   $"Статус: {car.Status}\n" +
+                   $"Гос. номер: {carDto.LicensePlate}\n" +
+                   $"Марка: {carDto.Brand}\n" +
+                   $"Модель: {carDto.Model}\n" +
+                   $"Год выпуска: {carDto.Year}\n" +
+                   $"Пробег: {carDto.Mileage:N0} км\n" +
+                   $"Цена/час: {carDto.RentalPricePerHour:N2} ₽\n" +
+                   $"Статус: {carDto.Status}\n" +
                    $"══════════════════════════════\n" +
-                   $"ID: {car.Id}";
+                   $"ID: {carDto.Id}";
         }
 
         /// <summary>

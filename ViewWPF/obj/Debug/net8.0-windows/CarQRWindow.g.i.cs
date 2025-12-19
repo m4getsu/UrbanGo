@@ -53,7 +53,7 @@ namespace ViewWPF {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ViewWPF;V1.0.0.0;component/carqrwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ViewWPF;component/carqrwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\CarQRWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

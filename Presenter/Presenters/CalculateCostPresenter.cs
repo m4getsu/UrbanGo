@@ -2,7 +2,7 @@ using System;
 using Shared;
 using BussinessLogic;
 
-namespace Presenter
+namespace Presenter.Presenters
 {
     /// <summary>
     /// Presenter для представления расчета стоимости аренды.
@@ -67,7 +67,7 @@ namespace Presenter
                 {
                     _currentPromoCode = promoCode;
                     decimal discountAmount = originalCost - discountedCost;
-                    decimal discountPercent = (discountAmount / originalCost) * 100;
+                    decimal discountPercent = discountAmount / originalCost * 100;
 
                     _view.DisplayDiscountInfo(discountAmount, discountPercent);
                     _view.DisplayTotalCost(discountedCost);
@@ -98,11 +98,11 @@ namespace Presenter
             try
             {
                 string breakdown = _carService.GetPricingBreakdown(_view.Hours);
-                System.Windows.Forms.MessageBox.Show(
+                MessageBox.Show(
                     breakdown,
                     "Детализация расчета стоимости",
-                    System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Information);
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {

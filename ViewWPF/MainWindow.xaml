@@ -9,7 +9,6 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <!-- Стиль для кнопок, которые остаются видимыми даже в disabled состоянии -->
         <Style x:Key="AlwaysVisibleButtonStyle" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>

@@ -40,10 +40,8 @@ namespace Presenter
         /// <returns>Созданная и инициализированная ViewModel.</returns>
         public T CreateViewModel<T>() where T : BaseViewModel
         {
-            // Создаем экземпляр ViewModel с инъекцией зависимостей
             BaseViewModel viewModel;
 
-            // Для CarImportViewModel передаем ICarImportService
             if (typeof(T) == typeof(ViewModels.CarImportViewModel) && _importService != null)
             {
                 viewModel = (T)Activator.CreateInstance(typeof(T), this, _carService, _importService)!;
@@ -53,10 +51,8 @@ namespace Presenter
                 viewModel = (T)Activator.CreateInstance(typeof(T), this, _carService)!;
             }
 
-            // Устанавливаем ссылку на VMManager
             viewModel.SetVMManager(this);
 
-            // Инициализируем ViewModel
             viewModel.Initialize();
 
             return (T)viewModel;
@@ -70,13 +66,10 @@ namespace Presenter
         /// <returns>Созданная и инициализированная ViewModel.</returns>
         public T CreateViewModelWithParameter<T>(int parameter) where T : BaseViewModel
         {
-            // Создаем экземпляр ViewModel с инъекцией зависимостей и параметром
             var viewModel = (T)Activator.CreateInstance(typeof(T), this, _carService, parameter)!;
 
-            // Устанавливаем ссылку на VMManager
             viewModel.SetVMManager(this);
 
-            // Инициализируем ViewModel
             viewModel.Initialize();
 
             return viewModel;
@@ -90,29 +83,26 @@ namespace Presenter
         /// <returns>Созданная и инициализированная ViewModel.</returns>
         public T CreateViewModelWithNullableParameter<T>(int? parameter) where T : BaseViewModel
         {
-            // Создаем экземпляр ViewModel с инъекцией зависимостей и nullable параметром
             var viewModel = (T)Activator.CreateInstance(typeof(T), this, _carService, parameter)!;
 
-            // Устанавливаем ссылку на VMManager
             viewModel.SetVMManager(this);
 
-            // Инициализируем ViewModel
             viewModel.Initialize();
 
             return viewModel;
         }
 
         /// <summary>
-        /// Создает и инициализирует CarQRViewModel с объектом Car.
+        /// Создает и инициализирует CarQRViewModel с DTO автомобиля.
         /// </summary>
-        /// <param name="car">Автомобиль для которого создается QR-код.</param>
+        /// <param name="carDto">DTO автомобиля для которого создается QR-код.</param>
         /// <returns>Созданная и инициализированная CarQRViewModel.</returns>
-        public ViewModels.CarQRViewModel CreateCarQRViewModel(Model.Car car)
+        public ViewModels.CarQRViewModel CreateCarQRViewModel(BussinessLogic.Dto.CarQRDto carDto)
         {
             if (_qrService == null)
                 throw new InvalidOperationException("IQRCodeService не инициализирован. Убедитесь что сервис зарегистрирован в DI.");
 
-            var viewModel = new ViewModels.CarQRViewModel(this, _carService, _qrService, car);
+            var viewModel = new ViewModels.CarQRViewModel(this, _carService, _qrService, carDto);
             viewModel.SetVMManager(this);
             viewModel.Initialize();
             return viewModel;
@@ -133,8 +123,6 @@ namespace Presenter
         /// <param name="viewModel">ViewModel для очистки.</param>
         public void CloseViewModel(BaseViewModel viewModel)
         {
-            // Здесь можно добавить логику очистки ресурсов
-            // Например, отписку от событий, закрытие соединений и т.д.
         }
     }
 }
